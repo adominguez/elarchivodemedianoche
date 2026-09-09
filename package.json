@@ -1,0 +1,30 @@
+{
+  "name": "el-archivo-de-medianoche",
+  "type": "module",
+  "version": "0.0.1",
+  "packageManager": "pnpm@9.2.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/react": "^6.0.5",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.3.2",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.5.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}
