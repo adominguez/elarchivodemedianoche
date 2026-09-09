@@ -13,14 +13,14 @@ const { verdict } = Astro.props;
 
 const TONE = {
   solved: 'text-gold-400 border-gold-500',
-  partial: 'text-parchment-200 border-parchment-300',
+  partial: 'text-blood-bright border-blood-bright',
   failed: 'text-blood-bright border-blood-bright',
 } as const;
 
 const NOTE = {
   solved: 'La acusación se sostiene. El expediente queda cerrado.',
-  partial: 'Parte de la acusación se sostiene. El expediente sigue abierto.',
-  failed: 'La acusación no se sostiene. El expediente sigue abierto.',
+  partial: 'La teoría presentada no queda acreditada. Revise la investigación y las pruebas seleccionadas.',
+  failed: 'La teoría presentada no queda acreditada. Revise la investigación y las pruebas seleccionadas.',
 } as const;
 ---
 

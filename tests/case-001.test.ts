@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { case001 } from '../db/seeds/case-001-la-ultima-campanada.ts';
 import { fromDefinition, initialState } from './case-definition.ts';
-import { canFollow, visitNode, judgeAccusation, caseProgress, nodeContinuations, openInvestigations } from '../src/lib/domain/engine.ts';
+import { canAccuse, canFollow, visitNode, judgeAccusation, caseProgress, nodeContinuations, openInvestigations } from '../src/lib/domain/engine.ts';
 const file = fromDefinition(case001);
 const accusation = {culpritSuspectId:file.solution.culpritSuspectId,motiveOptionId:file.solution.motiveOptionId,methodOptionId:file.solution.methodOptionId,evidenceClueIds:file.solution.evidenceClueIds};
 function traverse(reverse = false) {
@@ -11,14 +11,7 @@ function traverse(reverse = false) {
     const visible=[...nodeContinuations(file,state,state.currentNodeId),...openInvestigations(file,state)];
     if (reverse) visible.reverse();
     const next=visible.find(({option}) => !state.visitedNodeIds.has(option.targetNodeId));
-    if (!next) {
-      const returnOption=openInvestigations(file,state).find(({option}) =>
-        file.options.some(candidate => candidate.sourceNodeId === option.targetNodeId && !state.visitedNodeIds.has(candidate.targetNodeId)),
-      );
-      if (!returnOption) return state;
-      state=visitNode(file,state,returnOption.option.targetNodeId).state;
-      continue;
-    }
+    if (!next) return state;
     assert.ok(canFollow(file,state,next.option.id));
     state = visitNode(file,state,next.option.targetNodeId).state;
   }
@@ -29,6 +22,7 @@ test('el expediente completo es alcanzable en ambos órdenes y admite pruebas al
     assert.equal(state.visitedNodeIds.size,case001.nodes.length);
     assert.equal(state.clueStates.size,case001.clues.length);
     assert.equal(caseProgress(file,state).percent,100);
+    assert.equal(canAccuse(file,state),true);
     assert.equal(judgeAccusation(file,accusation,state).verdict,'solved');
     const alternative={...accusation,evidenceClueIds:['c001-cl-cuaderno','c001-cl-carta-auditoria','c001-cl-informe','c001-cl-disco']};
     assert.equal(judgeAccusation(file,alternative,state).verdict,'solved');
@@ -48,5 +42,13 @@ test('releer el disco no pierde su comprobación ni bloquea el recorrido', () =>
   assert.ok(canFollow(file,reread,'c001-o-recorrido'));
 });
 test('el expediente no se resuelve por acertar las opciones sin investigar', () => {
+  assert.equal(canAccuse(file,initialState(file.id)),false);
   assert.equal(judgeAccusation(file,accusation,initialState(file.id)).verdict,'partial');
+});
+
+test('el cajón del despacho sigue disponible después de abandonar la escena', () => {
+  let state=visitNode(file,initialState(file.id),file.entryNodeId).state;
+  state=visitNode(file,state,'c001-n-despacho').state;
+  state=visitNode(file,state,'c001-n-invernadero').state;
+  assert.ok(openInvestigations(file,state).some(({option})=>option.id==='c001-o-despacho-libro'));
 });

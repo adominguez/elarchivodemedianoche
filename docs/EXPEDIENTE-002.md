@@ -18,10 +18,10 @@
 - 21:14: Elías abre la galería con su tarjeta y se dirige al refugio S-2, atraído mediante una clave privada.
 - 21:17: Nora lo sigue usando su tarjeta N-04.
 - Aproximadamente 21:19: lo encierra en S-2 desde el exterior.
+- Nora asegura la puerta y espera en un recodo de servicio para que el boletín cubra su ausencia.
 - 21:30: el temporizador reproduce el boletín grabado mientras Nora sigue en el túnel.
 - 21:36: Nora regresa hacia el módulo de radio.
-- 21:30: un temporizador reproduce su boletín previamente grabado y crea una coartada auditiva.
-- Después retira el cristal de frecuencia del transmisor y lo esconde dentro de su estuche de auriculares.
+- Antes de salir había retirado el oscilador maestro; lo oculta en su estuche y planea reinstalarlo después.
 - 22:10: comienza la investigación.
 
 El túnel se alcanza desde el interior. La compuerta exterior conserva el hielo y el sensor demuestra que no se abrió: no intervino un intruso.
@@ -32,7 +32,7 @@ La acusación debe sostener cuatro aspectos:
 
 1. El aviso fue fabricado: registro de radio analizado o nota de Elías contrastada.
 2. Nora estuvo en el túnel: registro de tarjetas analizado.
-3. La coartada y el sabotaje fueron preparados: cinta, cristal o fibras analizados.
+3. La coartada y el sabotaje fueron preparados: cinta, oscilador o fibras analizados.
 4. Existía un beneficio económico: télex reconstruido o informe mineralógico contrastado.
 
 El mapa, la batería y las huellas ayudan a localizar a Elías y completar la reconstrucción. Los secretos de Tomás, Liv y Samuel son infracciones reales, pero no explican toda la cadena.

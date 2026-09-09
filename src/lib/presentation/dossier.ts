@@ -402,8 +402,8 @@ function accusationForm(caseFile: CaseFile, state: InvestigationState): Accusati
 
 const VERDICT_HEADLINE: Record<RecordedAccusation['verdict'], string> = {
   solved: 'Expediente cerrado',
-  partial: 'Acusación insuficiente',
-  failed: 'Acusación desestimada',
+  partial: 'Acusación no acreditada',
+  failed: 'Acusación no acreditada',
 };
 
 export function verdictView(

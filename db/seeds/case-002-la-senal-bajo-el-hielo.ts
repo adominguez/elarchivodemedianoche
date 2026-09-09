@@ -49,8 +49,8 @@ export const case002: CaseDefinition = {
         {
           "id": "c002-f-nora-cristal",
           "kind": "contradiction",
-          "headline": "Ocultó el cristal del transmisor",
-          "detail": "El cristal de frecuencia aparece en el estuche de auriculares de Nora, envuelto en el mismo paño rojo que dejó fibras en el panel."
+          "headline": "Ocultó el oscilador maestro",
+          "detail": "El oscilador maestro aparece en el estuche de auriculares de Nora, envuelto en el mismo paño rojo que dejó fibras en el panel."
         },
         {
           "id": "c002-f-nora-oferta",
@@ -326,7 +326,7 @@ export const case002: CaseDefinition = {
         {
           "key": "found",
           "label": "Huellas sobre nieve prensada",
-          "description": "Un rastro va del módulo de radio al túnel y vuelve. El viento ha borrado parte del dibujo."
+          "description": "Unas botas grandes avanzan hacia S-2; detrás, un rastro menor va del módulo de radio al túnel y vuelve. El viento ha borrado parte del dibujo."
         },
         {
           "key": "analyzed",
@@ -500,7 +500,7 @@ export const case002: CaseDefinition = {
       "kind": "scene",
       "title": "La galería de acceso",
       "location": "Galería presurizada",
-      "body": "Una esclusa interior conduce al túnel excavado en el hielo. El lector de tarjetas imprime cada apertura sobre una tira perforada.\n\nSobre la nieve prensada se distinguen dos rastros: unas botas grandes avanzan hacia S-2 sin regreso visible; tres minutos detrás, una pisada menor va desde el módulo de radio hacia la galería y vuelve. No hay huellas que lleguen desde la compuerta exterior.\n\nLas juntas exteriores conservan una costra continua de hielo. Nadie ha abierto esa compuerta desde antes de la tormenta.",
+      "body": "Una esclusa interior conduce al túnel excavado en el hielo. El lector de tarjetas imprime cada apertura sobre una tira perforada.\n\nSobre la nieve prensada se distinguen dos rastros: unas botas grandes avanzan hacia S-2 sin regreso visible; detrás, una pisada menor va desde el módulo de radio hacia la galería y vuelve. No hay huellas que lleguen desde la compuerta exterior.\n\nLas juntas exteriores conservan una costra continua de hielo. Nadie ha abierto esa compuerta desde antes de la tormenta.",
       "imagePublicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/tunel",
       "effects": [
         {
@@ -510,11 +510,6 @@ export const case002: CaseDefinition = {
         {
           "effect": "discover_clue",
           "target": "c002-cl-huellas-nieve"
-        },
-        {
-          "effect": "set_flag",
-          "target": "sin_intruso",
-          "value": "1"
         }
       ]
     },
@@ -913,7 +908,7 @@ export const case002: CaseDefinition = {
       "kind": "analysis",
       "title": "Reconstruir la desaparición",
       "location": "Sala de mapas",
-      "body": "A las 21:12 alguien añadió una llamada imposible al registro. Elías entró en la galería con una batería agotada, atraído hacia S-2 por una frase reservada a comunicaciones.\n\nLa tarjeta de Nora lo siguió tres minutos después y no regresó hasta las 21:36. Mientras su voz sonaba automáticamente a las 21:30, ella seguía en el túnel y el transmisor permanecía inutilizado.\n\nLos secretos de Tomás, Liv y Samuel explican sus mentiras. Ninguno enlaza la llamada, el acceso, el falso turno, el oscilador oculto y el beneficio económico como lo hacen las pruebas contra Nora.",
+      "body": "A las 21:12 alguien añadió una llamada imposible al registro. Elías entró en la galería con una batería agotada, atraído hacia S-2 por una frase reservada a comunicaciones.\n\nLa tarjeta de Nora lo siguió tres minutos después y no regresó hasta las 21:36. Tras asegurar la puerta, aguardó en un recodo de servicio hasta oír por el altavoz el boletín automático de las 21:30 y volvió cuando su falsa coartada ya había sonado. El transmisor permanecía inutilizado.\n\nLos secretos de Tomás, Liv y Samuel explican sus mentiras. Ninguno enlaza la llamada, el acceso, el falso turno, el oscilador oculto y el beneficio económico como lo hacen las pruebas contra Nora.",
       "imagePublicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/mapas",
       "effects": []
     }
@@ -1361,7 +1356,7 @@ export const case002: CaseDefinition = {
     "accusationRequirements": [
       { "requirement": "flag", "target": "victima_rescatada", "value": "1" }
     ],
-    "explanation": "Nora Vidal conocía las coordenadas de la veta porque preparaba el cifrado del informe de Elías. Un télex dirigido a su canal privado le ofrecía dinero por retrasar el envío y facilitar la posición exacta.\n\nAñadió al registro una llamada imposible de la baliza 3 y empleó la clave «Aurora sin sombra» para que Elías creyera que el aviso era auténtico. Antes de que saliera, sustituyó la batería cargada de su radio por una unidad descartada. Elías entró al túnel con su tarjeta a las 21:14; la tarjeta N-04 de Nora lo siguió tres minutos después.\n\nNora cerró el refugio S-2 desde fuera y no regresó al módulo central hasta las 21:36. A las 21:30 un temporizador reprodujo el boletín que había grabado, creando la impresión de que seguía en la radio mientras aún estaba en el túnel. Antes de salir había retirado el oscilador maestro para impedir llamadas de auxilio y bloquear el envío automático del informe. Pensaba reinstalarlo tras borrar el envío, atribuir el silencio a una avería térmica y usar más tarde su canal privado. El oscilador apareció dentro de su estuche, envuelto en el paño cuyas fibras quedaron en el panel.\n\nLa tormenta debía mantener a Elías aislado hasta que Nora pudiera vender las coordenadas y presentar la desaparición como un accidente. El registro de puertas y el hielo intacto de la compuerta descartan a un intruso. Elías fue rescatado con hipotermia, pero consciente.\n\nTomás falseó una inspección, Liv desvió combustible y Samuel omitió un sedante. Sus secretos explican sus mentiras, pero ninguno reúne el aviso falso, el acceso al túnel, la coartada grabada, el sabotaje y el beneficio económico.",
+    "explanation": "Nora Vidal conocía las coordenadas de la veta porque preparaba el cifrado del informe de Elías. Un télex dirigido a su canal privado le ofrecía dinero por retrasar el envío y facilitar la posición exacta.\n\nAñadió al registro una llamada imposible de la baliza 3 y empleó la clave «Aurora sin sombra» para que Elías creyera que el aviso era auténtico. Antes de que saliera, sustituyó la batería cargada de su radio por una unidad descartada. Elías entró al túnel con su tarjeta a las 21:14; la tarjeta N-04 de Nora lo siguió tres minutos después.\n\nNora cerró el refugio S-2 desde fuera. Tras asegurar la puerta, aguardó en un recodo de servicio hasta oír por el altavoz el boletín automático de las 21:30 y no regresó al módulo central hasta las 21:36. Así creó la impresión de que seguía en la radio mientras aún estaba en el túnel. Antes de salir había retirado el oscilador maestro para impedir llamadas de auxilio y bloquear el envío automático del informe. Pensaba reinstalarlo tras borrar el envío, atribuir el silencio a una avería térmica y usar más tarde su canal privado. El oscilador apareció dentro de su estuche, envuelto en el paño cuyas fibras quedaron en el panel.\n\nLa tormenta debía mantener a Elías aislado hasta que Nora pudiera vender las coordenadas y presentar la desaparición como un accidente. El registro de puertas y el hielo intacto de la compuerta descartan a un intruso. Elías fue rescatado con hipotermia, pero consciente.\n\nTomás falseó una inspección, Liv desvió combustible y Samuel omitió un sedante. Sus secretos explican sus mentiras, pero ninguno reúne el aviso falso, el acceso al túnel, la coartada grabada, el sabotaje y el beneficio económico.",
     "epitaph": "Bajo el hielo no había una voz pidiendo ayuda. Había alguien procurando que nadie pudiera pedirla."
   }
 };

@@ -637,11 +637,6 @@ export const case001: CaseDefinition = {
           "target": "c001-cl-disco",
           "value": "analyzed"
         },
-        {
-          "effect": "set_flag",
-          "target": "hora_falsificada",
-          "value": "1"
-        }
       ]
     },
     {
@@ -807,11 +802,6 @@ export const case001: CaseDefinition = {
       "body": "El pabellón está a ochenta metros de la casa, al final de un camino empedrado. El generador está parado. La tapa de bornes conserva polvo y la caja de herramientas sigue cerrada, con los precintos de papel del mecánico intactos.\n\nNo encuentra indicios de la reparación que Abel describió. Eso no demuestra que no estuviera aquí: pudo venir y no trabajar. Usted anota ambas cosas.",
       "effects": [
         {
-          "effect": "set_flag",
-          "target": "pabellon_revisado",
-          "value": "1"
-        },
-        {
           "effect": "reveal_fact",
           "target": "c001-f-abel-pabellon"
         }
@@ -909,9 +899,12 @@ export const case001: CaseDefinition = {
     },
     {
       "id": "c001-o-despacho-libro",
-      "from": "c001-n-despacho",
       "to": "c001-n-libro-contraste",
-      "label": "Registrar el cajón del escritorio"
+      "label": "Registrar el cajón del escritorio",
+      "line": "La casa",
+      "requires": [
+        { "requirement": "node", "target": "c001-n-despacho" }
+      ]
     },
     {
       "id": "c001-o-salon",
@@ -1305,6 +1298,9 @@ export const case001: CaseDefinition = {
           }
         ]
       }
+    ],
+    "accusationRequirements": [
+      { "requirement": "node", "target": "c001-n-recorrido" }
     ]
   }
 };
