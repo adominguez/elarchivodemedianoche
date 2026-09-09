@@ -563,3 +563,14 @@ Su cronología y biblia visual están documentadas en
 [`docs/EXPEDIENTE-002.md`](docs/EXPEDIENTE-002.md) (contiene spoilers).
 El inventario de imágenes publicadas está en
 [`docs/assets-la-senal-bajo-el-hielo.json`](docs/assets-la-senal-bajo-el-hielo.json).
+
+## Expediente #003
+
+**La puja de humo** abandona el crimen violento para investigar una doble
+estafa en una subasta de arte de 2004: una obra sustituida y un pago desviado.
+Contiene 29 nodos, 14 pistas, cuatro sospechosos y 30 imágenes originales.
+
+El canon y la continuidad visual están en
+[`docs/EXPEDIENTE-003.md`](docs/EXPEDIENTE-003.md) (contiene spoilers), y el
+inventario publicado en
+[`docs/assets-la-puja-de-humo.json`](docs/assets-la-puja-de-humo.json).

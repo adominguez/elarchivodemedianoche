@@ -1,0 +1,50 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { case003 } from '../db/seeds/case-003-la-puja-de-humo.ts';
+import { fromDefinition, initialState } from './case-definition.ts';
+import { canAccuse, canFollow, caseProgress, judgeAccusation, nodeContinuations, openInvestigations, visitNode } from '../src/lib/domain/engine.ts';
+
+const file=fromDefinition(case003);
+const accusation={culpritSuspectId:'c003-s-celia',motiveOptionId:'c003-mo-deuda',methodOptionId:'c003-me-doble-fraude',evidenceClueIds:['c003-cl-catalogo','c003-cl-pase','c003-cl-fax','c003-cl-factura']};
+
+function traverse(reverse=false) {
+  let state=visitNode(file,initialState(file.id),file.entryNodeId).state;
+  for (;;) {
+    const visible=[...nodeContinuations(file,state,state.currentNodeId),...openInvestigations(file,state)];
+    if(reverse) visible.reverse();
+    const next=visible.find(({option})=>!state.visitedNodeIds.has(option.targetNodeId));
+    if(!next) return state;
+    assert.ok(canFollow(file,state,next.option.id));
+    state=visitNode(file,state,next.option.targetNodeId).state;
+  }
+}
+
+test('la estafa completa es alcanzable en distintos órdenes por la interfaz real',()=>{
+  for(const reverse of [false,true]) {
+    const state=traverse(reverse);
+    assert.equal(state.visitedNodeIds.size,case003.nodes.length);
+    assert.equal(state.clueStates.size,case003.clues.length);
+    assert.equal(caseProgress(file,state).percent,100);
+    assert.equal(canAccuse(file,state),true);
+    assert.equal(judgeAccusation(file,accusation,state).verdict,'solved');
+  }
+});
+
+test('no se puede acusar antes de reconstruir la doble estafa',()=>{
+  assert.equal(canAccuse(file,initialState(file.id)),false);
+});
+
+test('cada grupo probatorio es necesario y los indicios indiscriminados penalizan',()=>{
+  const state=traverse();
+  for(const clueId of accusation.evidenceClueIds) {
+    assert.equal(judgeAccusation(file,{...accusation,evidenceClueIds:accusation.evidenceClueIds.filter(id=>id!==clueId)},state).verdict,'partial');
+  }
+  assert.equal(judgeAccusation(file,{...accusation,evidenceClueIds:file.clues.map(({id})=>id)},state).verdict,'partial');
+});
+
+test('los tres secretos secundarios quedan separados de la doble estafa',()=>{
+  const state=traverse();
+  for(const factId of ['c003-f-bruno-pujas','c003-f-nadia-barniz','c003-f-leo-camara']) {
+    assert.ok(state.discoveredFactIds.has(factId));
+  }
+});
