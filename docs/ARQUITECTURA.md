@@ -192,3 +192,13 @@ prompt ──► generación ──► Cloudinary ──► publicId ──► T
 - **Tipografías autoalojadas** con la API de fuentes de Astro (EB Garamond para
   la narración, Special Elite para la máquina de escribir). Sin peticiones a
   terceros en tiempo de ejecución.
+
+
+## Revisión editorial de septiembre de 2026
+
+`case_evidence_rules` guarda los grupos de pruebas y sus estados mínimos.
+`judgeAccusation` recibe también el progreso: acertar las opciones sin sostener
+los grupos produce un resultado parcial. Los estados de pistas son monotónicos.
+`pnpm db:update` conserva una copia previa y comprueba el progreso después
+de aplicar esta edición; `pnpm assets:upload` publica el manifiesto visual.
+La continuidad del primer caso vive en [EXPEDIENTE-001.md](EXPEDIENTE-001.md).

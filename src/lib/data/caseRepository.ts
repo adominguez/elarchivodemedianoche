@@ -76,6 +76,7 @@ export async function getCaseFile(slug: string): Promise<CaseFile | null> {
     solutionOptions,
     solution,
     evidence,
+    evidenceRules,
   ] = await client.batch(
     [
       { sql: `SELECT * FROM suspects WHERE case_id = ? ORDER BY position, name`, args },
@@ -89,6 +90,7 @@ export async function getCaseFile(slug: string): Promise<CaseFile | null> {
       { sql: `SELECT * FROM solution_options WHERE case_id = ? ORDER BY dimension, position`, args },
       { sql: `SELECT * FROM case_solutions WHERE case_id = ?`, args },
       { sql: `SELECT clue_id FROM solution_evidence WHERE case_id = ?`, args },
+      { sql: `SELECT groups_json FROM case_evidence_rules WHERE case_id = ?`, args },
     ],
     'read',
   );
@@ -224,6 +226,7 @@ export async function getCaseFile(slug: string): Promise<CaseFile | null> {
       explanation: str(solutionRow.explanation),
       epitaph: strOrNull(solutionRow.epitaph),
       evidenceClueIds: evidence.rows.map((row) => str(row.clue_id)),
+      evidenceGroups: JSON.parse(str(evidenceRules.rows[0]?.groups_json ?? '[]')),
     },
   };
 }

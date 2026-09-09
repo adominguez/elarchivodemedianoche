@@ -537,3 +537,18 @@ pnpm dev
 La arquitectura, el modelo de datos, el motor de investigación y las decisiones
 de implementación están documentados en
 [`docs/ARQUITECTURA.md`](docs/ARQUITECTURA.md).
+
+
+## Revisión del expediente #001
+
+El expediente revisado contiene 27 nodos, 14 pistas y 33 imágenes originales
+publicadas en Cloudinary. La acusación requiere evidencias contrastadas que
+sostengan autoría, motivo, lugar/arma y engaño; permite pruebas alternativas.
+
+La cronología y la continuidad de personajes y escenarios están documentadas en
+[`docs/EXPEDIENTE-001.md`](docs/EXPEDIENTE-001.md) (contiene spoilers).
+El inventario de recursos está en [`docs/assets-la-ultima-campanada.json`](docs/assets-la-ultima-campanada.json).
+
+Para reeditar este expediente conservando el progreso: `pnpm db:update`.
+Este comando guarda una copia en `.data/backups/`, aplica el esquema y la
+definición y comprueba que las tablas de progreso conservan su contenido.

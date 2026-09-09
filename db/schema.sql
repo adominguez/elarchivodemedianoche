@@ -232,3 +232,10 @@ CREATE TABLE IF NOT EXISTS accusations (
 );
 CREATE INDEX IF NOT EXISTS idx_accusations_investigation
   ON accusations(investigation_id);
+
+-- Reglas editoriales de evidencia: cada grupo debe quedar respaldado por una
+-- alternativa descubierta en el estado indicado. Separada para migrar sin ALTER.
+CREATE TABLE IF NOT EXISTS case_evidence_rules (
+  case_id TEXT PRIMARY KEY REFERENCES cases(id) ON DELETE CASCADE,
+  groups_json TEXT NOT NULL CHECK (json_valid(groups_json))
+);

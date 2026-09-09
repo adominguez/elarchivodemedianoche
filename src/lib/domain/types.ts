@@ -106,6 +106,7 @@ export interface CaseSolution {
   explanation: string;
   epitaph: string | null;
   evidenceClueIds: string[];
+  evidenceGroups: Array<{ label: string; alternatives: Array<{ clueId: string; stateKey: string }> }>;
 }
 
 /** Agregado completo de la definición de un expediente. */

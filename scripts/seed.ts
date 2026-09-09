@@ -21,6 +21,7 @@ function statementsFor(def: CaseDefinition): InStatement[] {
   // más simple de que la definición sea la fuente de verdad. Que las opciones
   // desbloqueadas se deriven (y no se guarden) es lo que lo hace posible.
   for (const table of [
+    'case_evidence_rules',
     'solution_evidence',
     'case_solutions',
     'solution_options',
@@ -235,6 +236,10 @@ function statementsFor(def: CaseDefinition): InStatement[] {
     });
   }
 
+  statements.push({
+    sql: 'INSERT INTO case_evidence_rules (case_id, groups_json) VALUES (?, ?)',
+    args: [def.id, JSON.stringify(def.solution.evidenceGroups)],
+  });
   return statements;
 }
 
@@ -289,10 +294,43 @@ function validate(def: CaseDefinition): string[] {
     }
   }
 
-  // Todo nodo debe ser alcanzable: de lo contrario hay narración que nadie leerá.
-  const reachable = new Set([def.entryNodeId, ...def.options.map((option) => option.to)]);
+  // Simular desbloqueos acumulativos, incluyendo requisitos, no sólo enlaces entrantes.
+  const reachable = new Set<string>();
+  const knownClues = new Map<string, string>();
+  const knownFacts = new Set<string>();
+  const knownFlags = new Map<string, string>();
+  const apply = (id: string) => {
+    reachable.add(id);
+    for (const e of def.nodes.find((n) => n.id === id)?.effects ?? []) {
+      if (e.effect === 'discover_clue' && !knownClues.has(e.target)) {
+        const initial = def.clues.find((c) => c.id === e.target)?.states[0]?.key;
+        if (initial) knownClues.set(e.target, initial);
+      }
+      if (e.effect === 'advance_clue') knownClues.set(e.target, e.value);
+      if (e.effect === 'reveal_fact') knownFacts.add(e.target);
+      if (e.effect === 'set_flag') knownFlags.set(e.target, e.value ?? '1');
+    }
+  };
+  apply(def.entryNodeId);
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const option of def.options) {
+      if (reachable.has(option.to) || (option.from && !reachable.has(option.from))) continue;
+      const available = (option.requires ?? []).every((r) => {
+        switch (r.requirement) {
+          case 'node': return reachable.has(r.target);
+          case 'clue': return knownClues.has(r.target);
+          case 'clue_state': return knownClues.get(r.target) === r.value;
+          case 'fact': return knownFacts.has(r.target);
+          case 'flag': return r.value === undefined ? knownFlags.has(r.target) : knownFlags.get(r.target) === r.value;
+        }
+      });
+      if (available) { apply(option.to); changed = true; }
+    }
+  }
   for (const id of nodeIds) {
-    if (!reachable.has(id)) errors.push(`nodo inalcanzable: ${id}`);
+    if (!reachable.has(id)) errors.push(`nodo inalcanzable por sus requisitos: ${id}`);
   }
 
   // Y todo lo que puede descubrirse debe poder descubrirse: un hecho o una pista
@@ -310,6 +348,17 @@ function validate(def: CaseDefinition): string[] {
     if (!clueIds.has(clueId)) errors.push(`evidencia de la solución inexistente: ${clueId}`);
   }
 
+  if (!def.solution.evidenceGroups.length) errors.push('faltan grupos de evidencia');
+  for (const group of def.solution.evidenceGroups) {
+    if (!group.alternatives.length) errors.push(`grupo vacío: ${group.label}`);
+    for (const alternative of group.alternatives) {
+      const clue = def.clues.find((c) => c.id === alternative.clueId);
+      if (!clue?.states.some((s) => s.key === alternative.stateKey)) {
+        errors.push(`evidencia o estado inválido: ${alternative.clueId}/${alternative.stateKey}`);
+      }
+      if (!def.solution.evidence.includes(alternative.clueId)) errors.push(`evidencia no puntuable: ${alternative.clueId}`);
+    }
+  }
   return errors;
 }
 

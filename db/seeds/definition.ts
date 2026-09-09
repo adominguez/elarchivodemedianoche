@@ -126,6 +126,7 @@ export interface SolutionDefinition {
   motive: string;
   method: string;
   evidence: string[];
+  evidenceGroups: Array<{ label: string; alternatives: Array<{ clueId: string; stateKey: string }> }>;
   explanation: string;
   epitaph?: string;
 }

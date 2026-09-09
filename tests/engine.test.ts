@@ -122,6 +122,7 @@ const caseFile: CaseFile = {
     explanation: 'porque sí',
     epitaph: null,
     evidenceClueIds: ['cl-llave'],
+    evidenceGroups: [{ label: 'Prueba', alternatives: [{ clueId: 'cl-llave', stateKey: 'analyzed' }] }],
   },
 };
 
@@ -238,7 +239,7 @@ test('la acusación distingue acierto, acierto parcial y fallo', () => {
     motiveOptionId: 'mo-1',
     methodOptionId: 'me-1',
     evidenceClueIds: ['cl-llave'],
-  });
+  }, visitNode(caseFile, emptyState(), 'n-analisis').state);
   assert.equal(correct.verdict, 'solved');
   assert.equal(correct.evidenceHits, 1);
   assert.equal(correct.evidenceTotal, 1);
@@ -248,7 +249,7 @@ test('la acusación distingue acierto, acierto parcial y fallo', () => {
     motiveOptionId: 'mo-2',
     methodOptionId: 'me-2',
     evidenceClueIds: [],
-  });
+  }, emptyState());
   assert.equal(partial.verdict, 'partial');
 
   const failed = judgeAccusation(caseFile, {
@@ -256,6 +257,22 @@ test('la acusación distingue acierto, acierto parcial y fallo', () => {
     motiveOptionId: 'mo-2',
     methodOptionId: 'me-2',
     evidenceClueIds: [],
-  });
+  }, emptyState());
   assert.equal(failed.verdict, 'failed');
+});
+
+const correctAccusation = { culpritSuspectId: 's-abel', motiveOptionId: 'mo-1', methodOptionId: 'me-1', evidenceClueIds: ['cl-llave'] };
+test('acertar sin pruebas, con una prueba no descubierta o sin analizar no cierra el caso', () => {
+  assert.equal(judgeAccusation(caseFile, { ...correctAccusation, evidenceClueIds: [] }, emptyState()).verdict, 'partial');
+  const forged = judgeAccusation(caseFile, correctAccusation, emptyState());
+  assert.equal(forged.verdict, 'partial');
+  assert.equal(forged.evidenceHits, 0);
+  const found = visitNode(caseFile, emptyState(), 'n-despacho').state;
+  assert.equal(judgeAccusation(caseFile, correctAccusation, found).verdict, 'partial');
+  const analyzed = visitNode(caseFile, found, 'n-analisis').state;
+  assert.equal(judgeAccusation(caseFile, correctAccusation, analyzed).verdict, 'solved');
+});
+test('un expediente sin reglas de evidencia no permite cerrar por azar', () => {
+  const analyzed = visitNode(caseFile, emptyState(), 'n-analisis').state;
+  assert.equal(judgeAccusation({ ...caseFile, solution: { ...caseFile.solution, evidenceGroups: [] } }, correctAccusation, analyzed).verdict, 'partial');
 });

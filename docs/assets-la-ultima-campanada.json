@@ -1,0 +1,205 @@
+{
+  "case": "la-ultima-campanada",
+  "revision": "2026-09-09",
+  "sourceDirectory": ".data/art/la-ultima-campanada",
+  "assets": [
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/portada",
+      "width": 1122,
+      "height": 1402,
+      "version": 1788936968
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/sospechosos/abel-varela",
+      "width": 508,
+      "height": 764,
+      "version": 1788936969
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/sospechosos/vera-solis",
+      "width": 508,
+      "height": 764,
+      "version": 1788936971
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/sospechosos/damian-otero",
+      "width": 508,
+      "height": 764,
+      "version": 1788936974
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/sospechosos/irene-lasa",
+      "width": 508,
+      "height": 764,
+      "version": 1788936976
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/escenas/abel-interrogatorio",
+      "width": 764,
+      "height": 508,
+      "version": 1788936979
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/escenas/vera-interrogatorio",
+      "width": 764,
+      "height": 508,
+      "version": 1788936982
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/escenas/damian-interrogatorio",
+      "width": 764,
+      "height": 508,
+      "version": 1788936985
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/escenas/irene-interrogatorio",
+      "width": 764,
+      "height": 508,
+      "version": 1788936987
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/escenas/vestibulo",
+      "width": 764,
+      "height": 337,
+      "version": 1788936990
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/escenas/salon",
+      "width": 764,
+      "height": 338,
+      "version": 1788936992
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/escenas/despacho",
+      "width": 764,
+      "height": 338,
+      "version": 1788936994
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/escenas/invernadero",
+      "width": 764,
+      "height": 337,
+      "version": 1788936995
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/escenas/cuerpo",
+      "width": 764,
+      "height": 337,
+      "version": 1788936997
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/escenas/gramofono",
+      "width": 764,
+      "height": 337,
+      "version": 1788936999
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/escenas/reconstruccion",
+      "width": 764,
+      "height": 338,
+      "version": 1788937001
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/escenas/pasillo",
+      "width": 764,
+      "height": 338,
+      "version": 1788937003
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/escenas/habitacion",
+      "width": 764,
+      "height": 337,
+      "version": 1788937005
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/escenas/pabellon",
+      "width": 764,
+      "height": 337,
+      "version": 1788937007
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/pruebas/reloj",
+      "width": 414,
+      "height": 414,
+      "version": 1788937008
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/pruebas/gramofono",
+      "width": 414,
+      "height": 414,
+      "version": 1788937010
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/pruebas/disco",
+      "width": 414,
+      "height": 414,
+      "version": 1788937011
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/pruebas/atizador",
+      "width": 414,
+      "height": 414,
+      "version": 1788937013
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/pruebas/carta-auditoria",
+      "width": 414,
+      "height": 414,
+      "version": 1788937015
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/pruebas/libro-cuentas",
+      "width": 414,
+      "height": 414,
+      "version": 1788937016
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/pruebas/cuaderno",
+      "width": 414,
+      "height": 414,
+      "version": 1788937018
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/pruebas/informe",
+      "width": 414,
+      "height": 414,
+      "version": 1788937020
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/pruebas/llave",
+      "width": 414,
+      "height": 414,
+      "version": 1788937021
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/pruebas/huellas",
+      "width": 764,
+      "height": 337,
+      "version": 1788937023
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/pruebas/colillas",
+      "width": 764,
+      "height": 337,
+      "version": 1788937025
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/pruebas/copa",
+      "width": 764,
+      "height": 338,
+      "version": 1788937027
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/pruebas/cartas",
+      "width": 764,
+      "height": 338,
+      "version": 1788937029
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-ultima-campanada/pruebas/pagare",
+      "width": 764,
+      "height": 337,
+      "version": 1788937031
+    }
+  ]
+}

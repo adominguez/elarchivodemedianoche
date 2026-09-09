@@ -164,7 +164,10 @@ export function visitNode(caseFile: CaseFile, state: InvestigationState, nodeId:
         if (!effect.value) break;
         // Sólo avanza una pista ya descubierta; si no lo estaba, se descubre ya evolucionada.
         const known = clueStates.get(effect.targetId);
-        if (known === effect.value) break;
+        const states = caseFile.clues.find((clue) => clue.id === effect.targetId)?.states ?? [];
+        const nextIndex = states.findIndex((s) => s.key === effect.value);
+        const currentIndex = states.findIndex((s) => s.key === known);
+        if (nextIndex < 0 || currentIndex >= nextIndex) break;
         clueStates.set(effect.targetId, effect.value);
         const change = { clueId: effect.targetId, stateKey: effect.value };
         if (known === undefined) changes.discoveredClues.push(change);
@@ -255,7 +258,7 @@ function countKnown(known: IterableIterator<string>, universe: string[]): number
 // Acusación
 // ---------------------------------------------------------------------------
 
-export function judgeAccusation(caseFile: CaseFile, accusation: Accusation): AccusationResult {
+export function judgeAccusation(caseFile: CaseFile, accusation: Accusation, state: InvestigationState): AccusationResult {
   const { solution } = caseFile;
 
   const culpritCorrect = accusation.culpritSuspectId === solution.culpritSuspectId;
@@ -263,12 +266,21 @@ export function judgeAccusation(caseFile: CaseFile, accusation: Accusation): Acc
   const methodCorrect = accusation.methodOptionId === solution.methodOptionId;
 
   const key = new Set(solution.evidenceClueIds);
-  const evidenceHits = new Set(accusation.evidenceClueIds).size
-    ? [...new Set(accusation.evidenceClueIds)].filter((id) => key.has(id)).length
-    : 0;
+  // Sólo se puntúan pruebas realmente descubiertas, aunque se invoque el motor directamente.
+  const selected = new Set(accusation.evidenceClueIds.filter((id) => state.clueStates.has(id)));
+  const supported = solution.evidenceGroups.length > 0 && solution.evidenceGroups.every((group) =>
+    group.alternatives.some(({ clueId, stateKey }) => {
+      if (!selected.has(clueId)) return false;
+      const states = caseFile.clues.find((clue) => clue.id === clueId)?.states ?? [];
+      const required = states.findIndex((s) => s.key === stateKey);
+      const current = states.findIndex((s) => s.key === state.clueStates.get(clueId));
+      return required >= 0 && current >= required;
+    }),
+  );
+  const evidenceHits = [...selected].filter((id) => key.has(id)).length;
 
   let verdict: Verdict;
-  if (culpritCorrect && motiveCorrect && methodCorrect) verdict = 'solved';
+  if (culpritCorrect && motiveCorrect && methodCorrect && supported) verdict = 'solved';
   else if (culpritCorrect || motiveCorrect || methodCorrect) verdict = 'partial';
   else verdict = 'failed';
 

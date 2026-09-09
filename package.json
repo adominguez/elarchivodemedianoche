@@ -14,7 +14,9 @@
     "db:seed": "node --env-file-if-exists=.env scripts/seed.ts",
     "db:reset": "node --env-file-if-exists=.env scripts/migrate.ts && node --env-file-if-exists=.env scripts/seed.ts",
     "assets": "node --env-file-if-exists=.env scripts/assets.ts",
-    "test": "node --env-file-if-exists=.env --test tests/*.test.ts"
+    "test": "node --env-file-if-exists=.env --test tests/*.test.ts",
+    "assets:upload": "node --env-file-if-exists=.env scripts/upload-assets.ts",
+    "db:update": "node --env-file-if-exists=.env scripts/update-case.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",

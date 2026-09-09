@@ -1,0 +1,158 @@
+---
+/**
+ * Formulario de acusación renderizado por el servidor.
+ *
+ * La selección y el envío funcionan sin JavaScript. El script del final sólo
+ * actualiza el contador de evidencias y el aspecto de las opciones elegidas.
+ */
+import type { AccusationFormView } from '@lib/presentation/dossier';
+
+interface Props {
+  form: AccusationFormView;
+}
+
+const { form } = Astro.props;
+---
+
+<form method="post" class="space-y-8" data-accusation-form>
+  <input type="hidden" name="intencion" value="acusar" />
+
+  <fieldset>
+    <legend class="typed-sm mb-3 text-gold-400">1 · Culpable</legend>
+    <ul class="grid grid-cols-2 gap-2 sm:grid-cols-4">
+      {
+        form.suspects.map((suspect) => (
+          <li>
+            <label class="accusation-choice flex h-full cursor-pointer flex-col gap-2 border border-parchment-400/20 p-2 transition-colors hover:border-parchment-400/50">
+              <input
+                type="radio"
+                name="culpable"
+                value={suspect.id}
+                class="sr-only"
+                required
+              />
+              <span class="photo block">
+                {suspect.thumbSrc ? (
+                  <img
+                    src={suspect.thumbSrc}
+                    alt=""
+                    class="aspect-square w-full object-cover"
+                    loading="lazy"
+                  />
+                ) : (
+                  <span class="photo-missing typed aspect-square w-full text-lg">
+                    {suspect.initials}
+                  </span>
+                )}
+              </span>
+              <span class="typed-sm text-parchment-100">{suspect.name}</span>
+              <span class="typed-sm text-parchment-400">{suspect.role}</span>
+            </label>
+          </li>
+        ))
+      }
+    </ul>
+  </fieldset>
+
+  <fieldset>
+    <legend class="typed-sm mb-3 text-gold-400">2 · Motivo</legend>
+    <ul class="space-y-1">
+      {
+        form.motives.map((option) => (
+          <li>
+            <label class="accusation-choice flex cursor-pointer items-baseline gap-3 border-l-2 border-transparent py-1.5 pl-3 text-parchment-300/80">
+              <input type="radio" name="motivo" value={option.id} class="sr-only" required />
+              <span class="action-mark" aria-hidden="true">·</span>
+              <span class="font-narrative text-lg leading-snug">{option.label}</span>
+            </label>
+          </li>
+        ))
+      }
+    </ul>
+  </fieldset>
+
+  <fieldset>
+    <legend class="typed-sm mb-3 text-gold-400">3 · Método</legend>
+    <ul class="space-y-1">
+      {
+        form.methods.map((option) => (
+          <li>
+            <label class="accusation-choice flex cursor-pointer items-baseline gap-3 border-l-2 border-transparent py-1.5 pl-3 text-parchment-300/80">
+              <input type="radio" name="metodo" value={option.id} class="sr-only" required />
+              <span class="action-mark" aria-hidden="true">·</span>
+              <span class="font-narrative text-lg leading-snug">{option.label}</span>
+            </label>
+          </li>
+        ))
+      }
+    </ul>
+  </fieldset>
+
+  <fieldset>
+    <legend class="typed-sm mb-3 text-gold-400">
+      4 · Evidencias que sostienen la acusación
+      <span class="ml-2 text-parchment-400" data-evidence-count>0/{form.evidence.length}</span>
+    </legend>
+
+    <p class="mb-3 font-narrative text-parchment-300">
+      Aporte pruebas contrastadas sobre la autoría, el motivo y el método. Encontrar un objeto no
+      sustituye a examinarlo.
+    </p>
+
+    {
+      form.evidence.length === 0 ? (
+        <p class="font-narrative italic text-parchment-300/70">
+          Todavía no ha incorporado ninguna evidencia al expediente.
+        </p>
+      ) : (
+        <ul class="space-y-1">
+          {form.evidence.map((clue) => (
+            <li>
+              <label class="accusation-choice flex cursor-pointer items-baseline gap-3 border-l-2 border-transparent py-1.5 pl-3 text-parchment-300/80">
+                <input type="checkbox" name="evidencia" value={clue.id} class="sr-only" />
+                <span class="action-mark" aria-hidden="true">·</span>
+                <span class="font-narrative">{clue.label}</span>
+              </label>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </fieldset>
+
+  <div class="flex flex-wrap items-center gap-4 border-t border-parchment-400/20 pt-5">
+    <button
+      type="submit"
+      class="stamp stamp-flat border-blood-bright px-5 py-2.5 text-blood-bright transition-colors hover:bg-blood/20"
+    >
+      Formular la acusación
+    </button>
+    <p class="typed-sm text-parchment-400/70">
+      Seleccione culpable, motivo y método antes de enviarla.
+    </p>
+  </div>
+</form>
+
+<script>
+  function initialiseAccusationForm(form: HTMLFormElement) {
+    const count = form.querySelector<HTMLElement>('[data-evidence-count]');
+    const evidence = [...form.querySelectorAll<HTMLInputElement>('input[name="evidencia"]')];
+
+    const refresh = () => {
+      for (const input of form.querySelectorAll<HTMLInputElement>('input[type="radio"], input[type="checkbox"]')) {
+        const label = input.closest<HTMLLabelElement>('.accusation-choice');
+        const mark = label?.querySelector<HTMLElement>('.action-mark');
+        label?.classList.toggle('border-gold-500', input.checked);
+        label?.classList.toggle('text-parchment-100', input.checked);
+        label?.classList.toggle('bg-blood/20', input.checked && input.name === 'culpable');
+        if (mark) mark.textContent = input.checked ? '✕' : '·';
+      }
+      if (count) count.textContent = `${evidence.filter((input) => input.checked).length}/${evidence.length}`;
+    };
+
+    form.addEventListener('change', refresh);
+    refresh();
+  }
+
+  document.querySelectorAll<HTMLFormElement>('[data-accusation-form]').forEach(initialiseAccusationForm);
+</script>

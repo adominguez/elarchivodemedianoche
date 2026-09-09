@@ -15,7 +15,7 @@ import SuspectFiles from '@components/SuspectFiles.astro';
 import EvidenceBoard from '@components/EvidenceBoard.astro';
 import ProgressLine from '@components/ProgressLine.astro';
 import Verdict from '@components/Verdict.astro';
-import AccusationForm from '@components/AccusationForm.tsx';
+import AccusationForm from '@components/AccusationForm.astro';
 
 import { getCaseFile } from '@lib/data/caseRepository';
 import {
@@ -86,7 +86,7 @@ if (Astro.request.method === 'POST') {
       accusation.methodOptionId !== '';
 
     if (complete) {
-      await recordAccusation(investigationId, accusation, judgeAccusation(caseFile, accusation));
+      await recordAccusation(investigationId, accusation, judgeAccusation(caseFile, accusation, state));
       state = await loadState(investigationId);
     } else {
       notice = 'La acusación necesita culpable, motivo y método.';
@@ -223,7 +223,7 @@ const { header } = dossier;
                   <p class="mb-7 max-w-prose font-narrative leading-relaxed text-parchment-200/80">
                     No hace falta haberlo descubierto todo. Hace falta poder sostenerlo.
                   </p>
-                  <AccusationForm client:load form={dossier.accusationForm} />
+                  <AccusationForm form={dossier.accusationForm} />
                 </div>
               </details>
             )}
