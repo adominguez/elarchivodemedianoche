@@ -15,11 +15,13 @@
 
 - Días antes, Celia prepara una procedencia circular con documentos internos y coloca la placa auténtica en la réplica de ensayo.
 - Antes de la subasta esconde el original en el doble fondo de la caja 14, destinada a salir hacia Marsella.
-- 21:41: imprime desde el archivo una página bancaria con la cuenta de Orbe Documental y la inserta bajo la portada firmada por Bruno.
 - 21:38: una alarma auténtica lleva a Leo hasta la azotea.
+- 21:41: Celia imprime desde el archivo una página bancaria con la cuenta de Orbe Documental.
 - 21:42: el pase R-02 de Celia abre la salida de servicio del archivo.
 - 21:43: el montacargas baja 38,4 kilos hacia el muelle.
 - 21:47: R-02 abre el muelle de carga.
+- 21:49: el montacargas devuelve al entresuelo los 6,1 kilos del carro vacío.
+- Entre 21:49 y 22:02: Celia recorre el corredor interior e inserta la página bancaria bajo la portada firmada por Bruno.
 - 22:02: la réplica se adjudica por 480.000 euros.
 - 22:07: el banco detecta que el beneficiario no es la fundación y retiene la orden antes de ejecutarla.
 
