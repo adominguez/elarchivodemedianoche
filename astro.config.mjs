@@ -1,14 +1,14 @@
 // @ts-check
 import { defineConfig, envField, fontProviders } from 'astro/config';
 import react from '@astrojs/react';
-import node from '@astrojs/node';
+import vercel from '@astrojs/vercel';
 import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
   // El expediente se renderiza bajo demanda: lee la definición y el progreso de Turso.
   output: 'server',
-  adapter: node({ mode: 'standalone' }),
+  adapter: vercel(),
 
   integrations: [react()],
 

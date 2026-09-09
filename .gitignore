@@ -21,3 +21,6 @@ pnpm-debug.log*
 
 # datos locales de desarrollo (libSQL en fichero)
 .data/
+
+# Vercel build output
+.vercel/
