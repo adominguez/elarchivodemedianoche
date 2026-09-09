@@ -1,0 +1,83 @@
+---
+/**
+ * Resultado de una acusación. Puede fallarse, acertarse en parte o cerrar el
+ * expediente; la verdad completa sólo se revela cuando el caso queda cerrado.
+ */
+import type { VerdictView } from '@lib/presentation/dossier';
+
+interface Props {
+  verdict: VerdictView;
+}
+
+const { verdict } = Astro.props;
+
+const TONE = {
+  solved: 'text-gold-400 border-gold-500',
+  partial: 'text-parchment-200 border-parchment-300',
+  failed: 'text-blood-bright border-blood-bright',
+} as const;
+
+const NOTE = {
+  solved: 'La acusación se sostiene. El expediente queda cerrado.',
+  partial: 'Parte de la acusación se sostiene. El expediente sigue abierto.',
+  failed: 'La acusación no se sostiene. El expediente sigue abierto.',
+} as const;
+---
+
+<section class="card-dark p-5 sm:p-7">
+  <header class="flex flex-wrap items-center justify-between gap-4 border-b border-parchment-400/20 pb-4">
+    <p class:list={['stamp stamp-flat text-base', TONE[verdict.verdict]]}>{verdict.headline}</p>
+    <p class="typed-sm text-parchment-400">
+      Investigación completada: {verdict.progress.percent} %
+    </p>
+  </header>
+
+  <dl class="mt-5 space-y-3">
+    {
+      verdict.lines.map((line) => (
+        <div class="flex items-baseline gap-3 border-b border-dotted border-parchment-400/20 pb-2">
+          <dt class="typed-sm w-20 flex-none text-parchment-400">{line.label}</dt>
+          <dd class="flex-1 font-narrative text-lg text-parchment-100">{line.value}</dd>
+          <dd
+            class:list={[
+              'typed-sm flex-none',
+              line.correct ? 'text-gold-400' : 'text-blood-bright',
+            ]}
+          >
+            {line.correct ? '✓ correcto' : '✕ incorrecto'}
+          </dd>
+        </div>
+      ))
+    }
+    <div class="flex items-baseline gap-3">
+      <dt class="typed-sm w-20 flex-none text-parchment-400">Evidencias</dt>
+      <dd class="flex-1 font-narrative text-lg text-parchment-100">
+        {verdict.evidenceHits} de {verdict.evidenceTotal} pertinentes
+      </dd>
+    </div>
+  </dl>
+
+  <p class="typed-sm mt-5 text-parchment-300/80">{NOTE[verdict.verdict]}</p>
+
+  <p class="typed-sm mt-4 text-parchment-400">
+    Pistas: {verdict.progress.cluesFound}/{verdict.progress.cluesTotal} ·
+    Anotaciones: {verdict.progress.factsFound}/{verdict.progress.factsTotal} ·
+    Diligencias: {verdict.progress.nodesVisited}/{verdict.progress.nodesTotal}
+  </p>
+
+  {
+    verdict.explanation && (
+      <div class="paper mt-7 px-5 py-6 sm:px-8">
+        <h3 class="typed text-sm text-blood">La verdad del caso</h3>
+        <div class="narrative mt-4 max-w-[62ch]">
+          {verdict.explanation.split(/\n\s*\n/).map((paragraph) => <p>{paragraph}</p>)}
+        </div>
+        {verdict.epitaph && (
+          <p class="mt-6 border-t border-ink-500/25 pt-4 text-center font-narrative italic text-ink-700">
+            {verdict.epitaph}
+          </p>
+        )}
+      </div>
+    )
+  }
+</section>

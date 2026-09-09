@@ -1,0 +1,31 @@
+---
+/**
+ * Estado del expediente. Una línea de máquina de escribir, no un dashboard.
+ */
+import type { CaseProgress } from '@lib/domain/engine';
+
+interface Props {
+  progress: CaseProgress;
+  closed?: boolean;
+}
+
+const { progress, closed = false } = Astro.props;
+---
+
+<div class="space-y-2">
+  <p class="typed-sm flex flex-wrap items-baseline gap-x-4 gap-y-1 text-parchment-400">
+    <span class="text-parchment-200">
+      {closed ? 'Expediente cerrado' : 'Expediente abierto'}
+    </span>
+    <span>Evidencias {progress.cluesFound}/{progress.cluesTotal}</span>
+    <span>Anotaciones {progress.factsFound}/{progress.factsTotal}</span>
+    <span>Diligencias {progress.nodesVisited}/{progress.nodesTotal}</span>
+  </p>
+  <div
+    class="h-px w-full bg-parchment-400/20"
+    role="img"
+    aria-label={`Investigación completada al ${progress.percent} por ciento`}
+  >
+    <div class="h-px bg-gold-500" style={`width: ${progress.percent}%`}></div>
+  </div>
+</div>

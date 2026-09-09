@@ -1,0 +1,100 @@
+---
+/**
+ * Fichas de sospechosos.
+ *
+ * Sólo se muestran hechos objetivos y lo que el lector ha averiguado. El
+ * archivo no señala culpables ni traduce una contradicción en una conclusión.
+ */
+import ArchiveImage from '@components/ArchiveImage.astro';
+import type { SuspectCard } from '@lib/presentation/dossier';
+
+interface Props {
+  suspects: SuspectCard[];
+}
+
+const { suspects } = Astro.props;
+
+const BADGE = {
+  contradiction: 'text-blood-bright border-blood-bright/70',
+  alibi: 'text-parchment-200 border-parchment-300/60',
+  motive: 'text-gold-400 border-gold-500/70',
+  testimony: 'text-parchment-200 border-parchment-300/60',
+  background: 'text-parchment-300 border-parchment-400/60',
+} as const;
+
+const BADGE_MARK = {
+  contradiction: '⚠',
+  alibi: '·',
+  motive: '§',
+  testimony: '·',
+  background: '·',
+} as const;
+---
+
+<ul class="space-y-4">
+  {
+    suspects.map((suspect) => (
+      <li class="card-dark">
+        <details class="group">
+          <summary class="flex gap-4 p-3">
+            <div class="photo w-20 flex-none sm:w-24">
+              <ArchiveImage
+                image={suspect.thumb}
+                alt={`Retrato de ${suspect.name}`}
+                placeholder={suspect.initials}
+                ratio="4 / 5"
+              />
+            </div>
+
+            <div class="min-w-0 flex-1">
+              <p class="typed text-sm text-parchment-100">{suspect.name}</p>
+              <p class="typed-sm mt-1 text-parchment-400">{suspect.role}</p>
+
+              {suspect.badges.length > 0 && (
+                <ul class="mt-2 flex flex-wrap gap-1.5">
+                  {suspect.badges.map((badge) => (
+                    <li class:list={['typed-sm border px-1.5 py-0.5', BADGE[badge.kind]]}>
+                      <span aria-hidden="true">{BADGE_MARK[badge.kind]}</span> {badge.label}
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              <p class="typed-sm mt-2 text-parchment-400/70">
+                <span class="disclosure-mark mr-1.5 text-gold-500" aria-hidden="true" />
+                {suspect.factsKnown} de {suspect.factsTotal} anotaciones
+              </p>
+            </div>
+          </summary>
+
+          <div class="space-y-4 border-t border-parchment-400/15 px-4 py-4">
+            <p class="font-narrative leading-relaxed text-parchment-200">{suspect.description}</p>
+            {suspect.relation && (
+              <p class="font-narrative text-[0.98rem] italic leading-relaxed text-parchment-300/80">
+                {suspect.relation}
+              </p>
+            )}
+
+            {suspect.facts.length > 0 ? (
+              <ul class="space-y-3">
+                {suspect.facts.map((fact) => (
+                  <li class="border-l-2 border-parchment-400/30 pl-3">
+                    <p class="typed-sm text-parchment-400">{fact.kindLabel}</p>
+                    <p class="font-narrative text-lg leading-snug text-parchment-100">
+                      {fact.headline}
+                    </p>
+                    <p class="mt-1 font-narrative leading-relaxed text-parchment-200/75">
+                      {fact.detail}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="typed-sm text-parchment-400/60">Sin anotaciones todavía.</p>
+            )}
+          </div>
+        </details>
+      </li>
+    ))
+  }
+</ul>

@@ -1,0 +1,52 @@
+---
+/**
+ * La escena que se está leyendo. Es la pieza protagonista de la pantalla:
+ * ilustración e imprenta, con la interfaz retirándose a los márgenes.
+ */
+import ArchiveImage from '@components/ArchiveImage.astro';
+import type { SceneView } from '@lib/presentation/dossier';
+
+interface Props {
+  scene: SceneView;
+}
+
+const { scene } = Astro.props;
+---
+
+<article class="paper paper-ruled">
+  <div class="px-5 py-6 sm:px-9 sm:py-9">
+    <header class="mb-6 border-b border-ink-500/25 pb-4">
+      {
+        scene.location && (
+          <p class="typed-sm text-blood/80">{scene.location}</p>
+        )
+      }
+      <h2 class="mt-1.5 font-narrative text-2xl leading-tight text-ink-900 sm:text-3xl">
+        {scene.title}
+      </h2>
+    </header>
+
+    {
+      (scene.image || scene.imageCaption) && (
+        <figure class="photo taped mx-auto mb-7 max-w-2xl">
+          <ArchiveImage
+            image={scene.image}
+            alt={scene.imageCaption ?? scene.title}
+            placeholder={scene.title}
+            ratio="16 / 9"
+            loading="eager"
+          />
+          {scene.imageCaption && (
+            <figcaption class="typed-sm mt-3 px-1 pb-1 text-center text-ink-500">
+              {scene.imageCaption}
+            </figcaption>
+          )}
+        </figure>
+      )
+    }
+
+    <div class="narrative mx-auto max-w-[62ch]">
+      {scene.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+  </div>
+</article>

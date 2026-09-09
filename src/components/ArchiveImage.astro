@@ -1,0 +1,49 @@
+---
+/**
+ * Fotografía del archivo.
+ *
+ * Recibe una imagen ya resuelta por el servicio de Cloudinary. Si aún no hay
+ * recurso, deja en su sitio un marcador de expediente en lugar de un hueco.
+ */
+import type { CaseImage } from '@lib/images/cloudinary';
+
+interface Props {
+  image: CaseImage | null;
+  alt: string;
+  /** Texto del marcador cuando no hay imagen disponible. */
+  placeholder?: string;
+  ratio?: string;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+}
+
+const {
+  image,
+  alt,
+  placeholder = 'Sin fotografía',
+  ratio = '4 / 3',
+  class: className = '',
+  loading = 'lazy',
+} = Astro.props;
+---
+
+<div class:list={['relative overflow-hidden', className]} style={`aspect-ratio: ${ratio};`}>
+  {
+    image ? (
+      <img
+        src={image.src}
+        srcset={image.srcSet}
+        sizes={image.sizes}
+        width={image.width}
+        height={image.height}
+        alt={alt}
+        loading={loading}
+        decoding="async"
+      />
+    ) : (
+      <div class="photo-missing absolute inset-0 p-3">
+        <span class="typed-sm">{placeholder}</span>
+      </div>
+    )
+  }
+</div>

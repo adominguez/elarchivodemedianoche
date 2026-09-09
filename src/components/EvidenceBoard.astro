@@ -1,0 +1,67 @@
+---
+/**
+ * Rejilla de evidencias. Lo hallado se ve; lo que falta ocupa su hueco como
+ * una incógnita, para que el expediente se sienta incompleto hasta el final.
+ * Al abrir una pieza, la ficha se despliega a lo ancho del tablero.
+ */
+import ArchiveImage from '@components/ArchiveImage.astro';
+import type { ClueSlotView } from '@lib/presentation/dossier';
+
+interface Props {
+  evidence: ClueSlotView[];
+}
+
+const { evidence } = Astro.props;
+---
+
+<ul class="evidence-grid grid grid-cols-3 gap-2.5 sm:grid-cols-4">
+  {
+    evidence.map((slot) =>
+      slot.known ? (
+        <li>
+          <details>
+            <summary class="photo block">
+              <ArchiveImage
+                image={slot.thumb}
+                alt={slot.name}
+                placeholder={slot.name}
+                ratio="1 / 1"
+              />
+              <span class="typed-sm mt-2 block truncate px-0.5 text-ink-700">
+                {slot.evolved && <span class="text-blood" aria-hidden="true">◆ </span>}
+                {slot.name}
+              </span>
+            </summary>
+
+            <div class="mt-2 flex gap-4 border border-parchment-400/20 bg-midnight-900/70 p-3">
+              <div class="photo hidden w-32 flex-none sm:block">
+                <ArchiveImage
+                  image={slot.detail}
+                  alt={slot.name}
+                  placeholder={slot.name}
+                  ratio="4 / 3"
+                />
+              </div>
+              <div class="min-w-0 flex-1">
+                <p class="typed-sm text-parchment-400">{slot.kindLabel}</p>
+                <p class="mt-1 font-narrative text-xl leading-tight text-parchment-100">
+                  {slot.stateLabel}
+                </p>
+                <p class="mt-2 font-narrative leading-relaxed text-parchment-200/80">
+                  {slot.description}
+                </p>
+                {slot.foundAt && (
+                  <p class="typed-sm mt-3 text-parchment-400/70">{slot.foundAt}</p>
+                )}
+              </div>
+            </div>
+          </details>
+        </li>
+      ) : (
+        <li class="evidence-unknown" aria-label="Evidencia sin descubrir">
+          ?
+        </li>
+      ),
+    )
+  }
+</ul>

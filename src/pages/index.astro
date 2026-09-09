@@ -1,14 +1,80 @@
 ---
+/**
+ * La portada del archivo: la mesa donde esperan las carpetas.
+ */
 import Layout from '@layouts/Layout.astro';
+import ArchiveImage from '@components/ArchiveImage.astro';
+import { listPublishedCases } from '@lib/data/caseRepository';
+import { caseSummaryCover } from '@lib/presentation/dossier';
+
+const cases = await listPublishedCases();
 ---
 
-<Layout title="El Archivo de Medianoche">
-  <main class="min-h-screen flex items-center justify-center px-6 text-center">
-    <div>
-      <h1 class="font-serif text-4xl text-gold-400 mb-4">El Archivo de Medianoche</h1>
-      <p class="text-parchment-200 max-w-prose">
-        Cuentos de misterio interactivos. En construcción.
+<Layout
+  title="El Archivo de Medianoche"
+  description="Historias interactivas de misterio donde leer se siente como investigar."
+>
+  <main class="mx-auto max-w-5xl px-4 pb-24 pt-16 sm:px-6 sm:pt-24">
+    <header class="border-b border-parchment-400/20 pb-10 text-center">
+      <p class="typed-sm text-parchment-400">Archivo general · acceso restringido</p>
+      <h1 class="mt-4 font-narrative text-5xl leading-none text-parchment-50 sm:text-6xl">
+        El Archivo de Medianoche
+      </h1>
+      <p class="mx-auto mt-5 max-w-lg font-narrative text-lg italic text-parchment-300">
+        Todo caso esconde una verdad. Ninguna se entrega sin investigarla.
       </p>
-    </div>
+    </header>
+
+    {
+      cases.length === 0 ? (
+        <p class="typed-sm mt-16 text-center text-parchment-400">
+          El archivo está vacío. Ejecute <span class="text-gold-400">pnpm db:reset</span> para
+          cargar los expedientes en Turso.
+        </p>
+      ) : (
+        <ul class="mt-14 space-y-10">
+          {cases.map((caseSummary) => (
+            <li>
+              <a
+                href={`/expediente/${caseSummary.slug}`}
+                class="group grid gap-6 sm:grid-cols-[13rem_minmax(0,1fr)] sm:items-start"
+              >
+                <div class="photo taped mx-auto w-full max-w-[13rem] transition-transform duration-200 group-hover:-rotate-1">
+                  <ArchiveImage
+                    image={caseSummaryCover(caseSummary)}
+                    alt={`Portada del expediente ${caseSummary.fileCode}`}
+                    placeholder={caseSummary.title}
+                    ratio="4 / 5"
+                    loading="eager"
+                  />
+                </div>
+
+                <div class="border-l-2 border-parchment-400/20 pl-5 transition-colors group-hover:border-gold-500">
+                  <p class="typed text-sm text-blood-bright">Expediente {caseSummary.fileCode}</p>
+                  <h2 class="mt-1 font-narrative text-3xl leading-tight text-parchment-50">
+                    {caseSummary.title}
+                  </h2>
+                  {caseSummary.subtitle && (
+                    <p class="mt-1 font-narrative text-lg italic text-parchment-300">
+                      {caseSummary.subtitle}
+                    </p>
+                  )}
+
+                  <p class="typed-sm mt-3 text-parchment-400">
+                    {[caseSummary.place, caseSummary.dateLabel].filter(Boolean).join(' · ')}
+                  </p>
+
+                  <p class="mt-4 max-w-prose font-narrative leading-relaxed text-parchment-200/80">
+                    {caseSummary.briefing}
+                  </p>
+
+                  <span class="typed-sm mt-5 inline-block text-gold-400">Abrir el expediente →</span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
   </main>
 </Layout>

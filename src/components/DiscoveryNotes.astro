@@ -1,0 +1,37 @@
+---
+/**
+ * Lo que acaba de incorporarse al expediente. Notas al margen, no alertas:
+ * enuncian el hecho y dejan la conclusión al lector.
+ */
+import type { DiscoveryNotice } from '@lib/presentation/dossier';
+
+interface Props {
+  notices: DiscoveryNotice[];
+}
+
+const { notices } = Astro.props;
+
+const TONE = {
+  clue: 'border-gold-500/60 text-gold-400',
+  update: 'border-parchment-300/50 text-parchment-200',
+  fact: 'border-blood-bright/60 text-blood-bright',
+} as const;
+---
+
+{
+  notices.length > 0 && (
+    <section aria-label="Incorporado al expediente" class="space-y-3">
+      {notices.map((notice) => (
+        <div class:list={['border-l-2 pl-4', TONE[notice.tone]]}>
+          <p class="typed-sm">{notice.label}</p>
+          <p class="mt-1 font-narrative text-lg leading-snug text-parchment-100">{notice.title}</p>
+          {notice.detail && (
+            <p class="mt-1 font-narrative text-[0.98rem] leading-relaxed text-parchment-200/70">
+              {notice.detail}
+            </p>
+          )}
+        </div>
+      ))}
+    </section>
+  )
+}

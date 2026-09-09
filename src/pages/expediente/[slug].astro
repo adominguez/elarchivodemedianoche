@@ -1,0 +1,269 @@
+---
+/**
+ * La pantalla del expediente.
+ *
+ * Orquesta las capas: repositorio (Turso) → motor → presentación → interfaz.
+ * Aquí no hay SQL ni reglas del caso; sólo la traducción de una petición HTTP
+ * en una acción de investigación.
+ */
+import Layout from '@layouts/Layout.astro';
+import ArchiveImage from '@components/ArchiveImage.astro';
+import Scene from '@components/Scene.astro';
+import DiscoveryNotes from '@components/DiscoveryNotes.astro';
+import InvestigationActions from '@components/InvestigationActions.astro';
+import SuspectFiles from '@components/SuspectFiles.astro';
+import EvidenceBoard from '@components/EvidenceBoard.astro';
+import ProgressLine from '@components/ProgressLine.astro';
+import Verdict from '@components/Verdict.astro';
+import AccusationForm from '@components/AccusationForm.tsx';
+
+import { getCaseFile } from '@lib/data/caseRepository';
+import {
+  findOrStartInvestigation,
+  lastAccusation,
+  loadState,
+  persistVisit,
+  recordAccusation,
+  reopenInvestigation,
+} from '@lib/data/progressRepository';
+import { canFollow, judgeAccusation, visitNode, type StateChanges } from '@lib/domain/engine';
+import { buildDossier } from '@lib/presentation/dossier';
+import { readerKey } from '@lib/reader';
+import type { Accusation } from '@lib/domain/types';
+
+const { slug } = Astro.params;
+const caseFile = slug ? await getCaseFile(slug) : null;
+
+if (!caseFile) {
+  return new Response('Expediente no encontrado', { status: 404 });
+}
+
+const reader = readerKey(Astro.cookies);
+const investigationId = await findOrStartInvestigation(caseFile.id, reader);
+
+let state = await loadState(investigationId);
+let changes: StateChanges | undefined;
+let notice: string | null = null;
+
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const intent = String(form.get('intencion') ?? '');
+
+  if (intent === 'empezar' && state.currentNodeId === null) {
+    const result = visitNode(caseFile, state, caseFile.entryNodeId);
+    await persistVisit(investigationId, caseFile.entryNodeId, result.changes);
+    state = result.state;
+    changes = result.changes;
+  }
+
+  if (intent === 'investigar' && state.status === 'open') {
+    const option = canFollow(caseFile, state, String(form.get('opcion') ?? ''));
+    if (option) {
+      const result = visitNode(caseFile, state, option.targetNodeId);
+      await persistVisit(investigationId, option.targetNodeId, result.changes);
+      state = result.state;
+      changes = result.changes;
+    } else {
+      notice = 'Esa diligencia ya no está disponible.';
+    }
+  }
+
+  if (intent === 'acusar' && state.status === 'open') {
+    const accusation: Accusation = {
+      culpritSuspectId: String(form.get('culpable') ?? ''),
+      motiveOptionId: String(form.get('motivo') ?? ''),
+      methodOptionId: String(form.get('metodo') ?? ''),
+      evidenceClueIds: form
+        .getAll('evidencia')
+        .map(String)
+        // Sólo cuenta como evidencia lo que realmente se ha encontrado.
+        .filter((clueId) => state.clueStates.has(clueId)),
+    };
+
+    const complete =
+      accusation.culpritSuspectId !== '' &&
+      accusation.motiveOptionId !== '' &&
+      accusation.methodOptionId !== '';
+
+    if (complete) {
+      await recordAccusation(investigationId, accusation, judgeAccusation(caseFile, accusation));
+      state = await loadState(investigationId);
+    } else {
+      notice = 'La acusación necesita culpable, motivo y método.';
+    }
+  }
+
+  if (intent === 'reabrir') {
+    await reopenInvestigation(investigationId);
+    state = await loadState(investigationId);
+  }
+}
+
+const accusation = await lastAccusation(investigationId);
+const dossier = buildDossier({ caseFile, state, changes, accusation });
+const started = state.currentNodeId !== null;
+const { header } = dossier;
+---
+
+<Layout
+  title={`${header.fileCode} ${header.title} — El Archivo de Medianoche`}
+  description={header.briefing}
+>
+  <main class="mx-auto max-w-6xl px-4 pb-24 pt-8 sm:px-6 lg:px-8">
+    <header class="border-b border-parchment-400/20 pb-6">
+      <a href="/" class="typed-sm text-parchment-400 hover:text-gold-400">
+        ← El Archivo de Medianoche
+      </a>
+
+      <div class="mt-4 flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
+        <div>
+          <p class="typed text-sm text-blood-bright">Expediente {header.fileCode}</p>
+          <h1 class="mt-1 font-narrative text-4xl leading-none text-parchment-50 sm:text-5xl">
+            {header.title}
+          </h1>
+          {
+            header.subtitle && (
+              <p class="mt-2 font-narrative text-xl italic text-parchment-300">{header.subtitle}</p>
+            )
+          }
+        </div>
+
+        <dl class="typed-sm space-y-1 text-parchment-400">
+          {header.place && <div><dt class="sr-only">Lugar</dt><dd>{header.place}</dd></div>}
+          {header.dateLabel && <div><dt class="sr-only">Fecha</dt><dd>{header.dateLabel}</dd></div>}
+          {
+            header.victimName && (
+              <div><dt class="sr-only">Víctima</dt><dd>Víctima: {header.victimName}</dd></div>
+            )
+          }
+        </dl>
+      </div>
+
+      {
+        started && (
+          <div class="mt-6">
+            <ProgressLine progress={dossier.progress} closed={dossier.closed} />
+          </div>
+        )
+      }
+    </header>
+
+    {
+      notice && (
+        <p class="typed-sm mt-6 border-l-2 border-blood-bright pl-3 text-blood-bright">{notice}</p>
+      )
+    }
+
+    {
+      !started ? (
+        <section class="mt-10 grid gap-8 md:grid-cols-[18rem_minmax(0,1fr)] md:items-start">
+          <div class="photo taped mx-auto w-full max-w-xs md:mx-0">
+            <ArchiveImage
+              image={header.cover}
+              alt={`Portada del expediente ${header.fileCode}`}
+              placeholder={header.title}
+              ratio="4 / 5"
+              loading="eager"
+            />
+          </div>
+
+          <div class="paper paper-ruled">
+            <div class="px-5 py-7 sm:px-8">
+              <p class="typed-sm text-blood">Informe preliminar</p>
+              <div class="narrative mt-4 max-w-[62ch]">
+                <p>{header.briefing}</p>
+              </div>
+
+              <form method="post" class="mt-8 border-t border-ink-500/25 pt-6">
+                <input type="hidden" name="intencion" value="empezar" />
+                <button
+                  type="submit"
+                  class="stamp border-blood text-blood transition-transform hover:rotate-0"
+                >
+                  Abrir el expediente
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
+      ) : (
+        <div class="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_21rem] lg:gap-12">
+          <div class="space-y-10">
+            {dossier.scene && <Scene scene={dossier.scene} />}
+
+            <DiscoveryNotes notices={dossier.notices} />
+
+            {dossier.verdict && <Verdict verdict={dossier.verdict} />}
+
+            {!dossier.closed && dossier.continuations.length > 0 && (
+              <InvestigationActions options={dossier.continuations} />
+            )}
+
+            {!dossier.closed && (
+              <InvestigationActions
+                title="¿Qué quiere investigar ahora?"
+                groups={dossier.investigationLines}
+              />
+            )}
+
+            {dossier.closed ? (
+              <form method="post">
+                <input type="hidden" name="intencion" value="reabrir" />
+                <button type="submit" class="typed-sm text-parchment-400 hover:text-gold-400">
+                  Volver a abrir el expediente desde el principio
+                </button>
+              </form>
+            ) : (
+              <details class="card-dark">
+                <summary class="flex items-center justify-between gap-4 p-5">
+                  <span class="typed text-sm text-blood-bright">Resolver el expediente</span>
+                  <span class="disclosure-mark text-gold-500" aria-hidden="true" />
+                </summary>
+                <div class="border-t border-parchment-400/20 p-5 sm:p-7">
+                  <p class="mb-7 max-w-prose font-narrative leading-relaxed text-parchment-200/80">
+                    No hace falta haberlo descubierto todo. Hace falta poder sostenerlo.
+                  </p>
+                  <AccusationForm client:load form={dossier.accusationForm} />
+                </div>
+              </details>
+            )}
+          </div>
+
+          <aside class="space-y-6 lg:sticky lg:top-8 lg:max-h-[calc(100vh-4rem)] lg:self-start lg:overflow-y-auto lg:pr-1">
+            <details class="card-dark" data-open-on-desktop>
+              <summary class="flex items-center justify-between gap-4 px-4 py-3">
+                <span class="typed text-sm text-gold-400">Sospechosos</span>
+                <span class="disclosure-mark text-gold-500" aria-hidden="true" />
+              </summary>
+              <div class="border-t border-parchment-400/20 p-3">
+                <SuspectFiles suspects={dossier.suspects} />
+              </div>
+            </details>
+
+            <details class="card-dark" data-open-on-desktop>
+              <summary class="flex items-center justify-between gap-4 px-4 py-3">
+                <span class="typed text-sm text-gold-400">
+                  Evidencias {dossier.progress.cluesFound}/{dossier.progress.cluesTotal}
+                </span>
+                <span class="disclosure-mark text-gold-500" aria-hidden="true" />
+              </summary>
+              <div class="border-t border-parchment-400/20 p-3">
+                <EvidenceBoard evidence={dossier.evidence} />
+              </div>
+            </details>
+          </aside>
+        </div>
+      )
+    }
+  </main>
+
+  <script>
+    // En escritorio el expediente permanece a la vista; en móvil se despliega
+    // a demanda para no tapar la narración.
+    const desktop = window.matchMedia('(min-width: 1024px)');
+    const panels = document.querySelectorAll<HTMLDetailsElement>('[data-open-on-desktop]');
+    const sync = (matches: boolean) => panels.forEach((panel) => (panel.open = matches));
+    sync(desktop.matches);
+    desktop.addEventListener('change', (event) => sync(event.matches));
+  </script>
+</Layout>

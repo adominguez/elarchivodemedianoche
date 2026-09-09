@@ -1,0 +1,101 @@
+---
+/**
+ * Acciones de investigación.
+ *
+ * Elegir una línea no cierra las demás: lo ya recorrido se queda a la vista,
+ * marcado, y lo que se desbloquea aparece señalado.
+ */
+import type { OptionGroup, OptionView } from '@lib/presentation/dossier';
+
+interface Props {
+  title?: string;
+  /** Continuaciones inmediatas del nodo que se acaba de leer. */
+  options?: OptionView[];
+  /** Acciones abiertas en todo el expediente, por línea de investigación. */
+  groups?: OptionGroup[];
+  disabled?: boolean;
+}
+
+const { title, options = [], groups = [], disabled = false } = Astro.props;
+
+const MARK = { available: '→', unlocked: '🔓', completed: '✓' } as const;
+const CLASS = { available: '', unlocked: 'action-new', completed: 'action-done' } as const;
+const LABEL = {
+  available: 'Sin recorrer',
+  unlocked: 'Nueva línea de investigación',
+  completed: 'Ya recorrida',
+} as const;
+---
+
+<section class="space-y-6">
+  {
+    title && (
+      <h2 class="typed text-sm text-gold-400">{title}</h2>
+    )
+  }
+
+  <form method="post" class="space-y-6">
+    <input type="hidden" name="intencion" value="investigar" />
+
+    {
+      options.length > 0 && (
+        <ul class="divide-y divide-parchment-400/12 border-y border-parchment-400/15">
+          {options.map((option) => (
+            <li>
+              <button
+                type="submit"
+                name="opcion"
+                value={option.id}
+                disabled={disabled}
+                class:list={['action', CLASS[option.status], 'disabled:opacity-40']}
+              >
+                <span class="action-mark" aria-hidden="true">{MARK[option.status]}</span>
+                <span>
+                  <span class="font-narrative text-lg leading-snug">{option.label}</span>
+                  <span class="sr-only"> · {LABEL[option.status]}</span>
+                  {option.hint && (
+                    <span class="mt-0.5 block font-narrative text-sm italic text-parchment-300/70">
+                      {option.hint}
+                    </span>
+                  )}
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    {
+      groups.map((group) => (
+        <div>
+          <h3 class="typed-sm mb-1 text-parchment-400">{group.line}</h3>
+          <ul class="divide-y divide-parchment-400/12 border-y border-parchment-400/15">
+            {group.options.map((option) => (
+              <li>
+                <button
+                  type="submit"
+                  name="opcion"
+                  value={option.id}
+                  disabled={disabled}
+                  class:list={['action', CLASS[option.status], 'disabled:opacity-40']}
+                >
+                  <span class="action-mark" aria-hidden="true">{MARK[option.status]}</span>
+                  <span>
+                    <span class="font-narrative text-lg leading-snug">{option.label}</span>
+                    <span class="sr-only"> · {LABEL[option.status]}</span>
+                    {option.hint && (
+                      <span class="mt-0.5 block font-narrative text-sm italic text-parchment-300/70">
+                        {option.hint}
+                      </span>
+                    )}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </form>
+</section>
