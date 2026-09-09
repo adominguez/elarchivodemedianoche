@@ -7,12 +7,12 @@ import { canAccuse, canFollow, caseProgress, judgeAccusation, nodeContinuations,
 const file=fromDefinition(case003);
 const accusation={culpritSuspectId:'c003-s-celia',motiveOptionId:'c003-mo-deuda',methodOptionId:'c003-me-doble-fraude',evidenceClueIds:['c003-cl-catalogo','c003-cl-pase','c003-cl-fax','c003-cl-factura']};
 
-function traverse(reverse=false) {
+function traverse(reverse=false, blockedNodeId?:string) {
   let state=visitNode(file,initialState(file.id),file.entryNodeId).state;
   for (;;) {
     const visible=[...nodeContinuations(file,state,state.currentNodeId),...openInvestigations(file,state)];
     if(reverse) visible.reverse();
-    const next=visible.find(({option})=>!state.visitedNodeIds.has(option.targetNodeId));
+    const next=visible.find(({option})=>option.targetNodeId!==blockedNodeId&&!state.visitedNodeIds.has(option.targetNodeId));
     if(!next) return state;
     assert.ok(canFollow(file,state,next.option.id));
     state=visitNode(file,state,next.option.targetNodeId).state;
@@ -30,8 +30,17 @@ test('la estafa completa es alcanzable en distintos órdenes por la interfaz rea
   }
 });
 
-test('no se puede acusar antes de reconstruir la doble estafa',()=>{
+test('la caja recuperada abre la acusación y la reconstrucción queda como ayuda opcional',()=>{
   assert.equal(canAccuse(file,initialState(file.id)),false);
+  const state=traverse();
+  const withoutReconstruction={...state,visitedNodeIds:new Set([...state.visitedNodeIds].filter(id=>id!=='c003-n-reconstruccion'))};
+  assert.equal(canAccuse(file,withoutReconstruction),true);
+});
+
+test('el recorrido necesario obliga a interrogar a los cuatro implicados',()=>{
+  for(const id of ['c003-n-celia','c003-n-bruno','c003-n-nadia','c003-n-leo']) {
+    assert.equal(canAccuse(file,traverse(false,id)),false,id);
+  }
 });
 
 test('cada grupo probatorio es necesario y los indicios indiscriminados penalizan',()=>{
@@ -40,11 +49,12 @@ test('cada grupo probatorio es necesario y los indicios indiscriminados penaliza
     assert.equal(judgeAccusation(file,{...accusation,evidenceClueIds:accusation.evidenceClueIds.filter(id=>id!==clueId)},state).verdict,'partial');
   }
   assert.equal(judgeAccusation(file,{...accusation,evidenceClueIds:file.clues.map(({id})=>id)},state).verdict,'partial');
+  assert.equal(judgeAccusation(file,{...accusation,evidenceClueIds:['c003-cl-catalogo','c003-cl-pase','c003-cl-cuenta']},state).verdict,'partial');
 });
 
 test('los tres secretos secundarios quedan separados de la doble estafa',()=>{
   const state=traverse();
-  for(const factId of ['c003-f-bruno-pujas','c003-f-nadia-barniz','c003-f-leo-camara']) {
+  for(const factId of ['c003-f-celia-cuenta','c003-f-bruno-pujas','c003-f-nadia-barniz','c003-f-leo-camara']) {
     assert.ok(state.discoveredFactIds.has(factId));
   }
 });

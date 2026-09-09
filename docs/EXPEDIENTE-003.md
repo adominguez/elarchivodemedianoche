@@ -6,7 +6,7 @@
 
 - Lugar: Fundación Mirall, centro de arte instalado en una antigua fábrica del puerto de Valencia.
 - Fecha: noche del 18 de septiembre de 2004.
-- Suceso: sustitución de una obra, falsificación de procedencia y desvío de una transferencia.
+- Suceso: sustitución de una obra, falsificación de procedencia e intento de desviar una transferencia.
 - Perjudicada: Fundación Mirall; no hay víctimas mortales.
 - Responsable: Celia Ors, registradora de la colección.
 - Motivo: cubrir una deuda urgente y apropiarse del pago.
@@ -15,13 +15,13 @@
 
 - Días antes, Celia prepara una procedencia circular con documentos internos y coloca la placa auténtica en la réplica de ensayo.
 - Antes de la subasta esconde el original en el doble fondo de la caja 14, destinada a salir hacia Marsella.
-- 21:18: imprime desde el archivo una página bancaria con la cuenta de Orbe Documental y la inserta bajo la portada firmada por Bruno.
+- 21:41: imprime desde el archivo una página bancaria con la cuenta de Orbe Documental y la inserta bajo la portada firmada por Bruno.
 - 21:38: una alarma auténtica lleva a Leo hasta la azotea.
-- 21:41: el pase R-02 de Celia abre el archivo.
+- 21:42: el pase R-02 de Celia abre la salida de servicio del archivo.
 - 21:43: el montacargas baja 38,4 kilos hacia el muelle.
 - 21:47: R-02 abre el muelle de carga.
 - 22:02: la réplica se adjudica por 480.000 euros.
-- 22:07: el banco informa de que el pago ha llegado a una cuenta ajena a la fundación.
+- 22:07: el banco detecta que el beneficiario no es la fundación y retiene la orden antes de ejecutarla.
 
 ## Cadena probatoria
 
@@ -29,10 +29,12 @@ La acusación debe sostener cuatro aspectos:
 
 1. Falsificación: catálogo, placa o fotografía analizados.
 2. Traslado: pase, montacargas o caja analizados.
-3. Desvío del pago: fax o cuenta analizados.
-4. Beneficio económico: factura o cuenta analizadas.
+3. Intento de desviar el pago: fax o cuenta analizados.
+4. Deuda y beneficio económico: factura analizada.
 
 Bruno manipuló la puja, Nadia ocultó una restauración y Leo permitió entregas clandestinas. Son faltas reales que no reúnen las tres partes de la estafa.
+
+La acusación se habilita después de recuperar el original de la caja 14 y tomar declaración a los cuatro implicados. La reconstrucción final es una ayuda opcional y no identifica al responsable.
 
 ## Continuidad visual
 
