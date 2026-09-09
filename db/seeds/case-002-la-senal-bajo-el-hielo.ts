@@ -10,7 +10,7 @@ export const case002: CaseDefinition = {
   "place": "Plataforma de Nansen, círculo polar",
   "dateLabel": "Noche del 14 de diciembre de 1987",
   "victimName": "Dr. Elías Roldán",
-  "briefing": "Durante la noche polar, el glaciólogo Elías Roldán salió de Boreal-7 para atender una llamada de auxilio de una baliza. Cuarenta minutos después no ha regresado, la radio principal está saboteada y una tormenta cubre sus huellas. Cuatro miembros de la expedición permanecen aislados en la estación. Encontrarlo es solo la primera parte del caso.",
+  "briefing": "Durante la noche polar, el glaciólogo Elías Roldán abandonó el módulo central de Boreal-7 para atender una llamada de auxilio de una baliza. Casi una hora después no ha regresado, la radio principal está saboteada y una tormenta amenaza la estación. Cuatro miembros de la expedición permanecen aislados. Encontrarlo es solo la primera parte del caso.",
   "coverPublicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/portada",
   "entryNodeId": "c002-n-intro",
   "suspects": [
@@ -44,7 +44,7 @@ export const case002: CaseDefinition = {
           "id": "c002-f-nora-acceso",
           "kind": "contradiction",
           "headline": "Su tarjeta abrió el túnel",
-          "detail": "El registro mecánico conserva la perforación 21:17 junto al código de Nora. Ella había declarado que su tarjeta no salió de su bolsillo."
+          "detail": "El registro mecánico conserva las perforaciones 21:17 y 21:36 junto al código de Nora. Su tarjeta recorrió el túnel mientras ella afirmaba no haber dejado la radio."
         },
         {
           "id": "c002-f-nora-cristal",
@@ -204,20 +204,20 @@ export const case002: CaseDefinition = {
     },
     {
       "id": "c002-cl-cristal",
-      "name": "Cristal de frecuencia",
+      "name": "Oscilador maestro",
       "kind": "essential",
       "foundAt": "En el estuche de auriculares de Nora",
       "imagePublicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/pruebas/cristal",
       "states": [
         {
           "key": "found",
-          "label": "Cristal de frecuencia",
-          "description": "Pieza de cuarzo numerada que permite al transmisor operar en la frecuencia de emergencia."
+          "label": "Oscilador maestro",
+          "description": "Pieza de cuarzo numerada que genera la frecuencia de referencia sin la que el transmisor no puede modular ningún canal."
         },
         {
           "key": "analyzed",
-          "label": "Cristal — procedencia contrastada",
-          "description": "El número de serie pertenece al transmisor principal. Estaba envuelto en un paño rojo con polvo del interior del panel."
+          "label": "Oscilador — procedencia contrastada",
+          "description": "El número de serie pertenece al transmisor principal. Estaba envuelto en un paño rojo con polvo del interior del panel. Puede reinstalarse sin dejar una avería permanente."
         }
       ]
     },
@@ -255,7 +255,7 @@ export const case002: CaseDefinition = {
         {
           "key": "analyzed",
           "label": "Registro — acceso identificado",
-          "description": "A las 21:17 se usó la tarjeta N-04, asignada a Nora, para abrir el túnel hacia el refugio sísmico."
+          "description": "La tarjeta E-02 entró a las 21:14. La N-04 de Nora la siguió a las 21:17 y no regresó al módulo central hasta las 21:36."
         }
       ]
     },
@@ -312,7 +312,7 @@ export const case002: CaseDefinition = {
         {
           "key": "analyzed",
           "label": "Fibras — paño de mantenimiento",
-          "description": "Coinciden con el paño rojo guardado en el estuche de Nora, no con el hilo sintético usado para reparar las parkas."
+          "description": "Coinciden con el paño rojo que Nora usa para limpiar conectores, no con el hilo sintético empleado para reparar las parkas."
         }
       ]
     },
@@ -421,7 +421,7 @@ export const case002: CaseDefinition = {
         {
           "key": "found",
           "label": "Nota escrita en el refugio",
-          "description": "Elías anotó la hora de encierro, describió una parka de servicio y recordó que la frase del falso aviso era una clave privada de comunicaciones."
+          "description": "Elías anotó la hora de encierro y describió una parka de servicio. La clave «Aurora sin sombra» la había leído antes en el aviso escrito; quien cerró la puerta no habló."
         },
         {
           "key": "analyzed",
@@ -437,7 +437,7 @@ export const case002: CaseDefinition = {
       "kind": "intro",
       "title": "Boreal-7, veintidós diez",
       "location": "Módulo central",
-      "body": "La alarma exterior lleva cuarenta minutos encendida sin que nadie recuerde haberla activado. Al otro lado de los ojos de buey, la noche polar borra la diferencia entre cielo y hielo.\n\nEl doctor Elías Roldán salió a las 21:15 para atender una supuesta llamada de la baliza 3. No ha regresado. Su traje de emergencia sigue en la estación y el transmisor principal ha dejado de funcionar.\n\nCuatro personas permanecen en Boreal-7. El avión de relevo no llegará hasta dentro de doce días. Con el viento aumentando, encontrar a Elías es más urgente que averiguar quién miente.",
+      "body": "A las 22:00 se activó la alarma automática del temporizador de retorno de Elías. Diez minutos después sigue sonando. Al otro lado de los ojos de buey, la noche polar borra la diferencia entre cielo y hielo.\n\nEl doctor Elías Roldán entró a las 21:14 en la galería interior para atender una supuesta llamada de la baliza 3. No ha regresado. Su traje de emergencia sigue en la estación y el transmisor principal ha dejado de funcionar.\n\nCuatro personas permanecen en Boreal-7. El avión de relevo no llegará hasta dentro de doce días. Con el frío aumentando en los túneles, encontrar a Elías es más urgente que averiguar quién miente.",
       "imagePublicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/exterior",
       "effects": []
     },
@@ -500,7 +500,7 @@ export const case002: CaseDefinition = {
       "kind": "scene",
       "title": "La galería de acceso",
       "location": "Galería presurizada",
-      "body": "Una esclusa interior conduce al túnel excavado en el hielo. El lector de tarjetas imprime cada apertura sobre una tira perforada.\n\nSobre la nieve prensada queda un rastro incompleto: alguien fue desde el módulo de radio hasta la galería y regresó. No hay pisadas que lleguen desde la compuerta exterior.\n\nLas juntas exteriores conservan una costra continua de hielo. Nadie ha abierto esa compuerta desde antes de la tormenta.",
+      "body": "Una esclusa interior conduce al túnel excavado en el hielo. El lector de tarjetas imprime cada apertura sobre una tira perforada.\n\nSobre la nieve prensada se distinguen dos rastros: unas botas grandes avanzan hacia S-2 sin regreso visible; tres minutos detrás, una pisada menor va desde el módulo de radio hacia la galería y vuelve. No hay huellas que lleguen desde la compuerta exterior.\n\nLas juntas exteriores conservan una costra continua de hielo. Nadie ha abierto esa compuerta desde antes de la tormenta.",
       "imagePublicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/tunel",
       "effects": [
         {
@@ -670,7 +670,7 @@ export const case002: CaseDefinition = {
       "kind": "analysis",
       "title": "Abrir el transmisor principal",
       "location": "Sala de radio",
-      "body": "Liv corta la corriente y abre el panel. Falta el cristal de cuarzo que fija la frecuencia de emergencia; sin él, el equipo solo produce estática.\n\nEn el cierre quedan dos fibras de lana roja y polvo gris reciente. La pieza se retiró con la herramienta adecuada, sin romper nada.\n\nEn una estación incomunicada, sabotear la radio retrasa tanto el rescate como cualquier aviso sobre el informe.",
+      "body": "Liv corta la corriente y abre el panel. Falta el oscilador maestro de cuarzo: sin esa referencia, el equipo recibe energía pero no puede modular ninguna frecuencia.\n\nEn el cierre quedan dos fibras de lana roja y polvo gris reciente. La pieza se retiró con la herramienta adecuada, sin romper nada y puede reinstalarse en minutos.\n\nEl sabotaje impide pedir ayuda y bloquea el envío automático del informe. Quien lo hizo podía restaurar después el equipo, borrar el envío programado y presentar el fallo como una avería térmica.",
       "imagePublicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/radio",
       "effects": [
         {
@@ -733,7 +733,7 @@ export const case002: CaseDefinition = {
       "kind": "analysis",
       "title": "Leer el registro de tarjetas",
       "location": "Galería presurizada",
-      "body": "La tira perforada asigna un patrón a cada tarjeta. A las 21:14 aparece E-02, la de Elías. A las 21:17, N-04 abre la misma puerta. A las 21:24 N-04 regresa hacia el módulo de radio.\n\nNora dijo que su tarjeta no salió de su bolsillo. Tomás conserva la suya y la llave maestra no produce registro.\n\nLas perforaciones están impresas bajo una capa intacta de cinta protectora: no se añadieron después.",
+      "body": "La tira perforada asigna un patrón a cada tarjeta. A las 21:14 aparece E-02, la de Elías. A las 21:17, N-04 abre la misma puerta. N-04 no regresa hacia el módulo de radio hasta las 21:36.\n\nA las 21:30, cuando sonó el boletín grabado, la tarjeta de Nora seguía en el túnel. Tomás conserva la suya y la llave maestra no produce registro.\n\nLas perforaciones están impresas bajo una capa intacta de cinta protectora: no se añadieron después.",
       "imagePublicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/tunel",
       "effects": [
         {
@@ -752,7 +752,7 @@ export const case002: CaseDefinition = {
       "kind": "analysis",
       "title": "Comparar las fibras rojas",
       "location": "Taller",
-      "body": "El hilo de las parkas es sintético, liso y brillante. Las fibras del transmisor son lana teñida y retienen el mismo polvo gris del panel.\n\nNora guarda en el estuche de sus auriculares un paño rojo de lana para limpiar conectores. Dentro del paño aparece el cristal de frecuencia, con su número de serie intacto.\n\nNora deja de afirmar que nadie abrió el transmisor.",
+      "body": "El hilo de las parkas es sintético, liso y brillante. Las fibras del transmisor son lana teñida y retienen el mismo polvo gris del panel.\n\nEl paño rojo que Nora usa para limpiar conectores es de la misma lana. La coincidencia justifica registrar el estuche de sus auriculares; Nora acepta en presencia de Tomás y Liv.\n\nLa parka reparada queda descartada como origen de las fibras.",
       "imagePublicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/taller",
       "effects": [
         {
@@ -761,22 +761,22 @@ export const case002: CaseDefinition = {
           "value": "analyzed"
         },
         {
-          "effect": "discover_clue",
-          "target": "c002-cl-cristal"
-        },
-        {
-          "effect": "advance_clue",
-          "target": "c002-cl-cristal",
-          "value": "analyzed"
-        },
-        {
-          "effect": "reveal_fact",
-          "target": "c002-f-nora-cristal"
-        },
-        {
           "effect": "reveal_fact",
           "target": "c002-f-liv-parka"
         }
+      ]
+    },
+    {
+      "id": "c002-n-estuche",
+      "kind": "analysis",
+      "title": "Registrar el estuche de Nora",
+      "location": "Sala de radio",
+      "body": "Tomás abre el registro de pertenencias y Liv presencia la diligencia. Bajo los auriculares hay un paño rojo cuidadosamente doblado.\n\nDentro aparece el oscilador maestro del transmisor, con su número de serie intacto y polvo gris adherido al zócalo. Puede reinstalarse en pocos minutos: no era una destrucción, sino un silencio temporal.\n\nNora deja de afirmar que nadie abrió el panel, pero no explica por qué guardaba la pieza que mantenía incomunicada la estación.",
+      "imagePublicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/radio",
+      "effects": [
+        { "effect": "discover_clue", "target": "c002-cl-cristal" },
+        { "effect": "advance_clue", "target": "c002-cl-cristal", "value": "analyzed" },
+        { "effect": "reveal_fact", "target": "c002-f-nora-cristal" }
       ]
     },
     {
@@ -784,7 +784,7 @@ export const case002: CaseDefinition = {
       "kind": "analysis",
       "title": "Medir las huellas de la galería",
       "location": "Galería presurizada",
-      "body": "El viento interior de ventilación ha suavizado los bordes, pero la longitud del paso permite descartar a Liv y Samuel. El rastro es compatible con Nora o Tomás.\n\nNo hay una segunda línea de pisadas desde la compuerta exterior. Sus juntas conservan hielo continuo y el sensor confirma que no se abrió durante siete horas.\n\nQuien siguió a Elías salió del interior de Boreal-7.",
+      "body": "El rastro de botas grandes coincide con el calzado de Elías y termina en dirección a S-2. La segunda línea, de ida y vuelta, permite descartar por talla a Liv y Samuel; es compatible con Nora o Tomás.\n\nNo existe un tercer rastro desde la compuerta exterior. Sus juntas conservan hielo continuo y el sensor confirma que no se abrió durante siete horas.\n\nQuien siguió a Elías salió del interior de Boreal-7.",
       "imagePublicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/tunel",
       "effects": [
         {
@@ -875,7 +875,7 @@ export const case002: CaseDefinition = {
       "kind": "scene",
       "title": "El refugio S-2",
       "location": "Túnel bajo el hielo",
-      "body": "La tarjeta de Nora abre la última esclusa. Detrás, el refugio S-2 está a oscuras. Elías golpea el metal desde dentro con una llave inglesa.\n\nTiene principio de hipotermia, pero está consciente. Alguien con una parka de servicio cerró la puerta exterior después de citar la clave «Aurora sin sombra». Su radio parecía encendida y nunca recibió respuesta.\n\nEn la pared dejó una nota con la hora: 21:19. No vio el rostro bajo la capucha. Samuel inicia el recalentamiento mientras usted conserva la batería y la nota.",
+      "body": "Tomás entrega la llave maestra del armario de emergencia y con ella abre la última esclusa. Detrás, el refugio S-2 está casi a oscuras. Elías golpea el metal desde dentro con una llave inglesa.\n\nTiene principio de hipotermia, pero está consciente. El falso aviso escrito citaba «Aurora sin sombra»; después, alguien con una parka de servicio cerró la puerta sin hablar. Su radio parecía encendida y nunca recibió respuesta.\n\nCon la débil lámpara de emergencia, inmediatamente después del encierro, Elías dejó una nota breve con la hora: 21:19. No vio el rostro bajo la capucha. Samuel inicia el recalentamiento mientras usted conserva la batería y la nota.",
       "imagePublicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/refugio",
       "effects": [
         {
@@ -898,7 +898,7 @@ export const case002: CaseDefinition = {
       "kind": "analysis",
       "title": "Contrastar la nota de Elías",
       "location": "Enfermería",
-      "body": "La nota fue escrita con el lápiz de campo de Elías y describe tres detalles anteriores al hallazgo: la hora aproximada del encierro, una parka de servicio y la clave privada.\n\nEl registro fija la tarjeta N-04 a las 21:17. La cinta cubre la ausencia de Nora a las 21:30. El télex explica por qué necesitaba retrasar el informe y el cristal oculto por qué nadie podía pedir ayuda.\n\nElías no identifica un rostro. Las pruebas independientes sí permiten reconstruir el recorrido.",
+      "body": "La nota fue escrita con el lápiz de campo de Elías a la luz de emergencia, antes de que el refugio se enfriara. Fija la hora aproximada del encierro y describe una parka de servicio; también copia la clave que había leído en el falso aviso.\n\nEl registro sitúa la tarjeta N-04 fuera entre las 21:17 y las 21:36. La cinta cubre la ausencia de Nora a las 21:30. El télex explica por qué necesitaba retrasar el informe y el oscilador oculto por qué nadie podía pedir ayuda.\n\nElías no identifica un rostro ni oyó hablar a quien cerró la puerta. Las pruebas independientes permiten reconstruir el recorrido.",
       "imagePublicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/enfermeria",
       "effects": [
         {
@@ -913,7 +913,7 @@ export const case002: CaseDefinition = {
       "kind": "analysis",
       "title": "Reconstruir la desaparición",
       "location": "Sala de mapas",
-      "body": "A las 21:12 alguien añadió una llamada imposible al registro. Elías salió con una batería agotada, atraído hacia S-2 por una frase reservada a comunicaciones.\n\nLa tarjeta de Nora lo siguió tres minutos después y regresó antes del boletín grabado. Mientras su voz sonaba automáticamente, el transmisor permanecía inutilizado y el cristal estaba oculto entre sus pertenencias.\n\nLos secretos de Tomás, Liv y Samuel explican sus mentiras. Ninguno enlaza la llamada, el acceso, el falso turno y el beneficio económico como lo hacen las pruebas contra Nora.",
+      "body": "A las 21:12 alguien añadió una llamada imposible al registro. Elías entró en la galería con una batería agotada, atraído hacia S-2 por una frase reservada a comunicaciones.\n\nLa tarjeta de Nora lo siguió tres minutos después y no regresó hasta las 21:36. Mientras su voz sonaba automáticamente a las 21:30, ella seguía en el túnel y el transmisor permanecía inutilizado.\n\nLos secretos de Tomás, Liv y Samuel explican sus mentiras. Ninguno enlaza la llamada, el acceso, el falso turno, el oscilador oculto y el beneficio económico como lo hacen las pruebas contra Nora.",
       "imagePublicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/mapas",
       "effects": []
     }
@@ -923,8 +923,8 @@ export const case002: CaseDefinition = {
       "id": "c002-o-intro-radio",
       "to": "c002-n-radio",
       "label": "Entrar en la sala de radio",
-      "requires": [],
-      "from": "c002-n-intro"
+      "line": "La estación",
+      "requires": []
     },
     {
       "id": "c002-o-laboratorio",
@@ -1121,6 +1121,16 @@ export const case002: CaseDefinition = {
       ]
     },
     {
+      "id": "c002-o-estuche",
+      "to": "c002-n-estuche",
+      "label": "Registrar el estuche de auriculares de Nora",
+      "line": "Peritajes",
+      "requires": [
+        { "requirement": "clue_state", "target": "c002-cl-fibras", "value": "analyzed" },
+        { "requirement": "fact", "target": "c002-f-nora-turno" }
+      ]
+    },
+    {
       "id": "c002-o-combustible",
       "to": "c002-n-combustible",
       "label": "Cuadrar el combustible desaparecido",
@@ -1173,15 +1183,6 @@ export const case002: CaseDefinition = {
         {
           "requirement": "node",
           "target": "c002-n-mapa"
-        },
-        {
-          "requirement": "node",
-          "target": "c002-n-tarjeta"
-        },
-        {
-          "requirement": "flag",
-          "target": "sin_intruso",
-          "value": "1"
         }
       ]
     },
@@ -1233,7 +1234,7 @@ export const case002: CaseDefinition = {
         },
         {
           "requirement": "node",
-          "target": "c002-n-fibras"
+          "target": "c002-n-estuche"
         },
         {
           "requirement": "node",
@@ -1357,7 +1358,10 @@ export const case002: CaseDefinition = {
         ]
       }
     ],
-    "explanation": "Nora Vidal conocía las coordenadas de la veta porque preparaba el cifrado del informe de Elías. Un télex dirigido a su canal privado le ofrecía dinero por retrasar el envío y facilitar la posición exacta.\n\nAñadió al registro una llamada imposible de la baliza 3 y empleó la clave «Aurora sin sombra» para que Elías creyera que el aviso era auténtico. Antes de que saliera, sustituyó la batería cargada de su radio por una unidad descartada. Elías entró al túnel con su tarjeta a las 21:14; la tarjeta N-04 de Nora lo siguió tres minutos después.\n\nNora cerró el refugio S-2 desde fuera y regresó a las 21:24. A las 21:30 un temporizador reprodujo el boletín que había grabado, creando la impresión de que continuaba en la sala de radio. Después retiró el cristal de frecuencia del transmisor para impedir que la estación pidiera ayuda o enviara el informe. El cristal apareció dentro de su estuche, envuelto en el paño cuyas fibras quedaron en el panel.\n\nLa tormenta debía mantener a Elías aislado hasta que Nora pudiera enviar las coordenadas por su canal privado y presentar la desaparición como un accidente. El registro de puertas y el hielo intacto de la compuerta descartan a un intruso. Elías fue rescatado con hipotermia, pero consciente.\n\nTomás falseó una inspección, Liv desvió combustible y Samuel omitió un sedante. Sus secretos explican sus mentiras, pero ninguno reúne el aviso falso, el acceso al túnel, la coartada grabada, el sabotaje y el beneficio económico.",
+    "accusationRequirements": [
+      { "requirement": "flag", "target": "victima_rescatada", "value": "1" }
+    ],
+    "explanation": "Nora Vidal conocía las coordenadas de la veta porque preparaba el cifrado del informe de Elías. Un télex dirigido a su canal privado le ofrecía dinero por retrasar el envío y facilitar la posición exacta.\n\nAñadió al registro una llamada imposible de la baliza 3 y empleó la clave «Aurora sin sombra» para que Elías creyera que el aviso era auténtico. Antes de que saliera, sustituyó la batería cargada de su radio por una unidad descartada. Elías entró al túnel con su tarjeta a las 21:14; la tarjeta N-04 de Nora lo siguió tres minutos después.\n\nNora cerró el refugio S-2 desde fuera y no regresó al módulo central hasta las 21:36. A las 21:30 un temporizador reprodujo el boletín que había grabado, creando la impresión de que seguía en la radio mientras aún estaba en el túnel. Antes de salir había retirado el oscilador maestro para impedir llamadas de auxilio y bloquear el envío automático del informe. Pensaba reinstalarlo tras borrar el envío, atribuir el silencio a una avería térmica y usar más tarde su canal privado. El oscilador apareció dentro de su estuche, envuelto en el paño cuyas fibras quedaron en el panel.\n\nLa tormenta debía mantener a Elías aislado hasta que Nora pudiera vender las coordenadas y presentar la desaparición como un accidente. El registro de puertas y el hielo intacto de la compuerta descartan a un intruso. Elías fue rescatado con hipotermia, pero consciente.\n\nTomás falseó una inspección, Liv desvió combustible y Samuel omitió un sedante. Sus secretos explican sus mentiras, pero ninguno reúne el aviso falso, el acceso al túnel, la coartada grabada, el sabotaje y el beneficio económico.",
     "epitaph": "Bajo el hielo no había una voz pidiendo ayuda. Había alguien procurando que nadie pudiera pedirla."
   }
 };

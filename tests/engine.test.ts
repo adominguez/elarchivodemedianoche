@@ -123,6 +123,7 @@ const caseFile: CaseFile = {
     epitaph: null,
     evidenceClueIds: ['cl-llave'],
     evidenceGroups: [{ label: 'Prueba', alternatives: [{ clueId: 'cl-llave', stateKey: 'analyzed' }] }],
+    accusationRequirements: [],
   },
 };
 

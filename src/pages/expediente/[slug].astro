@@ -26,7 +26,7 @@ import {
   recordAccusation,
   reopenInvestigation,
 } from '@lib/data/progressRepository';
-import { canFollow, judgeAccusation, visitNode, type StateChanges } from '@lib/domain/engine';
+import { canAccuse, canFollow, judgeAccusation, visitNode, type StateChanges } from '@lib/domain/engine';
 import { buildDossier } from '@lib/presentation/dossier';
 import { readerKey } from '@lib/reader';
 import type { Accusation } from '@lib/domain/types';
@@ -69,6 +69,9 @@ if (Astro.request.method === 'POST') {
   }
 
   if (intent === 'acusar' && state.status === 'open') {
+    if (!canAccuse(caseFile, state)) {
+      notice = 'Antes de acusar debe completar la diligencia urgente pendiente.';
+    } else {
     const accusation: Accusation = {
       culpritSuspectId: String(form.get('culpable') ?? ''),
       motiveOptionId: String(form.get('motivo') ?? ''),
@@ -90,6 +93,7 @@ if (Astro.request.method === 'POST') {
       state = await loadState(investigationId);
     } else {
       notice = 'La acusación necesita culpable, motivo y método.';
+    }
     }
   }
 
@@ -220,10 +224,18 @@ const { header } = dossier;
                   <span class="disclosure-mark text-gold-500" aria-hidden="true" />
                 </summary>
                 <div class="border-t border-parchment-400/20 p-5 sm:p-7">
-                  <p class="mb-7 max-w-prose font-narrative leading-relaxed text-parchment-200/80">
-                    No hace falta haberlo descubierto todo. Hace falta poder sostenerlo.
-                  </p>
-                  <AccusationForm form={dossier.accusationForm} />
+                  {dossier.canAccuse ? (
+                    <>
+                      <p class="mb-7 max-w-prose font-narrative leading-relaxed text-parchment-200/80">
+                        No hace falta haberlo descubierto todo. Hace falta poder sostenerlo con pruebas precisas.
+                      </p>
+                      <AccusationForm form={dossier.accusationForm} />
+                    </>
+                  ) : (
+                    <p class="max-w-prose font-narrative leading-relaxed text-parchment-200/80">
+                      Antes de formular una acusación debe completar la diligencia urgente pendiente.
+                    </p>
+                  )}
                 </div>
               </details>
             )}

@@ -18,7 +18,8 @@
 - 21:14: Elías abre la galería con su tarjeta y se dirige al refugio S-2, atraído mediante una clave privada.
 - 21:17: Nora lo sigue usando su tarjeta N-04.
 - Aproximadamente 21:19: lo encierra en S-2 desde el exterior.
-- 21:24: Nora regresa hacia el módulo de radio.
+- 21:30: el temporizador reproduce el boletín grabado mientras Nora sigue en el túnel.
+- 21:36: Nora regresa hacia el módulo de radio.
 - 21:30: un temporizador reproduce su boletín previamente grabado y crea una coartada auditiva.
 - Después retira el cristal de frecuencia del transmisor y lo esconde dentro de su estuche de auriculares.
 - 22:10: comienza la investigación.

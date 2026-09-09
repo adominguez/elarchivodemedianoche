@@ -2,16 +2,25 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { case001 } from '../db/seeds/case-001-la-ultima-campanada.ts';
 import { fromDefinition, initialState } from './case-definition.ts';
-import { canFollow, visitNode, judgeAccusation, caseProgress } from '../src/lib/domain/engine.ts';
+import { canFollow, visitNode, judgeAccusation, caseProgress, nodeContinuations, openInvestigations } from '../src/lib/domain/engine.ts';
 const file = fromDefinition(case001);
 const accusation = {culpritSuspectId:file.solution.culpritSuspectId,motiveOptionId:file.solution.motiveOptionId,methodOptionId:file.solution.methodOptionId,evidenceClueIds:file.solution.evidenceClueIds};
 function traverse(reverse = false) {
   let state = visitNode(file, initialState(file.id), file.entryNodeId).state;
-  const options = reverse ? [...file.options].reverse() : file.options;
   for (;;) {
-    const option = options.find(o => !state.visitedNodeIds.has(o.targetNodeId) && canFollow(file,state,o.id));
-    if (!option) return state;
-    state = visitNode(file,state,option.targetNodeId).state;
+    const visible=[...nodeContinuations(file,state,state.currentNodeId),...openInvestigations(file,state)];
+    if (reverse) visible.reverse();
+    const next=visible.find(({option}) => !state.visitedNodeIds.has(option.targetNodeId));
+    if (!next) {
+      const returnOption=openInvestigations(file,state).find(({option}) =>
+        file.options.some(candidate => candidate.sourceNodeId === option.targetNodeId && !state.visitedNodeIds.has(candidate.targetNodeId)),
+      );
+      if (!returnOption) return state;
+      state=visitNode(file,state,returnOption.option.targetNodeId).state;
+      continue;
+    }
+    assert.ok(canFollow(file,state,next.option.id));
+    state = visitNode(file,state,next.option.targetNodeId).state;
   }
 }
 test('el expediente completo es alcanzable en ambos órdenes y admite pruebas alternativas', () => {

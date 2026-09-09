@@ -556,7 +556,7 @@ definición y comprueba que las tablas de progreso conservan su contenido.
 ## Expediente #002
 
 **La señal bajo el hielo** traslada la investigación a una estación científica
-polar en 1987. Es un caso de desaparición y sabotaje con 28 nodos, 14 pistas,
+polar en 1987. Es un caso de desaparición y sabotaje con 29 nodos, 14 pistas,
 cuatro sospechosos y una operación de rescate integrada en el recorrido.
 
 Su cronología y biblia visual están documentadas en

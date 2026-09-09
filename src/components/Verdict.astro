@@ -38,21 +38,18 @@ const NOTE = {
         <div class="flex items-baseline gap-3 border-b border-dotted border-parchment-400/20 pb-2">
           <dt class="typed-sm w-20 flex-none text-parchment-400">{line.label}</dt>
           <dd class="flex-1 font-narrative text-lg text-parchment-100">{line.value}</dd>
-          <dd
-            class:list={[
-              'typed-sm flex-none',
-              line.correct ? 'text-gold-400' : 'text-blood-bright',
-            ]}
-          >
-            {line.correct ? '✓ correcto' : '✕ incorrecto'}
-          </dd>
+          {verdict.verdict === 'solved' && (
+            <dd class="typed-sm flex-none text-gold-400">✓ acreditado</dd>
+          )}
         </div>
       ))
     }
     <div class="flex items-baseline gap-3">
       <dt class="typed-sm w-20 flex-none text-parchment-400">Evidencias</dt>
       <dd class="flex-1 font-narrative text-lg text-parchment-100">
-        {verdict.evidenceHits} de {verdict.evidenceTotal} pertinentes
+        {verdict.verdict === 'solved'
+          ? `${verdict.evidenceHits} de ${verdict.evidenceTotal} grupos probatorios acreditados`
+          : 'La selección no sostiene todavía una teoría completa y precisa'}
       </dd>
     </div>
   </dl>

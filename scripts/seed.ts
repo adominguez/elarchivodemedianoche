@@ -239,7 +239,10 @@ function statementsFor(def: CaseDefinition): InStatement[] {
 
   statements.push({
     sql: 'INSERT INTO case_evidence_rules (case_id, groups_json) VALUES (?, ?)',
-    args: [def.id, JSON.stringify(def.solution.evidenceGroups)],
+    args: [def.id, JSON.stringify({
+      groups: def.solution.evidenceGroups,
+      accusationRequirements: def.solution.accusationRequirements ?? [],
+    })],
   });
   return statements;
 }
@@ -358,6 +361,19 @@ function validate(def: CaseDefinition): string[] {
         errors.push(`evidencia o estado inválido: ${alternative.clueId}/${alternative.stateKey}`);
       }
       if (!def.solution.evidence.includes(alternative.clueId)) errors.push(`evidencia no puntuable: ${alternative.clueId}`);
+    }
+  }
+  for (const requirement of def.solution.accusationRequirements ?? []) {
+    const known =
+      (requirement.requirement === 'clue' || requirement.requirement === 'clue_state'
+        ? clueIds
+        : requirement.requirement === 'fact'
+          ? factIds
+          : requirement.requirement === 'node'
+            ? nodeIds
+            : null) ?? null;
+    if (known && !known.has(requirement.target)) {
+      errors.push(`requisito de acusación desconocido: ${requirement.target}`);
     }
   }
   return errors;

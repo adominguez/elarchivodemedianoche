@@ -6,6 +6,7 @@
  * ni saben cómo se construye una URL de imagen.
  */
 import {
+  canAccuse,
   caseProgress,
   nodeContinuations,
   openInvestigations,
@@ -351,6 +352,7 @@ export interface DossierView {
   evidence: ClueSlotView[];
   progress: CaseProgress;
   accusationForm: AccusationFormView;
+  canAccuse: boolean;
   verdict: VerdictView | null;
   closed: boolean;
 }
@@ -456,6 +458,7 @@ export function buildDossier({
     evidence: evidenceBoard(caseFile, state),
     progress: caseProgress(caseFile, state),
     accusationForm: accusationForm(caseFile, state),
+    canAccuse: canAccuse(caseFile, state),
     verdict: accusation ? verdictView(caseFile, state, accusation) : null,
     closed: state.status === 'closed',
   };

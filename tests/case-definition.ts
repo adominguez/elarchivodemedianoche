@@ -9,7 +9,7 @@ export function fromDefinition(d: CaseDefinition): CaseFile {
     nodes:Object.fromEntries(d.nodes.map(n=>[n.id,{...n,location:n.location??null,body:n.body.split('\n\n'),imagePublicId:n.imagePublicId??null,imageCaption:n.imageCaption??null,effects:(n.effects??[]).map(e=>({...e,targetId:e.target,value:'value' in e?e.value??null:null}))}])),
     options:d.options.map(o=>({...o,sourceNodeId:o.from??null,targetNodeId:o.to,hint:o.hint??null,line:o.line??null,repeatable:o.repeatable??false,requirements:(o.requires??[]).map(r=>({...r,targetId:r.target,value:'value' in r?r.value??null:null}))})),
     solutionOptions:[...d.motives.map(m=>({...m,dimension:'motive' as const})),...d.methods.map(m=>({...m,dimension:'method' as const}))],
-    solution:{culpritSuspectId:d.solution.culprit,motiveOptionId:d.solution.motive,methodOptionId:d.solution.method,explanation:d.solution.explanation,epitaph:d.solution.epitaph??null,evidenceClueIds:d.solution.evidence,evidenceGroups:d.solution.evidenceGroups},
+    solution:{culpritSuspectId:d.solution.culprit,motiveOptionId:d.solution.motive,methodOptionId:d.solution.method,explanation:d.solution.explanation,epitaph:d.solution.epitaph??null,evidenceClueIds:d.solution.evidence,evidenceGroups:d.solution.evidenceGroups,accusationRequirements:(d.solution.accusationRequirements??[]).map(r=>({...r,targetId:r.target,value:'value' in r?r.value??null:null}))},
   };
 }
 export function initialState(caseId: string): InvestigationState {

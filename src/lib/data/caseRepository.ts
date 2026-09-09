@@ -99,6 +99,17 @@ export async function getCaseFile(slug: string): Promise<CaseFile | null> {
   if (!solutionRow) {
     throw new Error(`El expediente "${slug}" no tiene solución registrada.`);
   }
+  const rawEvidenceRules = JSON.parse(str(evidenceRules.rows[0]?.groups_json ?? '[]'));
+  const evidenceGroups = Array.isArray(rawEvidenceRules)
+    ? rawEvidenceRules
+    : (rawEvidenceRules.groups ?? []);
+  const accusationRequirements = Array.isArray(rawEvidenceRules)
+    ? []
+    : (rawEvidenceRules.accusationRequirements ?? []).map((requirement: { requirement: RequirementType; target: string; value?: string }) => ({
+        requirement: requirement.requirement,
+        targetId: requirement.target,
+        value: requirement.value ?? null,
+      }));
 
   const factsBySuspect = groupBy(
     facts.rows,
@@ -226,7 +237,8 @@ export async function getCaseFile(slug: string): Promise<CaseFile | null> {
       explanation: str(solutionRow.explanation),
       epitaph: strOrNull(solutionRow.epitaph),
       evidenceClueIds: evidence.rows.map((row) => str(row.clue_id)),
-      evidenceGroups: JSON.parse(str(evidenceRules.rows[0]?.groups_json ?? '[]')),
+      evidenceGroups,
+      accusationRequirements,
     },
   };
 }

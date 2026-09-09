@@ -93,11 +93,14 @@ export function canFollow(
   const option = caseFile.options.find((candidate) => candidate.id === optionId);
   if (!option) return null;
   if (!areRequirementsMet(option, state)) return null;
-  if (option.sourceNodeId !== null && option.sourceNodeId !== state.currentNodeId) {
-    // Una continuación sólo se sigue desde su nodo, salvo que ya se recorriera.
-    if (!state.visitedNodeIds.has(option.sourceNodeId)) return null;
-  }
+  if (option.sourceNodeId !== null && option.sourceNodeId !== state.currentNodeId) return null;
   return option;
+}
+
+export function canAccuse(caseFile: CaseFile, state: InvestigationState): boolean {
+  return caseFile.solution.accusationRequirements.every((requirement) =>
+    isRequirementMet(requirement, state),
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -268,7 +271,7 @@ export function judgeAccusation(caseFile: CaseFile, accusation: Accusation, stat
   const key = new Set(solution.evidenceClueIds);
   // Sólo se puntúan pruebas realmente descubiertas, aunque se invoque el motor directamente.
   const selected = new Set(accusation.evidenceClueIds.filter((id) => state.clueStates.has(id)));
-  const supported = solution.evidenceGroups.length > 0 && solution.evidenceGroups.every((group) =>
+  const satisfiedGroups = solution.evidenceGroups.filter((group) =>
     group.alternatives.some(({ clueId, stateKey }) => {
       if (!selected.has(clueId)) return false;
       const states = caseFile.clues.find((clue) => clue.id === clueId)?.states ?? [];
@@ -277,7 +280,10 @@ export function judgeAccusation(caseFile: CaseFile, accusation: Accusation, stat
       return required >= 0 && current >= required;
     }),
   );
-  const evidenceHits = [...selected].filter((id) => key.has(id)).length;
+  const supported = solution.evidenceGroups.length > 0 &&
+    satisfiedGroups.length === solution.evidenceGroups.length &&
+    [...selected].every((id) => key.has(id));
+  const evidenceHits = satisfiedGroups.length;
 
   let verdict: Verdict;
   if (culpritCorrect && motiveCorrect && methodCorrect && supported) verdict = 'solved';
@@ -289,7 +295,7 @@ export function judgeAccusation(caseFile: CaseFile, accusation: Accusation, stat
     motiveCorrect,
     methodCorrect,
     evidenceHits,
-    evidenceTotal: key.size,
+    evidenceTotal: solution.evidenceGroups.length,
     verdict,
   };
 }
