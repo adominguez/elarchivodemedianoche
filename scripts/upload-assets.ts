@@ -6,10 +6,16 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { resolve, dirname } from 'node:path';
 import { case001 } from '../db/seeds/case-001-la-ultima-campanada.ts';
+import { case002 } from '../db/seeds/case-002-la-senal-bajo-el-hielo.ts';
 interface Asset { publicId: string; source: string; region?: [number, number, number, number] }
 const manifestPath = resolve(process.argv[2] ?? '.data/art/la-ultima-campanada/manifest.json');
 const assets: Asset[] = JSON.parse(await readFile(manifestPath, 'utf8'));
-const wanted = new Set([case001.coverPublicId,...case001.suspects.map(s=>s.portraitPublicId),...case001.clues.map(c=>c.imagePublicId),...case001.nodes.map(n=>n.imagePublicId)].filter(Boolean));
+const definitions = [case001, case002];
+const caseDefinition = definitions.find((definition) =>
+  assets.every((asset) => asset.publicId.startsWith(`archivos-de-medianoche/${definition.slug}/`)),
+);
+if (!caseDefinition) throw new Error('El manifiesto no pertenece a un expediente conocido');
+const wanted = new Set([caseDefinition.coverPublicId,...caseDefinition.suspects.map(s=>s.portraitPublicId),...caseDefinition.clues.map(c=>c.imagePublicId),...caseDefinition.nodes.map(n=>n.imagePublicId)].filter(Boolean));
 if (assets.length !== wanted.size || new Set(assets.map(a=>a.publicId)).size !== wanted.size || assets.some(a=>!wanted.has(a.publicId))) throw new Error('El manifiesto no coincide con los recursos del expediente');
 const cloud=process.env.CLOUDINARY_CLOUD_NAME, key=process.env.CLOUDINARY_API_KEY, secret=process.env.CLOUDINARY_API_SECRET;
 if (!cloud || !key || !secret) throw new Error('Falta configuración de Cloudinary');

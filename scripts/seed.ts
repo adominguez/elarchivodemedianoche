@@ -11,8 +11,9 @@ import type { InStatement } from '@libsql/client';
 import { scriptClient } from './turso.ts';
 import type { CaseDefinition } from '../db/seeds/definition.ts';
 import { case001 } from '../db/seeds/case-001-la-ultima-campanada.ts';
+import { case002 } from '../db/seeds/case-002-la-senal-bajo-el-hielo.ts';
 
-const CASES: CaseDefinition[] = [case001];
+export const CASES: CaseDefinition[] = [case001, case002];
 
 function statementsFor(def: CaseDefinition): InStatement[] {
   const statements: InStatement[] = [];

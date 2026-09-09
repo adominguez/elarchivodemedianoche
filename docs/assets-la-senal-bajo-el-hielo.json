@@ -1,0 +1,205 @@
+{
+  "case": "la-senal-bajo-el-hielo",
+  "revision": "2026-09-09",
+  "assets": [
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/portada",
+      "width": 1122,
+      "height": 1402,
+      "version": 1788959305
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/sospechosos/nora-vidal",
+      "width": 508,
+      "height": 764,
+      "version": 1788959306
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/sospechosos/tomas-echevarria",
+      "width": 508,
+      "height": 764,
+      "version": 1788959309
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/sospechosos/liv-halvorsen",
+      "width": 508,
+      "height": 764,
+      "version": 1788959311
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/sospechosos/samuel-okoro",
+      "width": 508,
+      "height": 764,
+      "version": 1788959314
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/exterior",
+      "width": 1122,
+      "height": 1402,
+      "version": 1788959317
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/nora",
+      "width": 764,
+      "height": 337,
+      "version": 1788959319
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/tomas",
+      "width": 764,
+      "height": 337,
+      "version": 1788959320
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/liv",
+      "width": 764,
+      "height": 338,
+      "version": 1788959322
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/samuel",
+      "width": 764,
+      "height": 338,
+      "version": 1788959324
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/laboratorio",
+      "width": 764,
+      "height": 337,
+      "version": 1788959326
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/tunel",
+      "width": 764,
+      "height": 337,
+      "version": 1788959329
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/taller",
+      "width": 764,
+      "height": 337,
+      "version": 1788959330
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/camarote",
+      "width": 764,
+      "height": 337,
+      "version": 1788959332
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/enfermeria",
+      "width": 764,
+      "height": 338,
+      "version": 1788959334
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/despacho",
+      "width": 764,
+      "height": 338,
+      "version": 1788959336
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/refugio",
+      "width": 764,
+      "height": 337,
+      "version": 1788959339
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/mapas",
+      "width": 764,
+      "height": 337,
+      "version": 1788959340
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/escenas/radio",
+      "width": 764,
+      "height": 337,
+      "version": 1788959342
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/pruebas/registro-radio",
+      "width": 508,
+      "height": 337,
+      "version": 1788959344
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/pruebas/cinta-boletin",
+      "width": 508,
+      "height": 337,
+      "version": 1788959345
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/pruebas/cristal",
+      "width": 508,
+      "height": 337,
+      "version": 1788959347
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/pruebas/mensaje-telex",
+      "width": 508,
+      "height": 338,
+      "version": 1788959349
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/pruebas/tarjeta",
+      "width": 508,
+      "height": 338,
+      "version": 1788959350
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/pruebas/mapa",
+      "width": 508,
+      "height": 338,
+      "version": 1788959352
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/pruebas/bateria",
+      "width": 508,
+      "height": 337,
+      "version": 1788959353
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/pruebas/fibras",
+      "width": 508,
+      "height": 337,
+      "version": 1788959355
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/pruebas/huellas-nieve",
+      "width": 508,
+      "height": 337,
+      "version": 1788959357
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/pruebas/informe-mineral",
+      "width": 764,
+      "height": 337,
+      "version": 1788959358
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/pruebas/combustible",
+      "width": 764,
+      "height": 337,
+      "version": 1788959360
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/pruebas/ampolla",
+      "width": 764,
+      "height": 338,
+      "version": 1788959362
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/pruebas/informe-seguridad",
+      "width": 764,
+      "height": 338,
+      "version": 1788959365
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-senal-bajo-el-hielo/pruebas/nota-refugio",
+      "width": 764,
+      "height": 337,
+      "version": 1788959367
+    }
+  ]
+}
+
