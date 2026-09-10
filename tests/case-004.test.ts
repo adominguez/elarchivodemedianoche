@@ -52,6 +52,14 @@ test('cada cadena probatoria es necesaria y los indicios indiscriminados penaliz
     assert.equal(judgeAccusation(file,{...accusation,evidenceClueIds},state).verdict,'partial',clueId);
   }
   assert.equal(judgeAccusation(file,{...accusation,evidenceClueIds:file.clues.map(({id})=>id)},state).verdict,'partial');
+  assert.equal(judgeAccusation(file,{...accusation,evidenceClueIds:file.clues.map(({id})=>id)},{...state,difficulty:'detective'}).verdict,'partial');
+});
+
+test('las confrontaciones dejan sus conclusiones en las fichas',()=>{
+  const state=traverse();
+  for(const id of ['c004-f-elisa-calibracion','c004-f-ines-llave-limitada','c004-f-soraya-orden','c004-f-teresa-frasco','c004-f-gabriel-rele']) {
+    assert.ok(state.discoveredFactIds.has(id),id);
+  }
 });
 
 test('acertar la teoría antes de investigar no resuelve el expediente',()=>{

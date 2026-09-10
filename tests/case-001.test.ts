@@ -32,12 +32,12 @@ test('el expediente completo es alcanzable en ambos órdenes y admite pruebas al
 });
 test('la dificultad adapta los aspectos probatorios sin cambiar la solución', () => {
   const complete=traverse();
-  const essential={...accusation,evidenceClueIds:['c001-cl-cuaderno','c001-cl-informe']};
-  assert.equal(requiredEvidenceGroups(file,'narrative'),2);
+  const essential={...accusation,evidenceClueIds:['c001-cl-cuaderno','c001-cl-informe','c001-cl-disco']};
+  assert.equal(requiredEvidenceGroups(file,'narrative'),3);
   assert.equal(judgeAccusation(file,essential,{...complete,difficulty:'narrative'}).verdict,'solved');
   assert.equal(requiredEvidenceGroups(file,'detective'),3);
-  assert.equal(judgeAccusation(file,essential,{...complete,difficulty:'detective'}).verdict,'partial');
-  assert.equal(judgeAccusation(file,{...essential,evidenceClueIds:[...essential.evidenceClueIds,'c001-cl-carta-auditoria']},{...complete,difficulty:'detective'}).verdict,'solved');
+  assert.equal(judgeAccusation(file,essential,{...complete,difficulty:'detective'}).verdict,'solved');
+  assert.equal(judgeAccusation(file,{...essential,evidenceClueIds:[...essential.evidenceClueIds,'c001-cl-colillas']},{...complete,difficulty:'detective'}).verdict,'partial');
   assert.equal(requiredEvidenceGroups(file,'hound'),4);
   assert.equal(judgeAccusation(file,accusation,{...complete,difficulty:'hound'}).verdict,'solved');
 });

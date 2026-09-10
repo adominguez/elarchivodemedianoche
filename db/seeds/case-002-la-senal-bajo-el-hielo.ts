@@ -1302,7 +1302,7 @@ export const case002: CaseDefinition = {
     "evidenceGroups": [
       {
         "label": "Aviso fabricado",
-        "importance": "complementary",
+        "importance": "essential",
         "alternatives": [
           {
             "clueId": "c002-cl-registro-radio",

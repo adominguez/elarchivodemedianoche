@@ -1294,7 +1294,7 @@ export const case001: CaseDefinition = {
       },
       {
         "label": "Engaño de la hora",
-        "importance": "complementary",
+        "importance": "essential",
         "alternatives": [
           {
             "clueId": "c001-cl-disco",

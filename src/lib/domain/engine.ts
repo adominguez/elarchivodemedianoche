@@ -300,7 +300,7 @@ export function judgeAccusation(caseFile: CaseFile, accusation: Accusation, stat
   const supported = solution.evidenceGroups.length > 0 &&
     satisfiedGroups.length >= evidenceRequired &&
     essentialSatisfied &&
-    (state.difficulty !== 'hound' || [...selected].every((id) => key.has(id)));
+    (state.difficulty === 'narrative' || [...selected].every((id) => key.has(id)));
   const evidenceHits = satisfiedGroups.length;
 
   let verdict: Verdict;

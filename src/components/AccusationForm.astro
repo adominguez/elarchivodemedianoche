@@ -20,7 +20,7 @@ const { form } = Astro.props;
   <aside class="accusation-requirement">
     <p><strong>Nivel {form.difficultyLabel}</strong> · Debes acreditar al menos {form.evidenceRequired} de {form.evidenceGroupsTotal} aspectos del caso.</p>
     <p>Varias pistas sobre el mismo aspecto cuentan como una sola.</p>
-    {form.difficulty === 'hound' && <p>En este nivel, incluir una pista irrelevante debilita la acusación.</p>}
+    {form.difficulty !== 'narrative' && <p>En este nivel, incluir una pista irrelevante debilita la acusación.</p>}
   </aside>
 
   <fieldset>

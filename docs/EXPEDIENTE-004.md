@@ -16,13 +16,14 @@
 - Tres noches antes, Elisa graba una calibración del receptor.
 - Antes del turno, empalma esa calibración en una copia y desmagnetiza el tramo equivalente de la cinta maestra.
 - 23:47: dicta a Soraya la hora falsa de Asterión; el reloj sidéreo no registra una observación.
-- Antes de 00:09: prepara el puente entre el relé y el temporizador, vierte revelador con óxido en la barandilla y deja su silla dispuesta.
+- Antes de 00:09: prepara el puente entre el relé y el temporizador, vierte revelador con óxido en la barandilla y retira sus botas de campo del despacho.
 - 00:09:42: Teresa abre el obturador para su exposición larga en la terraza oriental.
 - 00:10:00: el temporizador abre el relé y comienza el apagón.
+- 00:10:12: el generador auxiliar arranca, pero el relé abierto mantiene aislada la antena.
 - Durante el corte, Elisa vuelca la silla, cruza al pedestal y entra en el conducto con la cinta maestra.
-- 00:11:30: el relé se cierra y arranca el generador auxiliar.
+- 00:11:30: el temporizador termina, el relé se cierra y vuelve la corriente.
 - 00:12:18: Teresa cierra el obturador después de volver la corriente.
-- La búsqueda se dirige primero al barranco; Elisa espera detrás del armario de placas para destruir después la cinta.
+- La búsqueda se dirige primero al barranco; Elisa espera detrás del armario de placas para destruir después la cinta maestra. La copia empalmada queda como supuesta prueba del hallazgo y la maestra desmagnetizada, que lo refuta, desaparece con ella.
 
 ## Cadena probatoria
 
