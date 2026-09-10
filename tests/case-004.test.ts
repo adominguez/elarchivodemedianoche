@@ -67,3 +67,15 @@ test('acertar la teoría antes de investigar no resuelve el expediente',()=>{
   assert.equal(canAccuse(file,state),false);
   assert.equal(judgeAccusation(file,accusation,state).verdict,'partial');
 });
+
+test('las coartadas tempranas no adelantan hallazgos de diligencias posteriores',()=>{
+  const forbidden: Record<string,RegExp> = {
+    'c004-n-registro': /relé|temporizador|conducto|túnel|caída (?:falsa|fingida)/i,
+    'c004-n-fotografia': /relé|temporizador|conducto|túnel|caída (?:falsa|fingida)/i,
+    'c004-n-centralita': /relé|temporizador|conducto|túnel|pedestal|caída (?:falsa|fingida)/i,
+    'c004-n-pluviografo': /relé|temporizador|conducto|túnel|pedestal|caída (?:falsa|fingida)/i,
+  };
+  for(const [nodeId,pattern] of Object.entries(forbidden)) {
+    assert.doesNotMatch(file.nodes[nodeId]!.body.join(' '),pattern,nodeId);
+  }
+});
