@@ -1,0 +1,47 @@
+---
+/**
+ * Puerta del panel. Una sola llave (`ADMIN_TOKEN`), sin usuarios.
+ * El middleware ya garantiza que esta ruta no existe si no hay token.
+ */
+import AdminLayout from '@layouts/AdminLayout.astro';
+import { isSignedIn, openSession, tokenMatches } from '@lib/admin/session';
+
+if (isSignedIn(Astro.cookies)) return Astro.redirect('/admin');
+
+let error: string | null = null;
+
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  if (tokenMatches(String(form.get('llave') ?? '').trim())) {
+    openSession(Astro.cookies);
+    return Astro.redirect('/admin');
+  }
+  error = 'Llave incorrecta.';
+}
+---
+
+<AdminLayout title="Acceso" chrome={false}>
+  <div class="admin-gate">
+    <div class="admin-gate__card">
+      <p class="admin-kicker">Acceso restringido</p>
+      <h1>Dirección del Archivo</h1>
+      <p>Este panel muestra la telemetría de las lecturas. No forma parte de la experiencia pública.</p>
+
+      <form method="post">
+        <label class="admin-kicker" for="llave">Llave</label>
+        <input
+          class="admin-input"
+          id="llave"
+          name="llave"
+          type="password"
+          autocomplete="current-password"
+          required
+          autofocus
+        />
+        <button class="admin-button" type="submit">Entrar</button>
+      </form>
+
+      {error && <p class="admin-notice admin-notice--error">{error}</p>}
+    </div>
+  </div>
+</AdminLayout>

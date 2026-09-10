@@ -1,0 +1,42 @@
+---
+/**
+ * Lista comparativa con barra proporcional.
+ *
+ * Sin librería de gráficas: son divisiones con un ancho en porcentaje, así que
+ * funcionan sin JavaScript y se imprimen bien, que es como se acaban leyendo
+ * estas cosas.
+ */
+import { barWidth, share, type BarItem } from '@lib/admin/metrics';
+
+interface Props {
+  items: BarItem[];
+  /** Base de los porcentajes. Sin ella, se compara contra el mayor. */
+  total?: number;
+  empty?: string;
+  unit?: string;
+}
+
+const { items, total, empty = 'Todavía no hay datos.', unit = '' } = Astro.props;
+const max = Math.max(1, ...items.map((item) => item.value));
+const base = total && total > 0 ? total : max;
+---
+
+{items.length === 0 ? (
+  <p class="admin-empty">{empty}</p>
+) : (
+  <ul class="admin-bars">
+    {items.map((item) => (
+      <li class:list={['admin-bar', item.tone && item.tone !== 'neutral' && `admin-bar--${item.tone}`]}>
+        <div class="admin-bar__head">
+          <span class="admin-bar__label">{item.label}</span>
+          <span class="admin-bar__value">
+            {item.value}{unit}
+            {total !== undefined && total > 0 && <em>{share(item.value, base)} %</em>}
+          </span>
+        </div>
+        <div class="admin-bar__track"><span style={`width:${barWidth(item.value, max)}%`}></span></div>
+        {item.note && <p class="admin-bar__note">{item.note}</p>}
+      </li>
+    ))}
+  </ul>
+)}

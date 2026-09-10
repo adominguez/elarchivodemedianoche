@@ -1,0 +1,17 @@
+---
+/** Una cifra del panel, con su lectura en una línea. */
+interface Props {
+  label: string;
+  value: string | number;
+  hint?: string;
+  tone?: 'neutral' | 'good' | 'warn' | 'alert';
+}
+
+const { label, value, hint, tone = 'neutral' } = Astro.props;
+---
+
+<div class:list={['admin-stat', `admin-stat--${tone}`]}>
+  <p class="admin-stat__label">{label}</p>
+  <p class="admin-stat__value">{value}</p>
+  {hint && <p class="admin-stat__hint">{hint}</p>}
+</div>

@@ -1,0 +1,220 @@
+---
+/**
+ * Lectores e investigaciones.
+ *
+ * Aquí "lector" es una cookie anónima (`reader_key`), no una cuenta: es todo lo
+ * que el archivo sabe hoy de quien lee, y el panel no debe aparentar más. La
+ * columna `investigations.user_id` está prevista para cuando existan cuentas;
+ * ese día esta pantalla agrupa por ella y ya está.
+ */
+import AdminLayout from '@layouts/AdminLayout.astro';
+import StatCard from '@components/admin/StatCard.astro';
+import {
+  archiveOverview,
+  deleteInvestigation,
+  deleteReader,
+  listInvestigations,
+  listReaders,
+} from '@lib/data/telemetryRepository';
+import { maskReader, share, timeAgo } from '@lib/admin/metrics';
+
+// --- Acciones ---------------------------------------------------------------
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const action = String(form.get('accion') ?? '');
+
+  if (action === 'borrar-investigacion') {
+    const id = String(form.get('investigacion') ?? '');
+    if (id) {
+      await deleteInvestigation(id);
+      return Astro.redirect('/admin/lectores?hecho=investigacion-borrada');
+    }
+  }
+
+  if (action === 'borrar-lector') {
+    const key = String(form.get('lector') ?? '');
+    if (key) {
+      await deleteReader(key);
+      return Astro.redirect('/admin/lectores?hecho=lector-borrado');
+    }
+  }
+}
+
+const filter = Astro.url.searchParams.get('lector');
+const done = Astro.url.searchParams.get('hecho');
+
+const [overview, readers, investigations] = await Promise.all([
+  archiveOverview(),
+  listReaders(100),
+  listInvestigations({ readerKey: filter ?? undefined, limit: filter ? 100 : 60 }),
+]);
+
+const returning = readers.filter((reader) => reader.investigations > 1).length;
+const finishers = readers.filter((reader) => reader.closed > 0).length;
+
+const VERDICT_TAG = {
+  solved: { label: 'Resuelto', tone: 'admin-tag--good' },
+  partial: { label: 'No acreditada', tone: 'admin-tag--warn' },
+  failed: { label: 'Fallida', tone: 'admin-tag--alert' },
+} as const;
+---
+
+<AdminLayout title="Lectores" section="lectores">
+  <p class="admin-kicker">Panel de dirección</p>
+  <h1 class="admin-page-title">Lectores e investigaciones</h1>
+  <p class="admin-lede">
+    Todavía no hay cuentas: cada lector es una cookie anónima. Dos navegadores de la misma
+    persona son aquí dos lectores, y quien borre sus cookies aparecerá como uno nuevo.
+  </p>
+
+  {done === 'investigacion-borrada' && <p class="admin-notice">Investigación borrada con todo su progreso.</p>}
+  {done === 'lector-borrado' && <p class="admin-notice">Lector borrado con todas sus investigaciones.</p>}
+
+  <div class="admin-stats">
+    <StatCard label="Lectores" value={overview.readers} hint={`${overview.newLast7} nuevos en 7 días`} />
+    <StatCard
+      label="Volvieron"
+      value={returning}
+      hint={`abrieron más de un expediente · ${share(returning, overview.readers)} %`}
+      tone={overview.readers === 0 ? 'neutral' : returning > 0 ? 'good' : 'warn'}
+    />
+    <StatCard
+      label="Cerraron algún caso"
+      value={finishers}
+      hint={`${share(finishers, overview.readers)} % de los lectores`}
+    />
+    <StatCard label="Activos (7 días)" value={overview.activeLast7} hint="con alguna diligencia" />
+  </div>
+
+  <!-- ------------------------------------------------------------------ -->
+  <section class="admin-section">
+    <div class="admin-section__head">
+      <h2>Lectores</h2>
+      <p>{readers.length} más recientes</p>
+    </div>
+
+    <div class="admin-panel">
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Lector</th>
+              <th class="is-numeric">Expedientes</th>
+              <th class="is-numeric">Empezados</th>
+              <th class="is-numeric">Cerrados</th>
+              <th class="is-numeric">Pistas</th>
+              <th>Primera vez</th>
+              <th>Última vez</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {readers.length === 0 ? (
+              <tr><td colspan="8"><p class="admin-empty">Nadie ha abierto un expediente todavía.</p></td></tr>
+            ) : (
+              readers.map((reader) => (
+                <tr>
+                  <td>
+                    <a href={`/admin/lectores?lector=${encodeURIComponent(reader.readerKey)}`} class="admin-mono">
+                      {maskReader(reader.readerKey)}…
+                    </a>
+                    {reader.userId && <span class="admin-tag admin-tag--good" style="margin-left:.4rem">cuenta</span>}
+                  </td>
+                  <td class="is-numeric">{reader.investigations}</td>
+                  <td class="is-numeric">{reader.started}</td>
+                  <td class="is-numeric">{reader.closed}</td>
+                  <td class="is-numeric">{reader.cluesFound}</td>
+                  <td class="admin-mono">{timeAgo(reader.firstSeen)}</td>
+                  <td class="admin-mono">{timeAgo(reader.lastSeen)}</td>
+                  <td>
+                    <form method="post" data-confirm="Se borrarán todas las investigaciones de este lector. ¿Continuar?">
+                      <input type="hidden" name="accion" value="borrar-lector" />
+                      <input type="hidden" name="lector" value={reader.readerKey} />
+                      <button class="admin-button admin-button--danger" type="submit">Borrar</button>
+                    </form>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------------ -->
+  <section class="admin-section">
+    <div class="admin-section__head">
+      <h2>{filter ? `Investigaciones de ${maskReader(filter)}…` : 'Investigaciones recientes'}</h2>
+      {filter
+        ? <p><a href="/admin/lectores" style="color: var(--color-gold-400)">Ver todas</a></p>
+        : <p>{investigations.length} últimas</p>}
+    </div>
+
+    <div class="admin-panel">
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Expediente</th>
+              <th>Lector</th>
+              <th>Nivel</th>
+              <th class="is-numeric">Avance</th>
+              <th class="is-numeric">Pistas</th>
+              <th>Última diligencia</th>
+              <th>Acusación</th>
+              <th>Actividad</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {investigations.length === 0 ? (
+              <tr><td colspan="9"><p class="admin-empty">Sin investigaciones registradas.</p></td></tr>
+            ) : (
+              investigations.map((row) => {
+                const verdict = row.lastVerdict ? VERDICT_TAG[row.lastVerdict] : null;
+                return (
+                  <tr>
+                    <td>
+                      <a href={`/admin/expediente/${row.caseSlug}`}>
+                        <span class="admin-mono">{row.fileCode}</span> {row.caseTitle}
+                      </a>
+                    </td>
+                    <td>
+                      <a href={`/admin/lectores?lector=${encodeURIComponent(row.readerKey)}`} class="admin-mono">
+                        {maskReader(row.readerKey)}…
+                      </a>
+                    </td>
+                    <td class="admin-mono">{row.difficulty}</td>
+                    <td class="is-numeric">{share(row.nodesVisited, row.nodesTotal)} %</td>
+                    <td class="is-numeric">{row.cluesFound}/{row.cluesTotal}</td>
+                    <td>{row.currentTitle ?? <span class="admin-tag admin-tag--muted">sin empezar</span>}</td>
+                    <td>
+                      {verdict
+                        ? <span class:list={['admin-tag', verdict.tone]}>{verdict.label}</span>
+                        : <span class="admin-mono">—</span>}
+                      {row.accusations > 1 && <span class="admin-mono"> ×{row.accusations}</span>}
+                    </td>
+                    <td class="admin-mono">{timeAgo(row.updatedAt)}</td>
+                    <td>
+                      <form method="post" data-confirm="Se borrará esta investigación y todo su progreso. ¿Continuar?">
+                        <input type="hidden" name="accion" value="borrar-investigacion" />
+                        <input type="hidden" name="investigacion" value={row.id} />
+                        <button class="admin-button admin-button--danger" type="submit">Borrar</button>
+                      </form>
+                    </td>
+                  </tr>
+                );
+              })
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      <p class="admin-panel__hint">
+        Borrar una investigación libera al lector para empezar ese expediente de cero: útil
+        cuando alguien quiere repetir el caso con la mirada limpia.
+      </p>
+    </div>
+  </section>
+</AdminLayout>

@@ -202,3 +202,12 @@ los grupos produce un resultado parcial. Los estados de pistas son monotónicos.
 `pnpm db:update` conserva una copia previa y comprueba el progreso después
 de aplicar esta edición; `pnpm assets:upload` publica el manifiesto visual.
 La continuidad del primer caso vive en [EXPEDIENTE-001.md](EXPEDIENTE-001.md).
+
+## Panel de dirección
+
+`/admin` lee la telemetría que el propio juego ya escribe —`investigation_visits`,
+`investigations`, `accusations`— sin añadir tablas ni eventos nuevos. El SQL vive
+en `src/lib/data/telemetryRepository.ts`, la aritmética pura y probada en
+`src/lib/admin/metrics.ts`, y `src/middleware.ts` cierra la puerta: sin
+`ADMIN_TOKEN` configurado el panel responde 404 en lugar de mostrar un acceso.
+Los detalles están en [PANEL.md](PANEL.md).

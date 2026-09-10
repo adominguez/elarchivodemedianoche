@@ -32,6 +32,11 @@ export default defineConfig({
       // de Cloudinary sin volver a construir. Las URLs se generan al renderizar,
       // de modo que nunca llega al cliente.
       CLOUDINARY_CLOUD_NAME: envField.string({ context: 'server', access: 'secret', optional: true }),
+      // --- Panel de dirección ---------------------------------------------
+      // Llave única del panel de telemetría (`/admin`). Si está vacía, el panel
+      // no existe: el middleware responde 404 en lugar de mostrar un login.
+      ADMIN_TOKEN: envField.string({ context: 'server', access: 'secret', optional: true }),
+
       // Sólo necesarias para subir/generar imágenes (fuera del MVP de lectura).
       CLOUDINARY_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
       CLOUDINARY_API_SECRET: envField.string({ context: 'server', access: 'secret', optional: true }),

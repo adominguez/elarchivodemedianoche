@@ -1,0 +1,175 @@
+---
+/**
+ * Resumen del archivo: cuánta gente lee, cuánto avanza y qué expediente
+ * funciona. Es la portada del panel.
+ */
+import AdminLayout from '@layouts/AdminLayout.astro';
+import StatCard from '@components/admin/StatCard.astro';
+import { archiveOverview, caseTelemetry, dailyActivity, setCasePublished } from '@lib/data/telemetryRepository';
+import { formatMinutes, share, timeAgo } from '@lib/admin/metrics';
+
+// --- Gestión: publicar o retirar un expediente ------------------------------
+// Patrón POST → redirect para que recargar la página no repita la acción.
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const caseId = String(form.get('expediente') ?? '');
+  const publish = String(form.get('publicar') ?? '') === '1';
+
+  if (caseId) {
+    await setCasePublished(caseId, publish);
+    return Astro.redirect(`/admin?hecho=${publish ? 'publicado' : 'retirado'}#expedientes`);
+  }
+}
+
+const [overview, cases, activity] = await Promise.all([
+  archiveOverview(),
+  caseTelemetry(),
+  dailyActivity(14),
+]);
+
+const done = Astro.url.searchParams.get('hecho');
+const closeRate = share(overview.closed, overview.started);
+const peak = Math.max(1, ...activity.map((day) => day.investigations + day.diligences));
+const noData = overview.investigations === 0;
+---
+
+<AdminLayout title="Resumen" section="resumen">
+  <p class="admin-kicker">Panel de dirección</p>
+  <h1 class="admin-page-title">El archivo, por dentro</h1>
+  <p class="admin-lede">
+    Estas cifras no se han instrumentado aparte: son la lectura de lo que el propio juego ya
+    escribe en Turso al investigar. Nadie ha sido rastreado más allá de su cookie de lectura.
+  </p>
+
+  {done && (
+    <p class="admin-notice">
+      Expediente {done === 'publicado' ? 'publicado: ya aparece en la portada.' : 'retirado de la portada. Las investigaciones en curso se conservan.'}
+    </p>
+  )}
+
+  {noData && (
+    <p class="admin-notice">
+      Todavía no hay ninguna lectura registrada. En cuanto alguien abra un expediente, esta
+      pantalla empieza a llenarse sola.
+    </p>
+  )}
+
+  <div class="admin-stats">
+    <StatCard label="Lectores" value={overview.readers} hint={`${overview.newLast7} nuevos en 7 días`} />
+    <StatCard label="Investigaciones" value={overview.investigations} hint={`${overview.started} llegaron a empezar`} />
+    <StatCard
+      label="Expedientes cerrados"
+      value={overview.closed}
+      hint={`${closeRate} % de los que se abrieron`}
+      tone={overview.started === 0 ? 'neutral' : closeRate >= 40 ? 'good' : closeRate >= 15 ? 'warn' : 'alert'}
+    />
+    <StatCard
+      label="Acusaciones"
+      value={overview.accusations}
+      hint={`${overview.solvedAccusations} acertadas · ${share(overview.solvedAccusations, overview.accusations)} %`}
+    />
+    <StatCard label="Activos (7 días)" value={overview.activeLast7} hint="con alguna diligencia" />
+    <StatCard label="Expedientes" value={`${overview.publishedCases}/${overview.cases}`} hint="publicados en portada" />
+  </div>
+
+  <!-- ------------------------------------------------------------------ -->
+  <section class="admin-section">
+    <div class="admin-section__head">
+      <h2>Actividad</h2>
+      <p>Últimos 14 días · hora UTC</p>
+    </div>
+
+    <div class="admin-panel">
+      <div class="admin-spark">
+        {activity.map((day) => (
+          <div class="admin-spark__day" title={`${day.day}: ${day.investigations} investigaciones, ${day.diligences} diligencias`}>
+            <span class="admin-spark__bar" style={`height:${(day.diligences / peak) * 100}%`}></span>
+            <span class="admin-spark__bar admin-spark__bar--new" style={`height:${(day.investigations / peak) * 100}%`}></span>
+          </div>
+        ))}
+      </div>
+      <div class="admin-spark__labels" aria-hidden="true">
+        {activity.map((day) => <span>{day.day.slice(8)}</span>)}
+      </div>
+      <div class="admin-legend">
+        <span><b style="background: var(--color-gold-500)"></b>Diligencias nuevas</span>
+        <span><b style="background: var(--color-verified)"></b>Investigaciones abiertas</span>
+      </div>
+      <p class="admin-panel__hint">
+        Una diligencia cuenta la primera vez que un lector alcanza un nodo, no las relecturas.
+      </p>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------------ -->
+  <section class="admin-section" id="expedientes">
+    <div class="admin-section__head">
+      <h2>Expedientes</h2>
+      <p>{cases.length} en el archivo</p>
+    </div>
+
+    <div class="admin-panel">
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Expediente</th>
+              <th class="is-numeric">Abiertas</th>
+              <th class="is-numeric">Empezadas</th>
+              <th class="is-numeric">Cerradas</th>
+              <th class="is-numeric">Cierre</th>
+              <th class="is-numeric">Avance medio</th>
+              <th class="is-numeric">Duración</th>
+              <th>Actividad</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {cases.map((item) => {
+              const rate = share(item.closed, item.started);
+              return (
+                <tr>
+                  <td>
+                    <a href={`/admin/expediente/${item.slug}`}>
+                      <span class="admin-mono">{item.fileCode}</span> {item.title}
+                    </a>
+                  </td>
+                  <td class="is-numeric">{item.investigations}</td>
+                  <td class="is-numeric">{item.started}</td>
+                  <td class="is-numeric">{item.closed}</td>
+                  <td class="is-numeric">{item.started === 0 ? '—' : `${rate} %`}</td>
+                  <td class="is-numeric">
+                    {item.nodesTotal === 0 ? '—' : `${share(Math.round(item.avgNodesVisited), item.nodesTotal)} %`}
+                  </td>
+                  <td class="is-numeric">{formatMinutes(item.avgMinutesToClose)}</td>
+                  <td class="admin-mono">{timeAgo(item.lastActivity)}</td>
+                  <td>
+                    <span class:list={['admin-tag', item.published ? 'admin-tag--good' : 'admin-tag--muted']}>
+                      {item.published ? 'Publicado' : 'Retirado'}
+                    </span>
+                  </td>
+                  <td>
+                    <form method="post">
+                      <input type="hidden" name="expediente" value={item.id} />
+                      <input type="hidden" name="publicar" value={item.published ? '0' : '1'} />
+                      <button class="admin-button admin-button--quiet" type="submit">
+                        {item.published ? 'Retirar' : 'Publicar'}
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      <p class="admin-panel__hint">
+        «Abiertas» son las investigaciones creadas; «empezadas», las que llegaron a leer el primer
+        nodo. La diferencia entre ambas es gente que entró y se fue sin pulsar nada.
+        Retirar un expediente lo quita de la portada sin borrar nada.
+      </p>
+    </div>
+  </section>
+</AdminLayout>

@@ -1,0 +1,268 @@
+---
+/**
+ * Radiografía de un expediente.
+ *
+ * Responde a las preguntas que uno se hace tras una beta: ¿qué escenas no ve
+ * nadie?, ¿dónde se atasca la gente?, ¿qué prueba clave no encuentran?, ¿a
+ * quién acusan cuando fallan?
+ */
+import AdminLayout from '@layouts/AdminLayout.astro';
+import StatCard from '@components/admin/StatCard.astro';
+import BarList from '@components/admin/BarList.astro';
+import {
+  accusationBreakdown,
+  caseTelemetry,
+  clueReach,
+  nodeReach,
+  stallPoints,
+} from '@lib/data/telemetryRepository';
+import { clueSeverity, formatMinutes, share, timeAgo, type BarItem } from '@lib/admin/metrics';
+
+const { slug } = Astro.params;
+const cases = await caseTelemetry();
+const item = cases.find((entry) => entry.slug === slug);
+
+if (!item) return new Response('Expediente no encontrado', { status: 404 });
+
+const [nodes, clues, stalls, accusations] = await Promise.all([
+  nodeReach(item.id),
+  clueReach(item.id),
+  stallPoints(item.id),
+  accusationBreakdown(item.id),
+]);
+
+const base = item.started;
+
+// --- Embudo ----------------------------------------------------------------
+const unseen = nodes.filter((node) => node.readers === 0);
+const nodeItems: BarItem[] = nodes
+  .filter((node) => node.readers > 0)
+  .map((node) => ({
+    label: node.title,
+    value: node.readers,
+    tone: share(node.readers, base) < 20 ? 'warn' : 'neutral',
+    note: node.rereaders > 0 ? `${node.rereaders} lo releyeron` : undefined,
+  }));
+
+// --- Pistas ----------------------------------------------------------------
+const clueItems: BarItem[] = clues.map((clue) => {
+  const severity = clueSeverity(clue.found, base, clue.isEvidence);
+  const marks = [
+    clue.isEvidence ? 'sostiene la solución' : null,
+    clue.kind === 'red_herring' ? 'pista falsa' : null,
+    clue.advanced > 0 ? `${clue.advanced} la hicieron evolucionar` : null,
+  ].filter(Boolean);
+
+  return {
+    label: clue.name,
+    value: clue.found,
+    tone: severity === 'alert' ? 'alert' : severity === 'warn' ? 'warn' : 'neutral',
+    note: marks.length > 0 ? marks.join(' · ') : undefined,
+  };
+});
+
+const buriedEvidence = clues.filter((clue) => clue.isEvidence && clueSeverity(clue.found, base, true) === 'alert');
+
+// --- Acusaciones -----------------------------------------------------------
+const VERDICT_LABEL = { solved: 'Caso resuelto', partial: 'Teoría no acreditada', failed: 'Acusación fallida' } as const;
+const DIFFICULTY_LABEL = { narrative: 'Narrativo', detective: 'Detective', hound: 'Sabueso' } as const;
+
+const toBars = (rows: { label: string; total: number; correct: boolean }[]): BarItem[] =>
+  rows.map((row) => ({
+    label: row.label,
+    value: row.total,
+    tone: row.correct ? 'good' : 'neutral',
+    note: row.correct ? 'es la respuesta correcta' : undefined,
+  }));
+
+const closeRate = share(item.closed, base);
+---
+
+<AdminLayout title={item.title} section="expedientes">
+  <p class="admin-kicker">
+    <a href="/admin" style="color:inherit">← Resumen</a> · Expediente {item.fileCode}
+  </p>
+  <h1 class="admin-page-title">{item.title}</h1>
+  <p class="admin-lede">
+    <a href={`/expediente/${item.slug}`} target="_blank" rel="noreferrer" style="color: var(--color-gold-400)">
+      Abrir el expediente ↗
+    </a>
+    · Última actividad {timeAgo(item.lastActivity)}
+    · {item.published ? 'publicado en portada' : 'retirado de la portada'}
+  </p>
+
+  <div class="admin-stats">
+    <StatCard label="Investigaciones" value={item.investigations} hint={`${base} llegaron a empezar`} />
+    <StatCard
+      label="Cerradas"
+      value={item.closed}
+      hint={base === 0 ? 'sin datos' : `${closeRate} % de las empezadas`}
+      tone={base === 0 ? 'neutral' : closeRate >= 40 ? 'good' : closeRate >= 15 ? 'warn' : 'alert'}
+    />
+    <StatCard
+      label="Avance medio"
+      value={item.nodesTotal === 0 ? '—' : `${share(Math.round(item.avgNodesVisited), item.nodesTotal)} %`}
+      hint={`${Math.round(item.avgNodesVisited)} de ${item.nodesTotal} diligencias`}
+    />
+    <StatCard label="Duración media" value={formatMinutes(item.avgMinutesToClose)} hint="hasta cerrar el caso" />
+    <StatCard
+      label="Escenas sin ver"
+      value={unseen.length}
+      hint={`de ${item.nodesTotal} escritas`}
+      tone={unseen.length === 0 ? 'good' : unseen.length > item.nodesTotal / 3 ? 'alert' : 'warn'}
+    />
+    <StatCard
+      label="Acusaciones"
+      value={accusations.total}
+      hint={accusations.avgEvidenceHits === null
+        ? 'ninguna todavía'
+        : `${accusations.avgEvidenceHits.toFixed(1)} grupos probatorios de media`}
+    />
+  </div>
+
+  {buriedEvidence.length > 0 && (
+    <p class="admin-notice admin-notice--error">
+      {buriedEvidence.length === 1 ? 'Una prueba que sostiene la solución la encuentra' : `${buriedEvidence.length} pruebas que sostienen la solución las encuentra`}
+      menos de la mitad de quienes empiezan: {buriedEvidence.map((clue) => clue.name).join(', ')}.
+      Si no se encuentran, la acusación correcta no puede acreditarse.
+    </p>
+  )}
+
+  <!-- ------------------------------------------------------------------ -->
+  <section class="admin-section">
+    <div class="admin-section__head">
+      <h2>Recorrido de las diligencias</h2>
+      <p>Lectores distintos que alcanzaron cada nodo</p>
+    </div>
+
+    <div class="admin-grid admin-grid--2">
+      <div class="admin-panel">
+        <h3>Alcance</h3>
+        <BarList items={nodeItems} total={base} empty="Nadie ha recorrido este expediente todavía." />
+      </div>
+
+      <div class="admin-panel">
+        <h3>Escenas que nadie ha visto</h3>
+        {unseen.length === 0 ? (
+          <p class="admin-empty">Todas las escenas del expediente han sido alcanzadas al menos una vez.</p>
+        ) : (
+          <ul class="admin-bars">
+            {unseen.map((node) => (
+              <li class="admin-bar admin-bar--alert">
+                <div class="admin-bar__head">
+                  <span class="admin-bar__label">{node.title}</span>
+                  <span class="admin-bar__value">{node.kind}</span>
+                </div>
+                {node.isEntry && <p class="admin-bar__note">Es el nodo de entrada: nadie ha empezado el caso.</p>}
+              </li>
+            ))}
+          </ul>
+        )}
+        <p class="admin-panel__hint">
+          Contenido escrito que no llega a nadie. Suele significar que la acción que lleva
+          hasta él no se entiende, o que su condición de desbloqueo es demasiado exigente.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------------ -->
+  <section class="admin-section">
+    <div class="admin-section__head">
+      <h2>Dónde se detienen</h2>
+      <p>Última diligencia de las investigaciones sin cerrar</p>
+    </div>
+
+    <div class="admin-panel">
+      <BarList
+        items={stalls.map((stall) => ({
+          label: stall.title,
+          value: stall.readers,
+          note: `última actividad ${timeAgo(stall.lastActivity)}`,
+          tone: 'warn' as const,
+        }))}
+        empty="No hay investigaciones abiertas ahora mismo."
+      />
+      <p class="admin-panel__hint">
+        Un nodo que acumula lectores parados es el mejor candidato a punto de abandono:
+        o cierra la historia en falso, o no deja claro qué se puede hacer después.
+      </p>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------------ -->
+  <section class="admin-section">
+    <div class="admin-section__head">
+      <h2>Pistas</h2>
+      <p>De la menos encontrada a la más</p>
+    </div>
+
+    <div class="admin-panel">
+      <BarList items={clueItems} total={base} empty="Sin hallazgos registrados." />
+      <p class="admin-panel__hint">
+        Una pista falsa que encuentra todo el mundo cumple su función. Una prueba esencial
+        que casi nadie encuentra es un fallo de diseño: sin ella la solución no se sostiene.
+      </p>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------------ -->
+  <section class="admin-section">
+    <div class="admin-section__head">
+      <h2>Acusaciones</h2>
+      <p>{accusations.total} formuladas</p>
+    </div>
+
+    <div class="admin-grid admin-grid--2">
+      <div class="admin-panel">
+        <h3>Veredictos</h3>
+        <BarList
+          items={accusations.byVerdict.map((row) => ({
+            label: VERDICT_LABEL[row.verdict] ?? row.verdict,
+            value: row.total,
+            tone: row.verdict === 'solved' ? ('good' as const) : ('neutral' as const),
+          }))}
+          total={accusations.total}
+          empty="Nadie ha acusado todavía."
+        />
+      </div>
+
+      <div class="admin-panel">
+        <h3>A quién señalan</h3>
+        <BarList items={toBars(accusations.byCulprit)} total={accusations.total} empty="Nadie ha acusado todavía." />
+        <p class="admin-panel__hint">
+          Si el culpable real concentra casi todas las acusaciones, el caso es demasiado
+          evidente. Si no lo señala nadie, la cadena lógica no llega.
+        </p>
+      </div>
+
+      <div class="admin-panel">
+        <h3>Motivo elegido</h3>
+        <BarList items={toBars(accusations.byMotive)} total={accusations.total} empty="Sin datos." />
+      </div>
+
+      <div class="admin-panel">
+        <h3>Método elegido</h3>
+        <BarList items={toBars(accusations.byMethod)} total={accusations.total} empty="Sin datos." />
+      </div>
+
+      <div class="admin-panel">
+        <h3>Nivel de dificultad</h3>
+        <BarList
+          items={accusations.byDifficulty.map((row) => ({
+            label: DIFFICULTY_LABEL[row.difficulty] ?? row.difficulty,
+            value: row.total,
+            note: `${row.solved} cerraron el caso`,
+          }))}
+          total={accusations.total}
+          empty="Sin datos."
+        />
+        <p class="admin-panel__hint">
+          {accusations.avgEvidenceRequired === null
+            ? 'El nivel determina cuántos grupos probatorios exige la acusación.'
+            : `De media se acreditaron ${accusations.avgEvidenceHits?.toFixed(1)} grupos sobre los ${accusations.avgEvidenceRequired.toFixed(1)} exigidos.`}
+        </p>
+      </div>
+    </div>
+  </section>
+</AdminLayout>

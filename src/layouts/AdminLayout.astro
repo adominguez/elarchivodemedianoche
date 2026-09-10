@@ -1,0 +1,78 @@
+---
+/**
+ * Chrome del panel de dirección.
+ *
+ * No reutiliza `Layout.astro` a propósito: aquél es la voz del archivo y este
+ * es la trastienda. Comparten paleta y tipografías, no tono. El README pide que
+ * la parte pública no parezca un dashboard; el panel puede serlo sin culpa.
+ */
+import { Font } from 'astro:assets';
+import '@src/styles/global.css';
+import '@src/styles/admin.css';
+
+interface Props {
+  title: string;
+  section?: 'resumen' | 'expedientes' | 'lectores';
+  chrome?: boolean;
+}
+
+const { title, section, chrome = true } = Astro.props;
+
+const LINKS = [
+  { key: 'resumen', href: '/admin', label: 'Resumen' },
+  { key: 'expedientes', href: '/admin#expedientes', label: 'Expedientes' },
+  { key: 'lectores', href: '/admin/lectores', label: 'Lectores' },
+] as const;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{title} — Dirección del Archivo</title>
+    <Font cssVariable="--font-garamond" preload />
+    <Font cssVariable="--font-elite" />
+  </head>
+  <body class="admin-body">
+    {chrome && (
+      <header class="admin-topbar">
+        <div class="admin-topbar__brand">
+          <span class="admin-topbar__seal" aria-hidden="true">◈</span>
+          <div>
+            <p class="typed-sm">Dirección del Archivo</p>
+            <p class="admin-topbar__sub">Uso interno · no indexado</p>
+          </div>
+        </div>
+
+        <nav class="admin-topbar__nav" aria-label="Secciones del panel">
+          {LINKS.map((link) => (
+            <a href={link.href} class:list={[section === link.key && 'is-current']}>{link.label}</a>
+          ))}
+        </nav>
+
+        <div class="admin-topbar__actions">
+          <a href="/" target="_blank" rel="noreferrer">Ver el archivo ↗</a>
+          <a href="/admin/exportar.json" download>Exportar</a>
+          <form method="post" action="/admin/salir"><button type="submit">Salir</button></form>
+        </div>
+      </header>
+    )}
+
+    <main class="admin-main"><slot /></main>
+
+    <!--
+      Confirmación de las acciones destructivas. Es mejora progresiva: sin
+      JavaScript el formulario sigue enviándose, igual que el resto del proyecto.
+    -->
+    <script>
+      document.querySelectorAll('form[data-confirm]').forEach((form) => {
+        form.addEventListener('submit', (event) => {
+          if (!window.confirm(form.getAttribute('data-confirm') ?? '¿Continuar?')) event.preventDefault();
+        });
+      });
+    </script>
+  </body>
+</html>
