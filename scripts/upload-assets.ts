@@ -8,10 +8,11 @@ import { resolve, dirname } from 'node:path';
 import { case001 } from '../db/seeds/case-001-la-ultima-campanada.ts';
 import { case002 } from '../db/seeds/case-002-la-senal-bajo-el-hielo.ts';
 import { case003 } from '../db/seeds/case-003-la-puja-de-humo.ts';
+import { case004 } from '../db/seeds/case-004-noventa-segundos-de-sombra.ts';
 interface Asset { publicId: string; source: string; region?: [number, number, number, number] }
 const manifestPath = resolve(process.argv[2] ?? '.data/art/la-ultima-campanada/manifest.json');
 const assets: Asset[] = JSON.parse(await readFile(manifestPath, 'utf8'));
-const definitions = [case001, case002, case003];
+const definitions = [case001, case002, case003, case004];
 const caseDefinition = definitions.find((definition) =>
   assets.every((asset) => asset.publicId.startsWith(`archivos-de-medianoche/${definition.slug}/`)),
 );

@@ -1,0 +1,240 @@
+{
+  "case": "noventa-segundos-de-sombra",
+  "revision": "2026-09-10",
+  "assets": [
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/portada",
+      "width": 1024,
+      "height": 1536,
+      "version": 1789044971
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/sospechosos/elisa-montalban",
+      "width": 340,
+      "height": 500,
+      "version": 1789044972
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/sospechosos/ines-valcarcel",
+      "width": 340,
+      "height": 500,
+      "version": 1789044974
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/sospechosos/soraya-nunez",
+      "width": 340,
+      "height": 500,
+      "version": 1789044975
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/sospechosos/teresa-acedo",
+      "width": 340,
+      "height": 500,
+      "version": 1789044977
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/sospechosos/gabriel-requena",
+      "width": 340,
+      "height": 500,
+      "version": 1789044978
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/escenas/antena-noche",
+      "width": 400,
+      "height": 220,
+      "version": 1789044980
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/escenas/sala-control",
+      "width": 400,
+      "height": 220,
+      "version": 1789044982
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/escenas/terraza",
+      "width": 400,
+      "height": 220,
+      "version": 1789044983
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/escenas/base-antena",
+      "width": 400,
+      "height": 220,
+      "version": 1789044985
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/escenas/cuarto-electrico",
+      "width": 400,
+      "height": 220,
+      "version": 1789044986
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/escenas/archivo-tecnico",
+      "width": 400,
+      "height": 220,
+      "version": 1789044988
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/escenas/despacho",
+      "width": 400,
+      "height": 220,
+      "version": 1789044989
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/escenas/comunicaciones",
+      "width": 400,
+      "height": 220,
+      "version": 1789044990
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/escenas/laboratorio",
+      "width": 400,
+      "height": 220,
+      "version": 1789044991
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/escenas/cuarto-fotografico",
+      "width": 500,
+      "height": 220,
+      "version": 1789044992
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/escenas/tunel",
+      "width": 500,
+      "height": 220,
+      "version": 1789044994
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/escenas/reconstruccion",
+      "width": 500,
+      "height": 220,
+      "version": 1789044995
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/escenas/elisa",
+      "width": 500,
+      "height": 220,
+      "version": 1789044997
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/escenas/ines",
+      "width": 500,
+      "height": 220,
+      "version": 1789044998
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/escenas/soraya",
+      "width": 500,
+      "height": 220,
+      "version": 1789044999
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/escenas/teresa",
+      "width": 500,
+      "height": 220,
+      "version": 1789045001
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/escenas/gabriel",
+      "width": 500,
+      "height": 220,
+      "version": 1789045003
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/pruebas/registro-consola",
+      "width": 400,
+      "height": 266,
+      "version": 1789045004
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/pruebas/diario-observacion",
+      "width": 400,
+      "height": 266,
+      "version": 1789045006
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/pruebas/oscilograma",
+      "width": 400,
+      "height": 266,
+      "version": 1789045007
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/pruebas/rele-proteccion",
+      "width": 400,
+      "height": 266,
+      "version": 1789045009
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/pruebas/temporizador",
+      "width": 400,
+      "height": 266,
+      "version": 1789045010
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/pruebas/mancha-barandilla",
+      "width": 400,
+      "height": 266,
+      "version": 1789045011
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/pruebas/huellas-polvo",
+      "width": 400,
+      "height": 266,
+      "version": 1789045012
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/pruebas/plano-conductos",
+      "width": 400,
+      "height": 266,
+      "version": 1789045014
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/pruebas/telegrama",
+      "width": 440,
+      "height": 293,
+      "version": 1789045015
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/pruebas/copia-cinta",
+      "width": 440,
+      "height": 293,
+      "version": 1789045017
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/pruebas/cinta-maestra",
+      "width": 440,
+      "height": 293,
+      "version": 1789045018
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/pruebas/larga-exposicion",
+      "width": 440,
+      "height": 293,
+      "version": 1789045020
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/pruebas/cinta-centralita",
+      "width": 440,
+      "height": 293,
+      "version": 1789045021
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/pruebas/pluviografo",
+      "width": 440,
+      "height": 293,
+      "version": 1789045023
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/pruebas/libro-gasoil",
+      "width": 440,
+      "height": 293,
+      "version": 1789045025
+    },
+    {
+      "publicId": "archivos-de-medianoche/noventa-segundos-de-sombra/pruebas/negativo-presupuesto",
+      "width": 440,
+      "height": 293,
+      "version": 1789045026
+    }
+  ]
+}

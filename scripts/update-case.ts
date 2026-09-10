@@ -5,6 +5,7 @@ import { scriptClient } from './turso.ts';
 import { case001 } from '../db/seeds/case-001-la-ultima-campanada.ts';
 import { case002 } from '../db/seeds/case-002-la-senal-bajo-el-hielo.ts';
 import { case003 } from '../db/seeds/case-003-la-puja-de-humo.ts';
+import { case004 } from '../db/seeds/case-004-noventa-segundos-de-sombra.ts';
 await import('./migrate.ts');
 const editorial=['cases','suspects','clues','clue_states','suspect_facts','case_nodes','node_effects','node_options','option_requirements','solution_options','case_solutions','solution_evidence','case_evidence_rules'];
 const progress=['investigations','investigation_visits','investigation_clues','investigation_facts','investigation_flags','accusations'];
@@ -12,7 +13,7 @@ const client=scriptClient();
 const tableNames=new Set((await client.execute("SELECT name FROM sqlite_master WHERE type='table'")).rows.map(r=>String(r.name)));
 const snapshot: Record<string,unknown[]>={};
 for(const table of [...editorial,...progress]) if(tableNames.has(table)) snapshot[table]=(await client.execute(`SELECT * FROM ${table}`)).rows;
-for (const definition of [case001, case002, case003]) {
+for (const definition of [case001, case002, case003, case004]) {
   for(const [table,ids] of [
     ['case_nodes',definition.nodes.map(n=>n.id)],['clues',definition.clues.map(c=>c.id)],
     ['suspects',definition.suspects.map(s=>s.id)],['suspect_facts',definition.suspects.flatMap(s=>s.facts.map(f=>f.id))],
