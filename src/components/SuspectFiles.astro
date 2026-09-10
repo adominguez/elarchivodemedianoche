@@ -35,8 +35,8 @@ const BADGE_MARK = {
   {
     suspects.map((suspect) => (
       <li class="card-dark">
-        <details class="group">
-          <summary class="flex gap-4 p-3">
+        <details class="group interactive-file">
+          <summary class="interactive-file__summary flex gap-4 p-3">
             <div class="photo w-20 flex-none sm:w-24">
               <ArchiveImage
                 image={suspect.thumb}
@@ -60,10 +60,12 @@ const BADGE_MARK = {
                 </ul>
               )}
 
-              <p class="typed-sm mt-2 text-parchment-400/70">
-                <span class="disclosure-mark mr-1.5 text-gold-500" aria-hidden="true" />
-                {suspect.factsKnown} de {suspect.factsTotal} anotaciones
+              <p class="interactive-file__action">
+                <span class="when-closed">Abrir ficha</span>
+                <span class="when-open">Cerrar ficha</span>
+                <span class="interactive-file__arrow" aria-hidden="true">›</span>
               </p>
+              <p class="typed-sm mt-2 text-parchment-400/70">{suspect.factsKnown} de {suspect.factsTotal} anotaciones</p>
             </div>
           </summary>
 

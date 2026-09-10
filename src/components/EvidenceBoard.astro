@@ -19,8 +19,8 @@ const { evidence } = Astro.props;
     evidence.map((slot) =>
       slot.known ? (
         <li>
-          <details>
-            <summary class="photo block">
+          <details class="interactive-evidence">
+            <summary class="photo interactive-evidence__summary block">
               <ArchiveImage
                 image={slot.thumb}
                 alt={slot.name}
@@ -30,6 +30,11 @@ const { evidence } = Astro.props;
               <span class="typed-sm mt-2 block truncate px-0.5 text-ink-700">
                 {slot.evolved && <span class="text-blood" aria-hidden="true">◆ </span>}
                 {slot.name}
+              </span>
+              <span class="interactive-evidence__action">
+                <span class="when-closed">Examinar</span>
+                <span class="when-open">Cerrar</span>
+                <span class="interactive-file__arrow" aria-hidden="true">›</span>
               </span>
             </summary>
 

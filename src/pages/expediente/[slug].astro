@@ -145,12 +145,112 @@ const { header } = dossier;
 
       {
         started && (
-          <div class="mt-6">
+          <div class="mt-6 grid gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
             <ProgressLine progress={dossier.progress} closed={dossier.closed} />
+            <div class="flex flex-wrap gap-2 sm:justify-end">
+              <button type="button" class="summary-shortcut" data-open-summary>
+                <span aria-hidden="true">▣</span>
+                Ver resumen
+              </button>
+              {!dossier.closed && (
+                <button type="button" class="resolve-shortcut" data-open-resolver>
+                  <span class="resolve-shortcut__mark" aria-hidden="true">⚖</span>
+                  Resolver expediente
+                </button>
+              )}
+            </div>
           </div>
         )
       }
     </header>
+
+    {started && (
+      <dialog class="investigation-summary" data-investigation-summary aria-labelledby="summary-title">
+        <div class="investigation-summary__paper">
+          <header class="investigation-summary__header">
+            <div>
+              <p class="typed-sm text-blood">Informe de progreso · {header.fileCode}</p>
+              <h2 id="summary-title">Resumen de la investigación</h2>
+              <p class="summary-case-title">{header.title}{header.place && <span> · {header.place}</span>}</p>
+            </div>
+            <span class="summary-status">{dossier.closed ? 'Cerrado' : 'En investigación'}</span>
+            <button type="button" class="investigation-summary__close" data-close-summary aria-label="Cerrar resumen">×</button>
+          </header>
+
+          <div class="investigation-summary__metrics">
+            <div class="investigation-summary__progress">
+              <div class="summary-ring" style={`--summary-progress: ${dossier.progress.percent}%`}><strong>{dossier.progress.percent}%</strong></div>
+              <p>{dossier.closed ? 'Expediente cerrado' : 'Investigación en curso'}</p>
+            </div>
+            <dl>
+              <div><dt>Pistas</dt><dd>{dossier.progress.cluesFound} <span>de {dossier.progress.cluesTotal}</span></dd></div>
+              <div><dt>Anotaciones</dt><dd>{dossier.progress.factsFound} <span>de {dossier.progress.factsTotal}</span></dd></div>
+              <div><dt>Diligencias</dt><dd>{dossier.progress.nodesVisited} <span>de {dossier.progress.nodesTotal}</span></dd></div>
+            </dl>
+          </div>
+
+          <div class="investigation-summary__columns">
+            <section>
+              <h3>Sospechosos</h3>
+              <ul class="summary-suspects">
+                {dossier.suspects.map((suspect, index) => (
+                  <li>
+                    <button type="button" class="summary-card-button" popovertarget={`summary-suspect-${index}`}>
+                      <ArchiveImage image={suspect.thumb} alt={`Retrato de ${suspect.name}`} placeholder={suspect.initials} ratio="1 / 1" />
+                      <span class="summary-card-copy"><strong>{suspect.name}</strong><span>{suspect.factsKnown} de {suspect.factsTotal} anotaciones</span></span>
+                      <span class="summary-card-open" aria-hidden="true">Abrir ficha&nbsp; →</span>
+                    </button>
+                    <aside id={`summary-suspect-${index}`} class="summary-detail" popover="auto">
+                      <button type="button" class="summary-detail__close" popovertarget={`summary-suspect-${index}`} popovertargetaction="hide" aria-label={`Cerrar ficha de ${suspect.name}`}>×</button>
+                      <div class="summary-detail__portrait"><ArchiveImage image={suspect.portrait} alt={`Retrato de ${suspect.name}`} placeholder={suspect.initials} ratio="4 / 5" /></div>
+                      <div class="summary-detail__body">
+                        <p class="summary-detail__eyebrow">Ficha de sospechoso</p>
+                        <h4>{suspect.name}</h4>
+                        <p class="summary-detail__role">{suspect.role}</p>
+                        <p>{suspect.description}</p>
+                        {suspect.relation && <p class="summary-detail__relation">{suspect.relation}</p>}
+                        <h5>Anotaciones conocidas</h5>
+                        {suspect.facts.length > 0 ? (
+                          <ul class="summary-detail__facts">{suspect.facts.map((fact) => <li><small>{fact.kindLabel}</small><strong>{fact.headline}</strong><p>{fact.detail}</p></li>)}</ul>
+                        ) : <p class="summary-empty">Aún no has descubierto información sobre esta persona.</p>}
+                      </div>
+                    </aside>
+                  </li>
+                ))}
+              </ul>
+            </section>
+            <section>
+              <h3>Pistas encontradas</h3>
+              {dossier.progress.cluesFound > 0 ? (
+                <ul class="summary-clues">
+                  {dossier.evidence.map((slot, index) => slot.known && (
+                    <li>
+                      <button type="button" class="summary-clue-button" popovertarget={`summary-clue-${index}`}>
+                        <ArchiveImage image={slot.thumb} alt={slot.name} placeholder={slot.name} ratio="1 / 1" />
+                        <span>{slot.name}</span>
+                        <small aria-hidden="true">Examinar</small>
+                      </button>
+                      <aside id={`summary-clue-${index}`} class="summary-detail summary-detail--clue" popover="auto">
+                        <button type="button" class="summary-detail__close" popovertarget={`summary-clue-${index}`} popovertargetaction="hide" aria-label={`Cerrar detalle de ${slot.name}`}>×</button>
+                        <div class="summary-detail__evidence"><ArchiveImage image={slot.detail} alt={slot.name} placeholder={slot.name} ratio="4 / 3" /></div>
+                        <div class="summary-detail__body">
+                          <p class="summary-detail__eyebrow">{slot.kindLabel}</p>
+                          <h4>{slot.stateLabel}</h4>
+                          <p>{slot.description}</p>
+                          {slot.foundAt && <p class="summary-detail__relation">{slot.foundAt}</p>}
+                        </div>
+                      </aside>
+                    </li>
+                  ))}
+                </ul>
+              ) : <p class="summary-empty">Todavía no has incorporado ninguna pista al expediente.</p>}
+            </section>
+          </div>
+
+          <footer><button type="button" class="summary-close-button" data-close-summary>Volver a la investigación</button></footer>
+        </div>
+      </dialog>
+    )}
 
     {
       notice && (
@@ -191,8 +291,8 @@ const { header } = dossier;
           </div>
         </section>
       ) : (
-        <div class="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_21rem] lg:gap-12">
-          <div class="space-y-10">
+        <div class="investigation-layout mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_21rem] lg:gap-12">
+          <div class="investigation-main space-y-10">
             {dossier.scene && <Scene scene={dossier.scene} />}
 
             <DiscoveryNotes notices={dossier.notices} />
@@ -218,7 +318,7 @@ const { header } = dossier;
                 </button>
               </form>
             ) : (
-              <details class="card-dark">
+              <details class="card-dark scroll-mt-6" id="resolver-expediente">
                 <summary class="flex items-center justify-between gap-4 p-5">
                   <span class="typed text-sm text-blood-bright">Resolver el expediente</span>
                   <span class="disclosure-mark text-gold-500" aria-hidden="true" />
@@ -241,7 +341,7 @@ const { header } = dossier;
             )}
           </div>
 
-          <aside class="space-y-6 lg:sticky lg:top-8 lg:max-h-[calc(100vh-4rem)] lg:self-start lg:overflow-y-auto lg:pr-1">
+          <aside class="investigation-sidebar space-y-6 lg:sticky lg:top-8 lg:max-h-[calc(100vh-4rem)] lg:self-start lg:overflow-y-auto lg:pr-1">
             <details class="card-dark" data-open-on-desktop>
               <summary class="flex items-center justify-between gap-4 px-4 py-3">
                 <span class="typed text-sm text-gold-400">Sospechosos</span>
@@ -277,5 +377,28 @@ const { header } = dossier;
     const sync = (matches: boolean) => panels.forEach((panel) => (panel.open = matches));
     sync(desktop.matches);
     desktop.addEventListener('change', (event) => sync(event.matches));
+
+    const resolver = document.querySelector<HTMLDetailsElement>('#resolver-expediente');
+    if (window.location.hash === '#resolver-expediente') {
+      history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+      window.scrollTo(0, 0);
+    }
+
+    document.querySelectorAll<HTMLButtonElement>('[data-open-resolver]').forEach((shortcut) => {
+      shortcut.addEventListener('click', () => {
+        if (!resolver) return;
+        resolver.open = true;
+        resolver.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    const summary = document.querySelector<HTMLDialogElement>('[data-investigation-summary]');
+    document.querySelector<HTMLButtonElement>('[data-open-summary]')?.addEventListener('click', () => summary?.showModal());
+    document.querySelectorAll<HTMLButtonElement>('[data-close-summary]').forEach((button) => {
+      button.addEventListener('click', () => summary?.close());
+    });
+    summary?.addEventListener('click', (event) => {
+      if (event.target === summary) summary.close();
+    });
   </script>
 </Layout>
