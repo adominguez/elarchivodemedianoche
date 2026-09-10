@@ -12,7 +12,7 @@ interface Props {
 const { verdict } = Astro.props;
 
 const TONE = {
-  solved: 'text-gold-400 border-gold-500',
+  solved: 'text-verified border-verified',
   partial: 'text-blood-bright border-blood-bright',
   failed: 'text-blood-bright border-blood-bright',
 } as const;
@@ -24,7 +24,7 @@ const NOTE = {
 } as const;
 ---
 
-<section class="card-dark p-5 sm:p-7">
+<section class:list={['card-dark p-5 sm:p-7', verdict.verdict === 'solved' && 'verdict-success']}>
   <header class="flex flex-wrap items-center justify-between gap-4 border-b border-parchment-400/20 pb-4">
     <p class:list={['stamp stamp-flat text-base', TONE[verdict.verdict]]}>{verdict.headline}</p>
     <p class="typed-sm text-parchment-400">
@@ -39,7 +39,7 @@ const NOTE = {
           <dt class="typed-sm w-20 flex-none text-parchment-400">{line.label}</dt>
           <dd class="flex-1 font-narrative text-lg text-parchment-100">{line.value}</dd>
           {verdict.verdict === 'solved' && (
-            <dd class="typed-sm flex-none text-gold-400">✓ acreditado</dd>
+            <dd class="typed-sm flex-none text-verified">✓ acreditado</dd>
           )}
         </div>
       ))
@@ -54,7 +54,17 @@ const NOTE = {
     </div>
   </dl>
 
-  <p class="typed-sm mt-5 text-parchment-300/80">{NOTE[verdict.verdict]}</p>
+  {verdict.verdict === 'solved' ? (
+    <div class="verdict-success__message" role="status">
+      <span class="verdict-success__seal" aria-hidden="true">✓</span>
+      <div>
+        <strong>Acusación correcta</strong>
+        <p>{NOTE.solved}</p>
+      </div>
+    </div>
+  ) : (
+    <p class="typed-sm mt-5 text-parchment-300/80">{NOTE[verdict.verdict]}</p>
+  )}
 
   <p class="typed-sm mt-4 text-parchment-400">
     Pistas: {verdict.progress.cluesFound}/{verdict.progress.cluesTotal} ·

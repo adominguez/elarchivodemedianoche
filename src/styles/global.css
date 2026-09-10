@@ -31,6 +31,8 @@
   --color-gold-500: #b8923d;
   --color-gold-600: #8f6f2b;
 
+  --color-verified: #78c991;
+
   --font-narrative: var(--font-garamond, "Iowan Old Style", Georgia, serif);
   --font-typewriter: var(--font-elite, "Courier New", ui-monospace, monospace);
 }
@@ -75,6 +77,75 @@ body::before {
   outline: 2px solid var(--color-gold-400);
   outline-offset: 3px;
 }
+
+/* Todo control accionable debe comunicar que se puede pulsar. */
+:where(
+  a[href],
+  button:not(:disabled),
+  summary,
+  select:not(:disabled),
+  label[for],
+  label:has(input:not(:disabled)),
+  input[type="button"]:not(:disabled),
+  input[type="submit"]:not(:disabled),
+  input[type="reset"]:not(:disabled),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled),
+  input[type="file"]:not(:disabled),
+  [role="button"]:not([aria-disabled="true"])
+) {
+  cursor: pointer;
+}
+
+:where(button, select, input)[disabled],
+[role="button"][aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
+.verdict-success {
+  border-color: color-mix(in srgb, var(--color-verified) 55%, transparent);
+  background:
+    radial-gradient(circle at 8% 0, color-mix(in srgb, var(--color-verified) 12%, transparent), transparent 38%),
+    var(--color-midnight-850);
+  box-shadow: inset .25rem 0 var(--color-verified), 0 20px 50px rgba(0,0,0,.22);
+}
+
+.verdict-success__message {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.4rem;
+  padding: 1rem 1.15rem;
+  color: var(--color-parchment-50);
+  border: 1px solid color-mix(in srgb, var(--color-verified) 58%, transparent);
+  background: color-mix(in srgb, var(--color-verified) 11%, transparent);
+}
+
+.verdict-success__seal {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  flex: none;
+  place-items: center;
+  color: var(--color-midnight-950);
+  border-radius: 50%;
+  background: var(--color-verified);
+  font-family: var(--font-typewriter);
+  font-size: 1.5rem;
+  font-weight: 700;
+  box-shadow: 0 0 0 .3rem color-mix(in srgb, var(--color-verified) 18%, transparent);
+}
+
+.verdict-success__message strong {
+  display: block;
+  color: var(--color-verified);
+  font-family: var(--font-typewriter);
+  font-size: .85rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.verdict-success__message p { margin-top: .25rem; color: var(--color-parchment-200); font-size: 1rem; }
 
 /* --------------------------------------------------------------------------
    Tipografía de expediente
