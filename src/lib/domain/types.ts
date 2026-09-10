@@ -135,6 +135,7 @@ export interface CaseFile {
 
 /** Ficha reducida para el listado del archivo. */
 export interface CaseSummary {
+  id: string;
   slug: string;
   fileCode: string;
   title: string;

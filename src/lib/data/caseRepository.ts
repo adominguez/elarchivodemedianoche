@@ -28,13 +28,14 @@ import type {
 
 export async function listPublishedCases(): Promise<CaseSummary[]> {
   const { rows } = await db().execute(
-    `SELECT slug, file_code, title, subtitle, place, date_label, briefing, cover_public_id
+    `SELECT id, slug, file_code, title, subtitle, place, date_label, briefing, cover_public_id
        FROM cases
       WHERE published = 1
       ORDER BY file_code`,
   );
 
   return rows.map((row) => ({
+    id: str(row.id),
     slug: str(row.slug),
     fileCode: str(row.file_code),
     title: str(row.title),

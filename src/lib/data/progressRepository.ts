@@ -18,6 +18,61 @@ import type {
 } from '../domain/types';
 import type { StateChanges } from '../domain/engine';
 
+export interface ReaderCaseProgress {
+  caseId: string;
+  status: 'not-started' | 'in-progress' | 'completed';
+  difficulty: InvestigationDifficulty;
+  currentTitle: string | null;
+  cluesFound: number;
+  cluesTotal: number;
+  factsFound: number;
+  factsTotal: number;
+  nodesVisited: number;
+  nodesTotal: number;
+  percent: number;
+}
+
+export async function listReaderCaseProgress(readerKey: string): Promise<Map<string, ReaderCaseProgress>> {
+  const { rows } = await db().execute({
+    sql: `SELECT i.case_id, i.status, i.difficulty, i.current_node_id, n.title AS current_title,
+                 (SELECT COUNT(*) FROM investigation_clues ic WHERE ic.investigation_id = i.id) AS clues_found,
+                 (SELECT COUNT(*) FROM clues c WHERE c.case_id = i.case_id) AS clues_total,
+                 (SELECT COUNT(*) FROM investigation_facts inf WHERE inf.investigation_id = i.id) AS facts_found,
+                 (SELECT COUNT(*) FROM suspect_facts sf WHERE sf.case_id = i.case_id) AS facts_total,
+                 (SELECT COUNT(*) FROM investigation_visits iv WHERE iv.investigation_id = i.id) AS nodes_visited,
+                 (SELECT COUNT(*) FROM case_nodes cn WHERE cn.case_id = i.case_id) AS nodes_total
+            FROM investigations i
+            LEFT JOIN case_nodes n ON n.id = i.current_node_id
+           WHERE i.reader_key = ?`,
+    args: [readerKey],
+  });
+
+  return new Map(rows.map((row) => {
+    const cluesFound = num(row.clues_found);
+    const cluesTotal = num(row.clues_total);
+    const factsFound = num(row.facts_found);
+    const factsTotal = num(row.facts_total);
+    const nodesVisited = num(row.nodes_visited);
+    const nodesTotal = num(row.nodes_total);
+    const total = cluesTotal + factsTotal + nodesTotal;
+    const started = strOrNull(row.current_node_id) !== null;
+    const progress: ReaderCaseProgress = {
+      caseId: str(row.case_id),
+      status: !started ? 'not-started' : str(row.status) === 'closed' ? 'completed' : 'in-progress',
+      difficulty: str(row.difficulty) as InvestigationDifficulty,
+      currentTitle: strOrNull(row.current_title),
+      cluesFound,
+      cluesTotal,
+      factsFound,
+      factsTotal,
+      nodesVisited,
+      nodesTotal,
+      percent: total === 0 ? 0 : Math.round(((cluesFound + factsFound + nodesVisited) / total) * 100),
+    };
+    return [progress.caseId, progress];
+  }));
+}
+
 /**
  * Recupera la investigación abierta de este lector para el caso, o la crea.
  * `readerKey` es hoy una cookie anónima; el día que existan cuentas, se

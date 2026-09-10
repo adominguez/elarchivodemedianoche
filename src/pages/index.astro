@@ -2,9 +2,13 @@
 import Layout from '@layouts/Layout.astro';
 import ArchiveImage from '@components/ArchiveImage.astro';
 import { listPublishedCases } from '@lib/data/caseRepository';
+import { listReaderCaseProgress } from '@lib/data/progressRepository';
 import { caseSummaryCover } from '@lib/presentation/dossier';
+import { readerKey } from '@lib/reader';
 
 const cases = await listPublishedCases();
+const progressByCase = await listReaderCaseProgress(readerKey(Astro.cookies));
+const difficultyLabel = { narrative: 'Narrativo', detective: 'Detective', hound: 'Sabueso' } as const;
 const caseDetails: Record<string, { genre: string; suspects: string; difficulty: string }> = {
   'la-ultima-campanada': { genre: 'Misterio clásico', suspects: '4 sospechosos', difficulty: 'Dificultad media' },
   'la-senal-bajo-el-hielo': { genre: 'Ciencia y misterio', suspects: '4 sospechosos', difficulty: 'Dificultad alta' },
@@ -49,18 +53,36 @@ const caseDetails: Record<string, { genre: string; suspects: string; difficulty:
         <ol class="archive-case-grid">
           {cases.map((caseSummary, index) => {
             const details = caseDetails[caseSummary.slug] ?? { genre: 'Misterio interactivo', suspects: 'Varios sospechosos', difficulty: 'Dificultad por determinar' };
+            const progress = progressByCase.get(caseSummary.id);
+            const state = progress?.status ?? 'not-started';
+            const action = state === 'completed' ? 'Revisar expediente' : state === 'in-progress' ? 'Continuar investigación' : 'Abrir expediente';
             return (
-              <li><article class="archive-case-card">
+              <li><article class:list={['archive-case-card', `archive-case-card--${state}`]}>
                 <ArchiveImage image={caseSummaryCover(caseSummary)} alt={`Escenario de ${caseSummary.title}`} placeholder={caseSummary.title} ratio="16 / 10" loading={index === 0 ? 'eager' : 'lazy'} class="archive-case-card__image" />
                 <div class="archive-case-card__veil" aria-hidden="true"></div>
                 <div class="archive-case-card__content">
                   <p class="archive-case-card__number">{caseSummary.fileCode}</p>
+                  <p class="archive-case-card__status">
+                    <span aria-hidden="true">{state === 'completed' ? '✓' : state === 'in-progress' ? '◐' : '○'}</span>
+                    {state === 'completed' ? 'Expediente resuelto' : state === 'in-progress' ? 'Investigación en curso' : 'Sin comenzar'}
+                  </p>
                   <h3>{caseSummary.title}</h3>
                   {caseSummary.subtitle && <p class="archive-case-card__subtitle">{caseSummary.subtitle}</p>}
                   <ul class="archive-case-card__facts" aria-label="Características del expediente">
                     <li><span aria-hidden="true">◇</span>{details.genre}</li><li><span aria-hidden="true">♙</span>{details.suspects}</li><li><span aria-hidden="true">◴</span>{details.difficulty}</li>
                   </ul>
-                  <a class="archive-button archive-button--paper" href={`/expediente/${caseSummary.slug}`}>Abrir expediente <span aria-hidden="true">→</span></a>
+                  {progress && state !== 'not-started' && (
+                    <div class="archive-case-progress">
+                      <div class="archive-case-progress__heading">
+                        <span>{state === 'completed' ? 'Archivo explorado' : `Nivel ${difficultyLabel[progress.difficulty]}`}</span>
+                        <strong>{progress.percent}%</strong>
+                      </div>
+                      <div class="archive-case-progress__track" role="progressbar" aria-label={`Progreso en ${caseSummary.title}`} aria-valuenow={progress.percent} aria-valuemin="0" aria-valuemax="100"><span style={`width:${progress.percent}%`}></span></div>
+                      <p>{state === 'completed' ? `Caso resuelto · ${progress.cluesFound}/${progress.cluesTotal} pistas encontradas` : `${progress.cluesFound}/${progress.cluesTotal} pistas · ${progress.factsFound}/${progress.factsTotal} anotaciones`}</p>
+                      {state === 'in-progress' && progress.currentTitle && <p class="archive-case-progress__current">Última diligencia: {progress.currentTitle}</p>}
+                    </div>
+                  )}
+                  <a class="archive-button archive-button--paper" href={`/expediente/${caseSummary.slug}`}>{action} <span aria-hidden="true">→</span></a>
                 </div>
               </article></li>
             );
