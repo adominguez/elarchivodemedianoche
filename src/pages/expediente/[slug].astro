@@ -25,11 +25,12 @@ import {
   persistVisit,
   recordAccusation,
   reopenInvestigation,
+  setDifficulty,
 } from '@lib/data/progressRepository';
 import { canAccuse, canFollow, judgeAccusation, visitNode, type StateChanges } from '@lib/domain/engine';
 import { buildDossier } from '@lib/presentation/dossier';
 import { readerKey } from '@lib/reader';
-import type { Accusation } from '@lib/domain/types';
+import type { Accusation, InvestigationDifficulty } from '@lib/domain/types';
 
 const { slug } = Astro.params;
 const caseFile = slug ? await getCaseFile(slug) : null;
@@ -48,6 +49,16 @@ let notice: string | null = null;
 if (Astro.request.method === 'POST') {
   const form = await Astro.request.formData();
   const intent = String(form.get('intencion') ?? '');
+  const requestedDifficulty = String(form.get('dificultad') ?? '');
+  const difficulty = (['narrative', 'detective', 'hound'] as const).includes(requestedDifficulty as InvestigationDifficulty)
+    ? requestedDifficulty as InvestigationDifficulty
+    : null;
+
+  if ((intent === 'empezar' || intent === 'cambiar-dificultad') && difficulty && state.status === 'open') {
+    await setDifficulty(investigationId, difficulty);
+    state = { ...state, difficulty };
+    if (intent === 'cambiar-dificultad') notice = 'Nivel de investigación actualizado.';
+  }
 
   if (intent === 'empezar' && state.currentNodeId === null) {
     const result = visitNode(caseFile, state, caseFile.entryNodeId);
@@ -148,6 +159,17 @@ const { header } = dossier;
           <div class="mt-6 grid gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
             <ProgressLine progress={dossier.progress} closed={dossier.closed} />
             <div class="flex flex-wrap gap-2 sm:justify-end">
+              {!dossier.closed && (
+                <form method="post" class="difficulty-switch" aria-label="Nivel de investigación">
+                  <input type="hidden" name="intencion" value="cambiar-dificultad" />
+                  <span>Nivel</span>
+                  {(['narrative', 'detective', 'hound'] as const).map((level) => (
+                    <button type="submit" name="dificultad" value={level} aria-pressed={dossier.difficulty === level}>
+                      {level === 'narrative' ? 'Narrativo' : level === 'detective' ? 'Detective' : 'Sabueso'}
+                    </button>
+                  ))}
+                </form>
+              )}
               <button type="button" class="summary-shortcut" data-open-summary>
                 <span aria-hidden="true">▣</span>
                 Ver resumen
@@ -173,7 +195,7 @@ const { header } = dossier;
               <h2 id="summary-title">Resumen de la investigación</h2>
               <p class="summary-case-title">{header.title}{header.place && <span> · {header.place}</span>}</p>
             </div>
-            <span class="summary-status">{dossier.closed ? 'Cerrado' : 'En investigación'}</span>
+            <span class="summary-status">{dossier.closed ? 'Cerrado' : `Nivel ${dossier.difficultyLabel}`}</span>
             <button type="button" class="investigation-summary__close" data-close-summary aria-label="Cerrar resumen">×</button>
           </header>
 
@@ -181,6 +203,7 @@ const { header } = dossier;
             <div class="investigation-summary__progress">
               <div class="summary-ring" style={`--summary-progress: ${dossier.progress.percent}%`}><strong>{dossier.progress.percent}%</strong></div>
               <p>{dossier.closed ? 'Expediente cerrado' : 'Investigación en curso'}</p>
+              <small>Nivel {dossier.difficultyLabel}: exige {dossier.accusationForm.evidenceRequired} de {dossier.accusationForm.evidenceGroupsTotal} aspectos</small>
             </div>
             <dl>
               <div><dt>Pistas</dt><dd>{dossier.progress.cluesFound} <span>de {dossier.progress.cluesTotal}</span></dd></div>
@@ -280,6 +303,12 @@ const { header } = dossier;
 
               <form method="post" class="mt-8 border-t border-ink-500/25 pt-6">
                 <input type="hidden" name="intencion" value="empezar" />
+                <fieldset class="difficulty-picker">
+                  <legend>Elige el nivel de investigación</legend>
+                  <label><input type="radio" name="dificultad" value="narrative" /><strong>Narrativo</strong><span>Una investigación más flexible, centrada en la historia.</span></label>
+                  <label><input type="radio" name="dificultad" value="detective" checked /><strong>Detective</strong><span>Exige una teoría bien respaldada. Recomendado.</span></label>
+                  <label><input type="radio" name="dificultad" value="hound" /><strong>Sabueso</strong><span>Debes acreditar todos los aspectos sin aportar pistas irrelevantes.</span></label>
+                </fieldset>
                 <button
                   type="submit"
                   class="stamp border-blood text-blood transition-transform hover:rotate-0"

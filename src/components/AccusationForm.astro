@@ -17,6 +17,12 @@ const { form } = Astro.props;
 <form method="post" class="space-y-8" data-accusation-form>
   <input type="hidden" name="intencion" value="acusar" />
 
+  <aside class="accusation-requirement">
+    <p><strong>Nivel {form.difficultyLabel}</strong> · Debes acreditar al menos {form.evidenceRequired} de {form.evidenceGroupsTotal} aspectos del caso.</p>
+    <p>Varias pistas sobre el mismo aspecto cuentan como una sola.</p>
+    {form.difficulty === 'hound' && <p>En este nivel, incluir una pista irrelevante debilita la acusación.</p>}
+  </aside>
+
   <fieldset>
     <legend class="typed-sm mb-3 text-gold-400">1 · Culpable</legend>
     <ul class="grid grid-cols-2 gap-2 sm:grid-cols-4">
@@ -91,7 +97,7 @@ const { form } = Astro.props;
   <fieldset>
     <legend class="typed-sm mb-3 text-gold-400">
       4 · Evidencias que sostienen la acusación
-      <span class="ml-2 text-parchment-400" data-evidence-count>0/{form.evidence.length}</span>
+      <span class="ml-2 text-parchment-400" data-evidence-count>0 seleccionadas</span>
     </legend>
 
     <p class="mb-3 font-narrative text-parchment-300">
@@ -147,7 +153,7 @@ const { form } = Astro.props;
         label?.classList.toggle('bg-blood/20', input.checked && input.name === 'culpable');
         if (mark) mark.textContent = input.checked ? '✕' : '·';
       }
-      if (count) count.textContent = `${evidence.filter((input) => input.checked).length}/${evidence.length}`;
+      if (count) count.textContent = `${evidence.filter((input) => input.checked).length} seleccionadas`;
     };
 
     form.addEventListener('change', refresh);

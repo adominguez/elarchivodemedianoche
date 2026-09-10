@@ -354,7 +354,13 @@ function validate(def: CaseDefinition): string[] {
   }
 
   if (!def.solution.evidenceGroups.length) errors.push('faltan grupos de evidencia');
+  if (!def.solution.evidenceGroups.some((group) => group.importance === 'essential')) {
+    errors.push('falta al menos un grupo de evidencia esencial');
+  }
   for (const group of def.solution.evidenceGroups) {
+    if (group.importance !== 'essential' && group.importance !== 'complementary') {
+      errors.push(`importancia no definida en el grupo de evidencia: ${group.label}`);
+    }
     if (!group.alternatives.length) errors.push(`grupo vacío: ${group.label}`);
     for (const alternative of group.alternatives) {
       const clue = def.clues.find((c) => c.id === alternative.clueId);

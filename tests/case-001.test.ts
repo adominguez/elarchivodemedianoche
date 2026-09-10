@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { case001 } from '../db/seeds/case-001-la-ultima-campanada.ts';
 import { fromDefinition, initialState } from './case-definition.ts';
-import { canAccuse, canFollow, visitNode, judgeAccusation, caseProgress, nodeContinuations, openInvestigations } from '../src/lib/domain/engine.ts';
+import { canAccuse, canFollow, visitNode, judgeAccusation, caseProgress, nodeContinuations, openInvestigations, requiredEvidenceGroups } from '../src/lib/domain/engine.ts';
 const file = fromDefinition(case001);
 const accusation = {culpritSuspectId:file.solution.culpritSuspectId,motiveOptionId:file.solution.motiveOptionId,methodOptionId:file.solution.methodOptionId,evidenceClueIds:file.solution.evidenceClueIds};
 function traverse(reverse = false) {
@@ -26,8 +26,20 @@ test('el expediente completo es alcanzable en ambos órdenes y admite pruebas al
     assert.equal(judgeAccusation(file,accusation,state).verdict,'solved');
     const alternative={...accusation,evidenceClueIds:['c001-cl-cuaderno','c001-cl-carta-auditoria','c001-cl-informe','c001-cl-disco']};
     assert.equal(judgeAccusation(file,alternative,state).verdict,'solved');
-    for (const id of alternative.evidenceClueIds) assert.equal(judgeAccusation(file,{...alternative,evidenceClueIds:alternative.evidenceClueIds.filter(x=>x!==id)},state).verdict,'partial');
+    const houndState={...state,difficulty:'hound' as const};
+    for (const id of alternative.evidenceClueIds) assert.equal(judgeAccusation(file,{...alternative,evidenceClueIds:alternative.evidenceClueIds.filter(x=>x!==id)},houndState).verdict,'partial');
   }
+});
+test('la dificultad adapta los aspectos probatorios sin cambiar la solución', () => {
+  const complete=traverse();
+  const essential={...accusation,evidenceClueIds:['c001-cl-cuaderno','c001-cl-informe']};
+  assert.equal(requiredEvidenceGroups(file,'narrative'),2);
+  assert.equal(judgeAccusation(file,essential,{...complete,difficulty:'narrative'}).verdict,'solved');
+  assert.equal(requiredEvidenceGroups(file,'detective'),3);
+  assert.equal(judgeAccusation(file,essential,{...complete,difficulty:'detective'}).verdict,'partial');
+  assert.equal(judgeAccusation(file,{...essential,evidenceClueIds:[...essential.evidenceClueIds,'c001-cl-carta-auditoria']},{...complete,difficulty:'detective'}).verdict,'solved');
+  assert.equal(requiredEvidenceGroups(file,'hound'),4);
+  assert.equal(judgeAccusation(file,accusation,{...complete,difficulty:'hound'}).verdict,'solved');
 });
 test('escuchar el disco e interrogar a Irene no revela automáticamente la reconstrucción', () => {
   let state=initialState(file.id);

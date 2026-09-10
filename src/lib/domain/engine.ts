@@ -11,6 +11,7 @@ import type {
   CaseFile,
   CaseNode,
   InvestigationOption,
+  InvestigationDifficulty,
   InvestigationState,
   OptionRequirement,
   Verdict,
@@ -101,6 +102,19 @@ export function canAccuse(caseFile: CaseFile, state: InvestigationState): boolea
   return caseFile.solution.accusationRequirements.every((requirement) =>
     isRequirementMet(requirement, state),
   );
+}
+
+const DIFFICULTY_RATIO: Record<InvestigationDifficulty, number> = {
+  narrative: .5,
+  detective: .75,
+  hound: 1,
+};
+
+export function requiredEvidenceGroups(caseFile: CaseFile, difficulty: InvestigationDifficulty): number {
+  const groups = caseFile.solution.evidenceGroups;
+  if (groups.length === 0) return 0;
+  const essential = groups.filter((group) => group.importance === 'essential').length;
+  return Math.max(essential, Math.ceil(groups.length * DIFFICULTY_RATIO[difficulty]));
 }
 
 // ---------------------------------------------------------------------------
@@ -280,9 +294,13 @@ export function judgeAccusation(caseFile: CaseFile, accusation: Accusation, stat
       return required >= 0 && current >= required;
     }),
   );
+  const essentialGroups = solution.evidenceGroups.filter((group) => group.importance === 'essential');
+  const essentialSatisfied = essentialGroups.every((group) => satisfiedGroups.includes(group));
+  const evidenceRequired = requiredEvidenceGroups(caseFile, state.difficulty);
   const supported = solution.evidenceGroups.length > 0 &&
-    satisfiedGroups.length === solution.evidenceGroups.length &&
-    [...selected].every((id) => key.has(id));
+    satisfiedGroups.length >= evidenceRequired &&
+    essentialSatisfied &&
+    (state.difficulty !== 'hound' || [...selected].every((id) => key.has(id)));
   const evidenceHits = satisfiedGroups.length;
 
   let verdict: Verdict;
@@ -296,6 +314,8 @@ export function judgeAccusation(caseFile: CaseFile, accusation: Accusation, stat
     methodCorrect,
     evidenceHits,
     evidenceTotal: solution.evidenceGroups.length,
+    evidenceRequired,
+    difficulty: state.difficulty,
     verdict,
   };
 }

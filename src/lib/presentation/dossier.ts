@@ -10,6 +10,7 @@ import {
   caseProgress,
   nodeContinuations,
   openInvestigations,
+  requiredEvidenceGroups,
   type CaseProgress,
   type EvaluatedOption,
   type OptionStatus,
@@ -25,6 +26,7 @@ import type {
   ClueKind,
   FactKind,
   InvestigationState,
+  InvestigationDifficulty,
   RecordedAccusation,
   Suspect,
 } from '../domain/types';
@@ -323,6 +325,10 @@ export interface AccusationFormView {
   motives: AccusationChoiceView[];
   methods: AccusationChoiceView[];
   evidence: Array<{ id: string; label: string }>;
+  difficulty: InvestigationDifficulty;
+  difficultyLabel: string;
+  evidenceRequired: number;
+  evidenceGroupsTotal: number;
 }
 
 export interface VerdictLineView {
@@ -337,6 +343,8 @@ export interface VerdictView {
   lines: VerdictLineView[];
   evidenceHits: number;
   evidenceTotal: number;
+  evidenceRequired: number;
+  difficultyLabel: string;
   explanation: string | null;
   epitaph: string | null;
   progress: CaseProgress;
@@ -355,7 +363,15 @@ export interface DossierView {
   canAccuse: boolean;
   verdict: VerdictView | null;
   closed: boolean;
+  difficulty: InvestigationDifficulty;
+  difficultyLabel: string;
 }
+
+const DIFFICULTY_LABEL: Record<InvestigationDifficulty, string> = {
+  narrative: 'Narrativo',
+  detective: 'Detective',
+  hound: 'Sabueso',
+};
 
 export function caseHeader(caseFile: CaseFile): CaseHeaderView {
   return {
@@ -397,6 +413,10 @@ function accusationForm(caseFile: CaseFile, state: InvestigationState): Accusati
         id: clue.id,
         label: knownClue(clue, state.clueStates.get(clue.id)!).stateLabel,
       })),
+    difficulty: state.difficulty,
+    difficultyLabel: DIFFICULTY_LABEL[state.difficulty],
+    evidenceRequired: requiredEvidenceGroups(caseFile, state.difficulty),
+    evidenceGroupsTotal: caseFile.solution.evidenceGroups.length,
   };
 }
 
@@ -426,6 +446,8 @@ export function verdictView(
     ],
     evidenceHits: accusation.evidenceHits,
     evidenceTotal: accusation.evidenceTotal,
+    evidenceRequired: accusation.evidenceRequired || requiredEvidenceGroups(caseFile, accusation.difficulty),
+    difficultyLabel: DIFFICULTY_LABEL[accusation.difficulty],
     // La verdad completa sólo se revela cuando el caso queda cerrado.
     explanation: solved ? caseFile.solution.explanation : null,
     epitaph: solved ? caseFile.solution.epitaph : null,
@@ -461,6 +483,8 @@ export function buildDossier({
     canAccuse: canAccuse(caseFile, state),
     verdict: accusation ? verdictView(caseFile, state, accusation) : null,
     closed: state.status === 'closed',
+    difficulty: state.difficulty,
+    difficultyLabel: DIFFICULTY_LABEL[state.difficulty],
   };
 }
 

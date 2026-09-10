@@ -126,7 +126,7 @@ export interface SolutionDefinition {
   motive: string;
   method: string;
   evidence: string[];
-  evidenceGroups: Array<{ label: string; alternatives: Array<{ clueId: string; stateKey: string }> }>;
+  evidenceGroups: Array<{ label: string; importance?: 'essential' | 'complementary'; alternatives: Array<{ clueId: string; stateKey: string }> }>;
   /** Condiciones de la investigación que deben cumplirse antes de acusar. */
   accusationRequirements?: RequirementDefinition[];
   explanation: string;

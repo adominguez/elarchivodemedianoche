@@ -13,5 +13,5 @@ export function fromDefinition(d: CaseDefinition): CaseFile {
   };
 }
 export function initialState(caseId: string): InvestigationState {
-  return {id:'test',caseId,status:'open',currentNodeId:null,visitedNodeIds:new Set(),clueStates:new Map(),discoveredFactIds:new Set(),flags:new Map()};
+  return {id:'test',caseId,status:'open',difficulty:'detective',currentNodeId:null,visitedNodeIds:new Set(),clueStates:new Map(),discoveredFactIds:new Set(),flags:new Map()};
 }

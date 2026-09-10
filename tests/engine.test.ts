@@ -132,6 +132,7 @@ function emptyState(): InvestigationState {
     id: 'i',
     caseId: 'x',
     status: 'open',
+    difficulty: 'detective',
     currentNodeId: null,
     visitedNodeIds: new Set(),
     clueStates: new Map(),

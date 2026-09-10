@@ -16,6 +16,8 @@ export type FactKind = 'testimony' | 'alibi' | 'contradiction' | 'motive' | 'bac
 
 export type NodeKind = 'intro' | 'scene' | 'interrogation' | 'analysis';
 
+export type InvestigationDifficulty = 'narrative' | 'detective' | 'hound';
+
 export interface ClueState {
   key: string;
   label: string;
@@ -106,7 +108,7 @@ export interface CaseSolution {
   explanation: string;
   epitaph: string | null;
   evidenceClueIds: string[];
-  evidenceGroups: Array<{ label: string; alternatives: Array<{ clueId: string; stateKey: string }> }>;
+  evidenceGroups: Array<{ label: string; importance?: 'essential' | 'complementary'; alternatives: Array<{ clueId: string; stateKey: string }> }>;
   accusationRequirements: OptionRequirement[];
 }
 
@@ -153,6 +155,7 @@ export interface InvestigationState {
   id: string;
   caseId: string;
   status: InvestigationStatus;
+  difficulty: InvestigationDifficulty;
   currentNodeId: string | null;
   visitedNodeIds: ReadonlySet<string>;
   /** clueId → estado vigente de esa pista. Única fuente de verdad. */
@@ -176,6 +179,8 @@ export interface AccusationResult {
   methodCorrect: boolean;
   evidenceHits: number;
   evidenceTotal: number;
+  evidenceRequired: number;
+  difficulty: InvestigationDifficulty;
   verdict: Verdict;
 }
 

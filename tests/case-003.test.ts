@@ -44,7 +44,7 @@ test('el recorrido necesario obliga a interrogar a los cuatro implicados',()=>{
 });
 
 test('cada grupo probatorio es necesario y los indicios indiscriminados penalizan',()=>{
-  const state=traverse();
+  const state={...traverse(),difficulty:'hound' as const};
   for(const clueId of accusation.evidenceClueIds) {
     assert.equal(judgeAccusation(file,{...accusation,evidenceClueIds:accusation.evidenceClueIds.filter(id=>id!==clueId)},state).verdict,'partial');
   }

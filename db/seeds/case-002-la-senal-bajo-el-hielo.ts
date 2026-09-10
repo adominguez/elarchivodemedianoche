@@ -1302,6 +1302,7 @@ export const case002: CaseDefinition = {
     "evidenceGroups": [
       {
         "label": "Aviso fabricado",
+        "importance": "complementary",
         "alternatives": [
           {
             "clueId": "c002-cl-registro-radio",
@@ -1315,6 +1316,7 @@ export const case002: CaseDefinition = {
       },
       {
         "label": "Presencia en el túnel",
+        "importance": "essential",
         "alternatives": [
           {
             "clueId": "c002-cl-tarjeta",
@@ -1324,6 +1326,7 @@ export const case002: CaseDefinition = {
       },
       {
         "label": "Sabotaje y falsa coartada",
+        "importance": "essential",
         "alternatives": [
           {
             "clueId": "c002-cl-cinta-boletin",
@@ -1341,6 +1344,7 @@ export const case002: CaseDefinition = {
       },
       {
         "label": "Motivo económico",
+        "importance": "complementary",
         "alternatives": [
           {
             "clueId": "c002-cl-mensaje-telex",

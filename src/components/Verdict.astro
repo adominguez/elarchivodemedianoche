@@ -28,7 +28,7 @@ const NOTE = {
   <header class="flex flex-wrap items-center justify-between gap-4 border-b border-parchment-400/20 pb-4">
     <p class:list={['stamp stamp-flat text-base', TONE[verdict.verdict]]}>{verdict.headline}</p>
     <p class="typed-sm text-parchment-400">
-      Investigación completada: {verdict.progress.percent} %
+      Nivel {verdict.difficultyLabel} · Investigación completada: {verdict.progress.percent} %
     </p>
   </header>
 
@@ -48,7 +48,7 @@ const NOTE = {
       <dt class="typed-sm w-20 flex-none text-parchment-400">Evidencias</dt>
       <dd class="flex-1 font-narrative text-lg text-parchment-100">
         {verdict.verdict === 'solved'
-          ? `${verdict.evidenceHits} de ${verdict.evidenceTotal} grupos probatorios acreditados`
+          ? `${verdict.evidenceHits} grupos acreditados; el nivel exigía ${verdict.evidenceRequired} de ${verdict.evidenceTotal}`
           : 'La selección no sostiene todavía una teoría completa y precisa'}
       </dd>
     </div>

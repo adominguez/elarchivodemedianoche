@@ -114,3 +114,8 @@ const analyses: CaseDefinition['options'] = ([
 ] as CaseDefinition['options']).map(option=>({...option,id:`c003-o-${option.id}`}));
 
 case003.options.push(...analyses);
+
+case003.solution.evidenceGroups[0]!.importance = 'essential';
+case003.solution.evidenceGroups[1]!.importance = 'essential';
+case003.solution.evidenceGroups[2]!.importance = 'complementary';
+case003.solution.evidenceGroups[3]!.importance = 'complementary';

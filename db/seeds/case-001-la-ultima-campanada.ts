@@ -1256,6 +1256,7 @@ export const case001: CaseDefinition = {
     "evidenceGroups": [
       {
         "label": "Vínculo con la agresión",
+        "importance": "essential",
         "alternatives": [
           {
             "clueId": "c001-cl-cuaderno",
@@ -1265,6 +1266,7 @@ export const case001: CaseDefinition = {
       },
       {
         "label": "Motivo económico",
+        "importance": "complementary",
         "alternatives": [
           {
             "clueId": "c001-cl-libro",
@@ -1278,6 +1280,7 @@ export const case001: CaseDefinition = {
       },
       {
         "label": "Lugar y arma",
+        "importance": "essential",
         "alternatives": [
           {
             "clueId": "c001-cl-atizador",
@@ -1291,6 +1294,7 @@ export const case001: CaseDefinition = {
       },
       {
         "label": "Engaño de la hora",
+        "importance": "complementary",
         "alternatives": [
           {
             "clueId": "c001-cl-disco",

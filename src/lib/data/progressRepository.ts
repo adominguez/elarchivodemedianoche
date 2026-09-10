@@ -12,6 +12,7 @@ import type {
   Accusation,
   AccusationResult,
   InvestigationState,
+  InvestigationDifficulty,
   InvestigationStatus,
   RecordedAccusation,
 } from '../domain/types';
@@ -55,7 +56,7 @@ export async function loadState(investigationId: string): Promise<InvestigationS
 
   const [head, visits, clues, facts, flags] = await client.batch(
     [
-      { sql: `SELECT id, case_id, status, current_node_id FROM investigations WHERE id = ?`, args },
+      { sql: `SELECT id, case_id, status, difficulty, current_node_id FROM investigations WHERE id = ?`, args },
       { sql: `SELECT node_id FROM investigation_visits WHERE investigation_id = ?`, args },
       { sql: `SELECT clue_id, state_key FROM investigation_clues WHERE investigation_id = ?`, args },
       { sql: `SELECT fact_id FROM investigation_facts WHERE investigation_id = ?`, args },
@@ -71,12 +72,20 @@ export async function loadState(investigationId: string): Promise<InvestigationS
     id: str(headRow.id),
     caseId: str(headRow.case_id),
     status: str(headRow.status) as InvestigationStatus,
+    difficulty: str(headRow.difficulty) as InvestigationDifficulty,
     currentNodeId: strOrNull(headRow.current_node_id),
     visitedNodeIds: new Set(visits.rows.map((row) => str(row.node_id))),
     clueStates: new Map(clues.rows.map((row) => [str(row.clue_id), str(row.state_key)])),
     discoveredFactIds: new Set(facts.rows.map((row) => str(row.fact_id))),
     flags: new Map(flags.rows.map((row) => [str(row.flag), str(row.value)])),
   };
+}
+
+export async function setDifficulty(investigationId: string, difficulty: InvestigationDifficulty): Promise<void> {
+  await db().execute({
+    sql: `UPDATE investigations SET difficulty = ?, updated_at = datetime('now') WHERE id = ? AND status = 'open'`,
+    args: [difficulty, investigationId],
+  });
 }
 
 /**
@@ -147,8 +156,8 @@ export async function recordAccusation(
         sql: `INSERT INTO accusations (
                 id, investigation_id, culprit_suspect_id, motive_option_id, method_option_id,
                 evidence_ids, culprit_correct, motive_correct, method_correct,
-                evidence_hits, evidence_total, verdict
-              ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                evidence_hits, evidence_total, evidence_required, difficulty, verdict
+              ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         args: [
           id,
           investigationId,
@@ -161,6 +170,8 @@ export async function recordAccusation(
           result.methodCorrect ? 1 : 0,
           result.evidenceHits,
           result.evidenceTotal,
+          result.evidenceRequired,
+          result.difficulty,
           result.verdict,
         ],
       },
@@ -204,6 +215,8 @@ export async function lastAccusation(investigationId: string): Promise<RecordedA
     methodCorrect: num(row.method_correct) !== 0,
     evidenceHits: num(row.evidence_hits),
     evidenceTotal: num(row.evidence_total),
+    evidenceRequired: num(row.evidence_required),
+    difficulty: str(row.difficulty) as InvestigationDifficulty,
     verdict: str(row.verdict) as RecordedAccusation['verdict'],
   };
 }

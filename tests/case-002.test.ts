@@ -63,7 +63,7 @@ test('acertar culpable, motivo y método sin investigar no cierra el expediente'
 });
 
 test('marcar indicios ajenos a la teoría impide cerrar el expediente', () => {
-  const state = traverse();
+  const state = { ...traverse(), difficulty: 'hound' as const };
   assert.equal(
     judgeAccusation(file, { ...accusation, evidenceClueIds: file.clues.map(({ id }) => id) }, state).verdict,
     'partial',
@@ -71,7 +71,7 @@ test('marcar indicios ajenos a la teoría impide cerrar el expediente', () => {
 });
 
 test('cada grupo de la acusación es necesario', () => {
-  const state = traverse();
+  const state = { ...traverse(), difficulty: 'hound' as const };
   for (const clueId of accusation.evidenceClueIds) {
     assert.equal(
       judgeAccusation(

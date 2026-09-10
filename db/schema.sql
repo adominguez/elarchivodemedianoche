@@ -173,6 +173,7 @@ CREATE TABLE IF NOT EXISTS investigations (
   reader_key      TEXT NOT NULL,
   user_id         TEXT,
   status          TEXT NOT NULL DEFAULT 'open',  -- open | closed
+  difficulty      TEXT NOT NULL DEFAULT 'detective' CHECK (difficulty IN ('narrative', 'detective', 'hound')),
   current_node_id TEXT REFERENCES case_nodes(id),
   started_at      TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at      TEXT NOT NULL DEFAULT (datetime('now')),
@@ -227,6 +228,8 @@ CREATE TABLE IF NOT EXISTS accusations (
   method_correct     INTEGER NOT NULL,
   evidence_hits      INTEGER NOT NULL DEFAULT 0,
   evidence_total     INTEGER NOT NULL DEFAULT 0,
+  evidence_required  INTEGER NOT NULL DEFAULT 0,
+  difficulty         TEXT NOT NULL DEFAULT 'detective',
   verdict            TEXT NOT NULL,                -- solved | partial | failed
   created_at         TEXT NOT NULL DEFAULT (datetime('now'))
 );
