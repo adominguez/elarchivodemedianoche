@@ -1,80 +1,151 @@
 ---
-/**
- * La portada del archivo: la mesa donde esperan las carpetas.
- */
 import Layout from '@layouts/Layout.astro';
 import ArchiveImage from '@components/ArchiveImage.astro';
 import { listPublishedCases } from '@lib/data/caseRepository';
 import { caseSummaryCover } from '@lib/presentation/dossier';
 
 const cases = await listPublishedCases();
+const caseDetails: Record<string, { genre: string; suspects: string; difficulty: string }> = {
+  'la-ultima-campanada': { genre: 'Misterio clásico', suspects: '4 sospechosos', difficulty: 'Dificultad media' },
+  'la-senal-bajo-el-hielo': { genre: 'Ciencia y misterio', suspects: '4 sospechosos', difficulty: 'Dificultad alta' },
+};
 ---
 
 <Layout
-  title="El Archivo de Medianoche"
-  description="Historias interactivas de misterio donde leer se siente como investigar."
+  title="El Archivo de Medianoche — Historias que se investigan"
+  description="Misterios interactivos donde cada decisión te acerca a la verdad. Examina, interroga, conecta pistas y resuelve el caso."
 >
-  <main class="mx-auto max-w-5xl px-4 pb-24 pt-16 sm:px-6 sm:pt-24">
-    <header class="border-b border-parchment-400/20 pb-10 text-center">
-      <p class="typed-sm text-parchment-400">Archivo general · acceso restringido</p>
-      <h1 class="mt-4 font-narrative text-5xl leading-none text-parchment-50 sm:text-6xl">
-        El Archivo de Medianoche
-      </h1>
-      <p class="mx-auto mt-5 max-w-lg font-narrative text-lg italic text-parchment-300">
-        Todo caso esconde una verdad. Ninguna se entrega sin investigarla.
-      </p>
-    </header>
+  <main class="archive-home">
+    <section class="archive-hero" aria-labelledby="hero-title">
+      <img class="archive-hero__image" src="/images/archivo-medianoche-hero.webp" alt="Un escritorio de investigador iluminado por una lámpara durante una noche de lluvia" width="1672" height="941" loading="eager" fetchpriority="high" />
+      <div class="archive-hero__shade" aria-hidden="true"></div>
 
-    {
-      cases.length === 0 ? (
-        <p class="typed-sm mt-16 text-center text-parchment-400">
-          El archivo está vacío. Ejecute <span class="text-gold-400">pnpm db:reset</span> para
-          cargar los expedientes en Turso.
-        </p>
+      <nav class="archive-nav" aria-label="Navegación principal">
+        <a class="archive-brand" href="/" aria-label="El Archivo de Medianoche, inicio"><span>El Archivo</span><span>de Medianoche</span></a>
+        <div class="archive-nav__links">
+          <a href="#expedientes">Expedientes</a><a href="#como-funciona">Cómo funciona</a><a href="#diario">Diario</a><a href="#sobre-el-proyecto">Sobre el proyecto</a>
+        </div>
+        <a class="archive-nav__start" href="#expedientes">Iniciar</a>
+      </nav>
+
+      <div class="archive-hero__content">
+        <p class="archive-kicker">Archivo general · acceso autorizado</p>
+        <h1 id="hero-title">Historias que no solo se leen.<br />Se investigan.</h1>
+        <p class="archive-hero__lede">Adéntrate en misterios interactivos donde cada decisión te acerca a la verdad. Examina, interroga, conecta pistas y resuelve el caso.</p>
+        <a class="archive-button archive-button--paper" href="#expedientes">Explorar expedientes <span aria-hidden="true">→</span></a>
+      </div>
+      <p class="archive-hero__note" aria-hidden="true">Toda historia<br />esconde una verdad.</p>
+    </section>
+
+    <section class="archive-catalogue" id="expedientes" aria-labelledby="catalogue-title">
+      <div class="archive-section-heading">
+        <div><p class="archive-kicker">Clasificación: casos abiertos</p><h2 id="catalogue-title">Expedientes disponibles</h2></div>
+        <p>{String(cases.length).padStart(2, '0')} casos en archivo</p>
+      </div>
+
+      {cases.length === 0 ? (
+        <p class="archive-empty">El archivo está vacío. Ejecute <span>pnpm db:reset</span> para cargar los expedientes.</p>
       ) : (
-        <ul class="mt-14 space-y-10">
-          {cases.map((caseSummary) => (
-            <li>
-              <a
-                href={`/expediente/${caseSummary.slug}`}
-                class="group grid gap-6 sm:grid-cols-[13rem_minmax(0,1fr)] sm:items-start"
-              >
-                <div class="photo taped mx-auto w-full max-w-[13rem] transition-transform duration-200 group-hover:-rotate-1">
-                  <ArchiveImage
-                    image={caseSummaryCover(caseSummary)}
-                    alt={`Portada del expediente ${caseSummary.fileCode}`}
-                    placeholder={caseSummary.title}
-                    ratio="4 / 5"
-                    loading="eager"
-                  />
+        <ol class="archive-case-grid">
+          {cases.map((caseSummary, index) => {
+            const details = caseDetails[caseSummary.slug] ?? { genre: 'Misterio interactivo', suspects: 'Varios sospechosos', difficulty: 'Dificultad por determinar' };
+            return (
+              <li><article class="archive-case-card">
+                <ArchiveImage image={caseSummaryCover(caseSummary)} alt={`Escenario de ${caseSummary.title}`} placeholder={caseSummary.title} ratio="16 / 10" loading={index === 0 ? 'eager' : 'lazy'} class="archive-case-card__image" />
+                <div class="archive-case-card__veil" aria-hidden="true"></div>
+                <div class="archive-case-card__content">
+                  <p class="archive-case-card__number">{caseSummary.fileCode}</p>
+                  <h3>{caseSummary.title}</h3>
+                  {caseSummary.subtitle && <p class="archive-case-card__subtitle">{caseSummary.subtitle}</p>}
+                  <ul class="archive-case-card__facts" aria-label="Características del expediente">
+                    <li><span aria-hidden="true">◇</span>{details.genre}</li><li><span aria-hidden="true">♙</span>{details.suspects}</li><li><span aria-hidden="true">◴</span>{details.difficulty}</li>
+                  </ul>
+                  <a class="archive-button archive-button--paper" href={`/expediente/${caseSummary.slug}`}>Abrir expediente <span aria-hidden="true">→</span></a>
                 </div>
+              </article></li>
+            );
+          })}
+        </ol>
+      )}
+    </section>
 
-                <div class="border-l-2 border-parchment-400/20 pl-5 transition-colors group-hover:border-gold-500">
-                  <p class="typed text-sm text-blood-bright">Expediente {caseSummary.fileCode}</p>
-                  <h2 class="mt-1 font-narrative text-3xl leading-tight text-parchment-50">
-                    {caseSummary.title}
-                  </h2>
-                  {caseSummary.subtitle && (
-                    <p class="mt-1 font-narrative text-lg italic text-parchment-300">
-                      {caseSummary.subtitle}
-                    </p>
-                  )}
+    <section class="archive-method" id="como-funciona" aria-labelledby="method-title">
+      <header class="archive-content-heading">
+        <p class="archive-kicker">Manual del investigador</p>
+        <h2 id="method-title">Cómo funciona</h2>
+        <p>Cada expediente es una historia abierta. Tú decides qué examinar, a quién creer y cuándo hay pruebas suficientes para acusar.</p>
+      </header>
 
-                  <p class="typed-sm mt-3 text-parchment-400">
-                    {[caseSummary.place, caseSummary.dateLabel].filter(Boolean).join(' · ')}
-                  </p>
+      <ol class="archive-method__steps">
+        <li>
+          <span class="archive-method__number">01</span>
+          <div class="archive-method__icon" aria-hidden="true">⌕</div>
+          <h3>Explora la escena</h3>
+          <p>Recorre habitaciones, documentos y objetos. Algunas diligencias solo aparecen después de un hallazgo concreto.</p>
+        </li>
+        <li>
+          <span class="archive-method__number">02</span>
+          <div class="archive-method__icon" aria-hidden="true">◎</div>
+          <h3>Conecta las versiones</h3>
+          <p>Interroga a los sospechosos y contrasta sus palabras. Una pista puede cambiar de significado al descubrir nueva información.</p>
+        </li>
+        <li>
+          <span class="archive-method__number">03</span>
+          <div class="archive-method__icon" aria-hidden="true">⚖</div>
+          <h3>Sostén tu acusación</h3>
+          <p>Elige culpable, motivo y método. Resolver el misterio exige una teoría coherente respaldada por las pruebas correctas.</p>
+        </li>
+      </ol>
+      <p class="archive-method__warning"><span>Nota:</span> no necesitas descubrirlo todo, pero una acusación precipitada puede cerrar el caso sin revelar la verdad.</p>
+    </section>
 
-                  <p class="mt-4 max-w-prose font-narrative leading-relaxed text-parchment-200/80">
-                    {caseSummary.briefing}
-                  </p>
+    <section class="archive-journal" id="diario" aria-labelledby="journal-title">
+      <div class="archive-section-heading">
+        <div><p class="archive-kicker">Cuaderno de campo</p><h2 id="journal-title">Diario del archivo</h2></div>
+        <p>Anotaciones del editor</p>
+      </div>
 
-                  <span class="typed-sm mt-5 inline-block text-gold-400">Abrir el expediente →</span>
-                </div>
-              </a>
-            </li>
-          ))}
-        </ul>
-      )
-    }
+      <div class="archive-journal__grid">
+        <article class="archive-journal__lead">
+          <p class="archive-journal__entry">Entrada 003 · Diseño</p>
+          <h3>Cuando leer también significa decidir</h3>
+          <p>Una buena investigación no consiste en esconder la respuesta, sino en repartir la verdad entre escenas, testimonios y objetos. El lector debe poder equivocarse por sus propias razones.</p>
+          <p>Por eso ningún expediente obliga a recorrer un único camino: lo descubierto abre nuevas diligencias y transforma pistas que parecían definitivas.</p>
+        </article>
+        <div class="archive-journal__notes">
+          <article>
+            <p class="archive-journal__entry">Entrada 002 · Ambientación</p>
+            <h3>La imagen como parte del testimonio</h3>
+            <p>Retratos, habitaciones y objetos no ilustran únicamente el texto. Sitúan cada declaración en un lugar y dejan al lector observar antes de sacar conclusiones.</p>
+          </article>
+          <article>
+            <p class="archive-journal__entry">Entrada 001 · Origen</p>
+            <h3>Por qué existe este archivo</h3>
+            <p>Nació de una pregunta sencilla: ¿puede una historia de misterio conservar el ritmo de una novela y, al mismo tiempo, entregar al lector el control de la investigación?</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="archive-about" id="sobre-el-proyecto" aria-labelledby="about-title">
+      <div class="archive-about__stamp" aria-hidden="true">Documento<br />reservado</div>
+      <div class="archive-about__copy">
+        <p class="archive-kicker">Sobre el proyecto</p>
+        <h2 id="about-title">Un archivo de misterios interactivos</h2>
+        <p class="archive-about__lead">El Archivo de Medianoche combina ficción detectivesca, exploración y deducción en expedientes que respetan la inteligencia del lector.</p>
+        <div class="archive-about__columns">
+          <p>Cada caso está construido como una red de escenas. Puedes seguir líneas distintas, volver sobre lo descubierto y formular una acusación cuando creas comprender qué ocurrió.</p>
+          <p>El sistema registra tu investigación, pero nunca interpreta las pruebas por ti. Los hechos están en el archivo; la teoría final siempre te pertenece.</p>
+        </div>
+        <a class="archive-button archive-button--ink" href="#expedientes">Entrar en el archivo <span aria-hidden="true">→</span></a>
+      </div>
+      <blockquote>“La realidad siempre deja pistas. Solo hay que saber dónde mirar.”</blockquote>
+    </section>
+
+    <footer class="archive-footer">
+      <a class="archive-brand" href="/" aria-label="Volver al inicio"><span>El Archivo</span><span>de Medianoche</span></a>
+      <nav aria-label="Navegación del pie"><a href="#expedientes">Expedientes</a><a href="#como-funciona">Cómo funciona</a><a href="#diario">Diario</a></nav>
+      <span>© El Archivo de Medianoche</span>
+    </footer>
   </main>
 </Layout>
