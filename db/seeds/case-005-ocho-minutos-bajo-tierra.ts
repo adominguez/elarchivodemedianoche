@@ -109,7 +109,7 @@ export const case005: CaseDefinition = {
     clue('lampara','Lámpara roja de carburo','essential','Talud del túnel','Una lámpara artesanal sigue encendida tras una celosía.','La lente procede del armario del jefe de tren y el depósito fue preparado para arder toda la noche.'),
     clue('precinto','Precinto del furgón','essential','Furgón postal','El plomo aparenta estar intacto, aunque su borde limpio contrasta con la suciedad del viaje.','Fue sustituido durante el trayecto; la mordida inferior tiene un diente roto.'),
     clue('tenaza','Tenaza de reserva','essential','Coche de cola','La herramienta de Julián conserva polvo de plomo reciente.','Su diente mellado reproduce exactamente la huella del precinto falso.'),
-    clue('llave','Sobre de la llave postal','essential','Coche de cola','El lacre parece entero y la llave sigue dentro, pero el papel está ondulado.','El sobre se abrió con vapor para copiar la llave; el original fue devuelto y el sobre se selló de nuevo antes de partir.'),
+    clue('llave','Sobre de la llave postal','essential','Coche de cola','El lacre parece entero y, al tacto, parece conservar una llave dentro, pero el papel está ondulado.','El sobre se abrió con vapor para copiar la llave; el original fue devuelto y el sobre se selló de nuevo antes de partir.'),
     clue('carro','Carro de sacas','essential','Furgón postal','Una rueda tiene hollín fresco y una fibra negra.','El carro vacío cruzó la plataforma para recoger la soga, regresó al furgón y después transportó la caja hacia la puerta lateral.'),
     clue('puerta','Carril de la puerta lateral','essential','Furgón postal','La grasa está barrida en una franja reciente.','La puerta se abrió unos cuarenta centímetros en marcha; la marca coincide con el ancho de la caja.'),
     clue('soga','Soga alquitranada','essential','Plataforma trasera','Una cuerda húmeda está escondida bajo una lona.','Soportó unos setenta kilos y contiene arena rojiza del desagüe del kilómetro 84,6.'),
@@ -155,7 +155,7 @@ export const case005: CaseDefinition = {
     ],'clasificacion',[{effect:'discover_clue',target:'c005-cl-pesos'}]),
     node('cola','scene','Registrar el coche de cola','Coche de cola',[
       'El despacho de Julián parece un modelo de disciplina ferroviaria. En el armario faltan una lente roja y un sello de plomo. La tenaza de reserva tiene un diente mellado; el cuaderno de rondas incluye un croquis reciente del túnel y una suma repetida varias veces.',
-      'Dentro del maletín aparece un pagaré vencido, avalado con el sello de la mutualidad. El sobre sigue lacrado y parece conservar dentro una llave postal, aunque el papel se ondula alrededor de la solapa como después de recibir vapor.',
+      'Dentro del maletín aparece un pagaré vencido, avalado con el sello de la mutualidad. Sobre la mesa, donde el jefe de estación lo ha dejado bajo custodia, el sobre sigue lacrado y parece conservar dentro una llave postal, aunque el papel se ondula alrededor de la solapa como después de recibir vapor.',
     ],'coche-cola',[
       {effect:'discover_clue',target:'c005-cl-tenaza'},{effect:'discover_clue',target:'c005-cl-llave'},
       {effect:'discover_clue',target:'c005-cl-cuaderno'},{effect:'discover_clue',target:'c005-cl-pagare'}
