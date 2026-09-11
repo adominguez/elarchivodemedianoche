@@ -392,3 +392,20 @@ export const case005: CaseDefinition = {
     epitaph:'El tren no se detuvo. La verdad tampoco.',
   },
 };
+
+const optionLines: Record<string, string[]> = {
+  'El tren': ['furgon','locomotora','comunicaciones','comedor','tercera','clasificacion','cola'],
+  'Testimonios': ['julian','tomas','eusebio','marcelo','nuria','adela'],
+  'Peritajes del convoy': ['velocimetro','morse','precinto','tenaza','llave','carro','puerta','soga'],
+  'Comprobaciones': ['billetes','vales','pesos','cuaderno','pagare'],
+  'El túnel': ['tunel','lampara','arena','caja','caja-analisis'],
+  'Confrontaciones': ['confrontar-julian','confrontar-tomas','confrontar-eusebio','confrontar-marcelo','confrontar-nuria','confrontar-adela'],
+  'Conclusiones': ['reconstruccion'],
+};
+
+for (const [line, ids] of Object.entries(optionLines)) {
+  for (const id of ids) {
+    const investigation = case005.options.find((option) => option.id === `c005-o-${id}`);
+    if (investigation) investigation.line = line;
+  }
+}

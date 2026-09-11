@@ -20,6 +20,16 @@ test('la cabecera y las etiquetas de las pistas son inequívocas',()=>{
   }
 });
 
+test('las diligencias están separadas por zonas, testimonios y fases de investigación',()=>{
+  assert.ok(case005.options.every(({line})=>line));
+  const lines=new Set(case005.options.map(({line})=>line));
+  for(const expected of ['El tren','Testimonios','Peritajes del convoy','Comprobaciones','El túnel','Confrontaciones','Conclusiones']) {
+    assert.ok(lines.has(expected),expected);
+  }
+  assert.equal(case005.options.find(({id})=>id==='c005-o-furgon')?.line,'El tren');
+  assert.equal(case005.options.find(({id})=>id==='c005-o-julian')?.line,'Testimonios');
+});
+
 test('la cronología sitúa el kilómetro 84,6 a mitad de la reducción',()=>{
   const text=case005.nodes.map(node=>node.body).join(' ');
   assert.match(text,/1,6 kilómetros/);
