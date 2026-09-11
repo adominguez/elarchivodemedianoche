@@ -49,6 +49,7 @@ export interface Suspect {
   portraitPublicId: string | null;
   description: string;
   relation: string | null;
+  visibleAfterNodeId?: string | null;
   facts: SuspectFact[];
 }
 

@@ -34,6 +34,7 @@ const { form } = Astro.props;
                 type="radio"
                 name="culpable"
                 value={suspect.id}
+                aria-label={`Acusar a ${suspect.name}`}
                 class="sr-only"
                 required
               />
@@ -67,7 +68,7 @@ const { form } = Astro.props;
         form.motives.map((option) => (
           <li>
             <label class="accusation-choice flex cursor-pointer items-baseline gap-3 border-l-2 border-transparent py-1.5 pl-3 text-parchment-300/80">
-              <input type="radio" name="motivo" value={option.id} class="sr-only" required />
+              <input type="radio" name="motivo" value={option.id} aria-label={`Motivo: ${option.label}`} class="sr-only" required />
               <span class="action-mark" aria-hidden="true">·</span>
               <span class="font-narrative text-lg leading-snug">{option.label}</span>
             </label>
@@ -84,7 +85,7 @@ const { form } = Astro.props;
         form.methods.map((option) => (
           <li>
             <label class="accusation-choice flex cursor-pointer items-baseline gap-3 border-l-2 border-transparent py-1.5 pl-3 text-parchment-300/80">
-              <input type="radio" name="metodo" value={option.id} class="sr-only" required />
+              <input type="radio" name="metodo" value={option.id} aria-label={`Método: ${option.label}`} class="sr-only" required />
               <span class="action-mark" aria-hidden="true">·</span>
               <span class="font-narrative text-lg leading-snug">{option.label}</span>
             </label>
@@ -115,7 +116,7 @@ const { form } = Astro.props;
           {form.evidence.map((clue) => (
             <li>
               <label class="accusation-choice flex cursor-pointer items-baseline gap-3 border-l-2 border-transparent py-1.5 pl-3 text-parchment-300/80">
-                <input type="checkbox" name="evidencia" value={clue.id} class="sr-only" />
+                <input type="checkbox" name="evidencia" value={clue.id} aria-label={`Evidencia: ${clue.label}`} class="sr-only" />
                 <span class="action-mark" aria-hidden="true">·</span>
                 <span class="font-narrative">{clue.label}</span>
               </label>
@@ -133,7 +134,7 @@ const { form } = Astro.props;
     >
       Formular la acusación
     </button>
-    <p class="typed-sm text-parchment-400/70">
+    <p class="typed-sm text-parchment-400/70" data-accusation-status aria-live="polite">
       Seleccione culpable, motivo y método antes de enviarla.
     </p>
   </div>
@@ -143,6 +144,7 @@ const { form } = Astro.props;
   function initialiseAccusationForm(form: HTMLFormElement) {
     const count = form.querySelector<HTMLElement>('[data-evidence-count]');
     const evidence = [...form.querySelectorAll<HTMLInputElement>('input[name="evidencia"]')];
+    const status = form.querySelector<HTMLElement>('[data-accusation-status]');
 
     const refresh = () => {
       for (const input of form.querySelectorAll<HTMLInputElement>('input[type="radio"], input[type="checkbox"]')) {
@@ -153,7 +155,18 @@ const { form } = Astro.props;
         label?.classList.toggle('bg-blood/20', input.checked && input.name === 'culpable');
         if (mark) mark.textContent = input.checked ? '✕' : '·';
       }
-      if (count) count.textContent = `${evidence.filter((input) => input.checked).length} seleccionadas`;
+      const evidenceSelected = evidence.filter((input) => input.checked).length;
+      if (count) count.textContent = `${evidenceSelected} ${evidenceSelected === 1 ? 'seleccionada' : 'seleccionadas'}`;
+      if (status) {
+        const missing = [
+          ['culpable', 'culpable'],
+          ['motivo', 'motivo'],
+          ['metodo', 'método'],
+        ].filter(([name]) => !form.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)).map(([, label]) => label);
+        status.textContent = missing.length
+          ? `Falta seleccionar: ${missing.join(', ')}.`
+          : 'Teoría básica completa. Revise las evidencias antes de enviarla.';
+      }
     };
 
     form.addEventListener('change', refresh);

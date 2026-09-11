@@ -118,6 +118,7 @@ const accusation = await lastAccusation(investigationId);
 const dossier = buildDossier({ caseFile, state, changes, accusation });
 const started = state.currentNodeId !== null;
 const { header } = dossier;
+const victimDisplayName = header.victimName?.replace(/^v[ií]ctima\s*:\s*/i, '').trim() || null;
 ---
 
 <Layout
@@ -147,8 +148,8 @@ const { header } = dossier;
           {header.place && <div><dt class="sr-only">Lugar</dt><dd>{header.place}</dd></div>}
           {header.dateLabel && <div><dt class="sr-only">Fecha</dt><dd>{header.dateLabel}</dd></div>}
           {
-            header.victimName && (
-              <div><dt class="sr-only">Víctima</dt><dd>Víctima: {header.victimName}</dd></div>
+            victimDisplayName && (
+              <div><dt class="sr-only">Víctima</dt><dd>Víctima: {victimDisplayName}</dd></div>
             )
           }
         </dl>
@@ -175,7 +176,7 @@ const { header } = dossier;
                 Ver resumen
               </button>
               {!dossier.closed && (
-                <button type="button" class="resolve-shortcut" data-open-resolver>
+                <button type="button" class="resolve-shortcut" data-open-resolver aria-controls="resolver-expediente" aria-expanded="false">
                   <span class="resolve-shortcut__mark" aria-hidden="true">⚖</span>
                   Resolver expediente
                 </button>
@@ -416,8 +417,17 @@ const { header } = dossier;
     document.querySelectorAll<HTMLButtonElement>('[data-open-resolver]').forEach((shortcut) => {
       shortcut.addEventListener('click', () => {
         if (!resolver) return;
-        resolver.open = true;
-        resolver.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        resolver.setAttribute('open', '');
+        shortcut.setAttribute('aria-expanded', 'true');
+        requestAnimationFrame(() => {
+          resolver.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          resolver.querySelector<HTMLElement>('summary, input, button')?.focus({ preventScroll: true });
+        });
+      });
+    });
+    resolver?.addEventListener('toggle', () => {
+      document.querySelectorAll<HTMLButtonElement>('[data-open-resolver]').forEach((shortcut) => {
+        shortcut.setAttribute('aria-expanded', String(resolver.open));
       });
     });
 

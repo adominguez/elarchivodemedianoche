@@ -4,7 +4,7 @@ export function fromDefinition(d: CaseDefinition): CaseFile {
   return {
     ...d, subtitle: d.subtitle ?? null, place: d.place ?? null, dateLabel: d.dateLabel ?? null,
     victimName: d.victimName ?? null, coverPublicId: d.coverPublicId ?? null,
-    suspects: d.suspects.map(s => ({...s, portraitPublicId:s.portraitPublicId??null, relation:s.relation??null, facts:s.facts.map(f=>({...f,suspectId:s.id}))})),
+    suspects: d.suspects.map(s => ({...s, portraitPublicId:s.portraitPublicId??null, relation:s.relation??null, visibleAfterNodeId:s.visibleAfterNodeId??null, facts:s.facts.map(f=>({...f,suspectId:s.id}))})),
     clues:d.clues.map(c=>({...c,imagePublicId:c.imagePublicId??null,foundAt:c.foundAt??null})),
     nodes:Object.fromEntries(d.nodes.map(n=>[n.id,{...n,location:n.location??null,body:n.body.split('\n\n'),imagePublicId:n.imagePublicId??null,imageCaption:n.imageCaption??null,effects:(n.effects??[]).map(e=>({...e,targetId:e.target,value:'value' in e?e.value??null:null}))}])),
     options:d.options.map(o=>({...o,sourceNodeId:o.from??null,targetNodeId:o.to,hint:o.hint??null,line:o.line??null,repeatable:o.repeatable??false,requirements:(o.requires??[]).map(r=>({...r,targetId:r.target,value:'value' in r?r.value??null:null}))})),

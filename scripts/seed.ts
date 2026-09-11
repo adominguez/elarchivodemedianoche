@@ -82,12 +82,13 @@ function statementsFor(def: CaseDefinition): InStatement[] {
 
   def.suspects.forEach((suspect, index) => {
     statements.push({
-      sql: `INSERT INTO suspects (id, case_id, name, role, portrait_public_id, description, relation, position)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      sql: `INSERT INTO suspects (id, case_id, name, role, portrait_public_id, description, relation, visible_after_node_id, position)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT (id) DO UPDATE SET
               case_id = excluded.case_id, name = excluded.name, role = excluded.role,
               portrait_public_id = excluded.portrait_public_id, description = excluded.description,
-              relation = excluded.relation, position = excluded.position`,
+              relation = excluded.relation, visible_after_node_id = excluded.visible_after_node_id,
+              position = excluded.position`,
       args: [
         suspect.id,
         def.id,
@@ -96,6 +97,7 @@ function statementsFor(def: CaseDefinition): InStatement[] {
         suspect.portraitPublicId ?? null,
         suspect.description,
         suspect.relation ?? null,
+        suspect.visibleAfterNodeId ?? null,
         index,
       ],
     });

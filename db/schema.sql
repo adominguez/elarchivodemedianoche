@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS suspects (
   portrait_public_id TEXT,                     -- Cloudinary
   description        TEXT NOT NULL,
   relation           TEXT,                     -- relación con la víctima
+  visible_after_node_id TEXT,                   -- nodo que incorpora a la persona como sospechosa
   position           INTEGER NOT NULL DEFAULT 0
 );
 CREATE INDEX IF NOT EXISTS idx_suspects_case ON suspects(case_id);

@@ -14,21 +14,6 @@ interface Props {
 
 const { suspects } = Astro.props;
 
-const BADGE = {
-  contradiction: 'text-blood-bright border-blood-bright/70',
-  alibi: 'text-parchment-200 border-parchment-300/60',
-  motive: 'text-gold-400 border-gold-500/70',
-  testimony: 'text-parchment-200 border-parchment-300/60',
-  background: 'text-parchment-300 border-parchment-400/60',
-} as const;
-
-const BADGE_MARK = {
-  contradiction: '⚠',
-  alibi: '·',
-  motive: '§',
-  testimony: '·',
-  background: '·',
-} as const;
 ---
 
 <ul class="space-y-4">
@@ -49,16 +34,6 @@ const BADGE_MARK = {
             <div class="min-w-0 flex-1">
               <p class="typed text-sm text-parchment-100">{suspect.name}</p>
               <p class="typed-sm mt-1 text-parchment-400">{suspect.role}</p>
-
-              {suspect.badges.length > 0 && (
-                <ul class="mt-2 flex flex-wrap gap-1.5">
-                  {suspect.badges.map((badge) => (
-                    <li class:list={['typed-sm border px-1.5 py-0.5', BADGE[badge.kind]]}>
-                      <span aria-hidden="true">{BADGE_MARK[badge.kind]}</span> {badge.label}
-                    </li>
-                  ))}
-                </ul>
-              )}
 
               <p class="interactive-file__action">
                 <span class="when-closed">Abrir ficha</span>

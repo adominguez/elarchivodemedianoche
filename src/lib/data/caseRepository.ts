@@ -163,6 +163,7 @@ export async function getCaseFile(slug: string): Promise<CaseFile | null> {
       portraitPublicId: strOrNull(row.portrait_public_id),
       description: str(row.description),
       relation: strOrNull(row.relation),
+      visibleAfterNodeId: strOrNull(row.visible_after_node_id),
       facts: factsBySuspect.get(id) ?? [],
     };
   });

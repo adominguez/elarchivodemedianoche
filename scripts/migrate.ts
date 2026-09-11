@@ -26,6 +26,10 @@ if (!accusationColumns.has('evidence_required')) {
 if (!accusationColumns.has('difficulty')) {
   await client.execute(`ALTER TABLE accusations ADD COLUMN difficulty TEXT NOT NULL DEFAULT 'detective'`);
 }
+const suspectColumns = new Set((await client.execute(`PRAGMA table_info(suspects)`)).rows.map((row) => String(row.name)));
+if (!suspectColumns.has('visible_after_node_id')) {
+  await client.execute(`ALTER TABLE suspects ADD COLUMN visible_after_node_id TEXT`);
+}
 
 const { rows } = await client.execute(
   `SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' ORDER BY name`,

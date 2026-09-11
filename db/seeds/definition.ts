@@ -61,6 +61,8 @@ export interface SuspectDefinition {
   description: string;
   relation?: string;
   portraitPublicId?: string;
+  /** Nodo tras el que la persona pasa a formar parte de la lista de sospechosos. */
+  visibleAfterNodeId?: string;
   facts: FactDefinition[];
 }
 

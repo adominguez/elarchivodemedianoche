@@ -69,11 +69,11 @@ export interface DiscoveryNotice {
 }
 
 const FACT_LABEL: Record<FactKind, string> = {
-  testimony: 'Testimonio',
-  alibi: 'Coartada',
-  contradiction: 'Contradicción',
-  motive: 'Posible motivo',
-  background: 'Antecedente',
+  testimony: 'Declaración',
+  alibi: 'Comprobación',
+  contradiction: 'Dato contrastado',
+  motive: 'Antecedente',
+  background: 'Contexto',
 };
 
 export function discoveryNotices(caseFile: CaseFile, changes: StateChanges): DiscoveryNotice[] {
@@ -476,7 +476,9 @@ export function buildDossier({
     notices: changes ? discoveryNotices(caseFile, changes) : [],
     continuations: nodeContinuations(caseFile, state, state.currentNodeId).map(toOptionView),
     investigationLines: groupOptions(openInvestigations(caseFile, state)),
-    suspects: caseFile.suspects.map((suspect) => suspectCard(suspect, state)),
+    suspects: caseFile.suspects
+      .filter((suspect) => !suspect.visibleAfterNodeId || state.visitedNodeIds.has(suspect.visibleAfterNodeId))
+      .map((suspect) => suspectCard(suspect, state)),
     evidence: evidenceBoard(caseFile, state),
     progress: caseProgress(caseFile, state),
     accusationForm: accusationForm(caseFile, state),

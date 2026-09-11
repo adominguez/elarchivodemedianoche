@@ -33,6 +33,16 @@ test('la desaparición completa es alcanzable en distintos órdenes',()=>{
   }
 });
 
+test('Elisa no aparece como sospechosa hasta encontrarla en el conducto',()=>{
+  assert.equal(file.suspects.find(({id})=>id==='c004-s-elisa')?.visibleAfterNodeId,'c004-n-tunel');
+});
+
+test('la presentación conserva la hora correcta y no entrega la plantilla de la acusación',()=>{
+  assert.match(case004.briefing,/A las 00:10/);
+  assert.doesNotMatch(case004.briefing,/\bAlas 00:10/i);
+  assert.doesNotMatch(file.nodes['c004-n-reconstruccion']!.body.join(' '),/cuatro columnas|primera|segunda|tercera|cuarta/i);
+});
+
 test('encontrar a Elisa y tomar todas las declaraciones abre la acusación sin exigir la reconstrucción',()=>{
   const state=traverse();
   const withoutReconstruction={...state,visitedNodeIds:new Set([...state.visitedNodeIds].filter(id=>id!=='c004-n-reconstruccion'))};
