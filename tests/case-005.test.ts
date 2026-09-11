@@ -25,6 +25,8 @@ test('la cronología sitúa el kilómetro 84,6 a mitad de la reducción',()=>{
   assert.match(text,/1,6 kilómetros/);
   assert.match(text,/23:47/);
   assert.match(text,/parte falso/);
+  assert.match(text,/retuvo el sobre cerrado como prueba/);
+  assert.match(text,/Los tres detalles/);
 });
 
 function traverse(reverse=false,blockedNodeId?:string) {

@@ -43,7 +43,7 @@ export const case005: CaseDefinition = {
         fact('julian-ruta','background','Conocía el desagüe','Su cuaderno sitúa una revisión personal en el kilómetro 84,6 el día anterior.'),
         fact('julian-deuda','motive','Una deuda urgente','Un pagaré de juego vencía al mediodía siguiente por una cantidad que no podía cubrir.'),
         fact('julian-lampara','contradiction','Cristal de señales','La lámpara falsa fue montada con un cristal rojo del armario bajo su custodia.'),
-        fact('julian-sacos','contradiction','Conocía el escondite','Pregunta si la caja seguía cerrada bajo el segundo saco, dos detalles que nadie le había revelado.'),
+        fact('julian-sacos','contradiction','Conocía el escondite','Pregunta si la caja seguía cerrada bajo el segundo saco, tres detalles que nadie le había revelado.'),
       ],
     },
     {
@@ -155,7 +155,7 @@ export const case005: CaseDefinition = {
     ],'clasificacion',[{effect:'discover_clue',target:'c005-cl-pesos'}]),
     node('cola','scene','Registrar el coche de cola','Coche de cola',[
       'El despacho de Julián parece un modelo de disciplina ferroviaria. En el armario faltan una lente roja y un sello de plomo. La tenaza de reserva tiene un diente mellado; el cuaderno de rondas incluye un croquis reciente del túnel y una suma repetida varias veces.',
-      'Dentro del maletín aparece un pagaré vencido, avalado con el sello de la mutualidad. El sobre sigue lacrado y conserva dentro la llave postal original, aunque el papel se ondula alrededor de la solapa como después de recibir vapor.',
+      'Dentro del maletín aparece un pagaré vencido, avalado con el sello de la mutualidad. El sobre sigue lacrado y parece conservar dentro una llave postal, aunque el papel se ondula alrededor de la solapa como después de recibir vapor.',
     ],'coche-cola',[
       {effect:'discover_clue',target:'c005-cl-tenaza'},{effect:'discover_clue',target:'c005-cl-llave'},
       {effect:'discover_clue',target:'c005-cl-cuaderno'},{effect:'discover_clue',target:'c005-cl-pagare'}
@@ -172,7 +172,7 @@ export const case005: CaseDefinition = {
     ]),
     node('eusebio','interrogation','Interrogar a Eusebio Roldán','Compartimento postal',[
       'Eusebio protesta por el tabaco antes de que usted lo mencione. Confiesa que lo escondió entre las sacas para venderlo en Cáceres. Durante el túnel dos bultos se desplazaron y lo encerraron contra la mesa de clasificación. Oyó pasar el carro dos veces al otro lado del mamparo, pero el estrépito de la lona le impidió distinguir el golpe exterior.',
-      'Cerró personalmente la caja en Madrid. Luego metió la única llave de la jaula en un sobre, estampó lacre y se lo entregó a Julián conforme al reglamento. Al llegar a Ávila recibió el mismo sobre aparentemente intacto y encontró dentro la llave original.',
+      'Cerró personalmente la caja en Madrid. Luego metió la única llave de la jaula en un sobre, estampó lacre y se lo entregó a Julián conforme al reglamento. Al llegar a Ávila, Julián le mostró el mismo sobre aparentemente intacto. Eusebio palpó una llave bajo el papel, pero el jefe de estación retuvo el sobre cerrado como prueba.',
     ],'eusebio',[
       {effect:'reveal_fact',target:'c005-f-eusebio-tabaco'},{effect:'reveal_fact',target:'c005-f-eusebio-llave'}
     ]),
