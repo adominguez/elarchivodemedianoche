@@ -1,0 +1,252 @@
+{
+  "case": "ocho-minutos-bajo-tierra",
+  "revision": "2026-09-11",
+  "assets": [
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/portada",
+      "width": 1024,
+      "height": 1536,
+      "version": 1789118979
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/sospechosos/julian-cid",
+      "width": 300,
+      "height": 500,
+      "version": 1789118980
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/sospechosos/tomas-veiga",
+      "width": 300,
+      "height": 500,
+      "version": 1789118981
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/sospechosos/eusebio-roldan",
+      "width": 300,
+      "height": 500,
+      "version": 1789118983
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/sospechosos/marcelo-frias",
+      "width": 300,
+      "height": 500,
+      "version": 1789118984
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/sospechosos/nuria-salcedo",
+      "width": 300,
+      "height": 500,
+      "version": 1789118986
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/sospechosos/adela-barea",
+      "width": 300,
+      "height": 500,
+      "version": 1789118987
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/escenas/tren-noche",
+      "width": 520,
+      "height": 300,
+      "version": 1789118989
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/escenas/furgon",
+      "width": 520,
+      "height": 300,
+      "version": 1789118990
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/escenas/locomotora",
+      "width": 1536,
+      "height": 1024,
+      "version": 1789118992
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/escenas/telegrafo",
+      "width": 520,
+      "height": 300,
+      "version": 1789118993
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/escenas/comedor",
+      "width": 520,
+      "height": 300,
+      "version": 1789118994
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/escenas/tercera",
+      "width": 520,
+      "height": 300,
+      "version": 1789118996
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/escenas/clasificacion",
+      "width": 520,
+      "height": 300,
+      "version": 1789118997
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/escenas/coche-cola",
+      "width": 520,
+      "height": 300,
+      "version": 1789118999
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/escenas/julian",
+      "width": 520,
+      "height": 300,
+      "version": 1789119000
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/escenas/tomas",
+      "width": 520,
+      "height": 300,
+      "version": 1789119002
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/escenas/eusebio",
+      "width": 520,
+      "height": 300,
+      "version": 1789119005
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/escenas/marcelo",
+      "width": 520,
+      "height": 300,
+      "version": 1789119007
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/escenas/nuria",
+      "width": 520,
+      "height": 300,
+      "version": 1789119008
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/escenas/adela",
+      "width": 520,
+      "height": 300,
+      "version": 1789119010
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/escenas/mesa-pruebas",
+      "width": 520,
+      "height": 300,
+      "version": 1789119011
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/escenas/tunel",
+      "width": 520,
+      "height": 300,
+      "version": 1789119013
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/escenas/alcantarilla",
+      "width": 520,
+      "height": 300,
+      "version": 1789119014
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/escenas/reconstruccion",
+      "width": 520,
+      "height": 300,
+      "version": 1789119015
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/pruebas/velocimetro",
+      "width": 350,
+      "height": 460,
+      "version": 1789119017
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/pruebas/morse",
+      "width": 350,
+      "height": 460,
+      "version": 1789119019
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/pruebas/lampara",
+      "width": 350,
+      "height": 460,
+      "version": 1789119020
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/pruebas/precinto",
+      "width": 350,
+      "height": 460,
+      "version": 1789119021
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/pruebas/tenaza",
+      "width": 350,
+      "height": 460,
+      "version": 1789119023
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/pruebas/llave",
+      "width": 350,
+      "height": 460,
+      "version": 1789119024
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/pruebas/carro",
+      "width": 350,
+      "height": 460,
+      "version": 1789119025
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/pruebas/puerta",
+      "width": 350,
+      "height": 460,
+      "version": 1789119026
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/pruebas/soga",
+      "width": 225,
+      "height": 500,
+      "version": 1789119028
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/pruebas/arena",
+      "width": 225,
+      "height": 500,
+      "version": 1789119029
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/pruebas/caja",
+      "width": 225,
+      "height": 500,
+      "version": 1789119031
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/pruebas/cuaderno",
+      "width": 225,
+      "height": 500,
+      "version": 1789119033
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/pruebas/pagare",
+      "width": 225,
+      "height": 500,
+      "version": 1789119034
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/pruebas/billetes",
+      "width": 225,
+      "height": 500,
+      "version": 1789119035
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/pruebas/vales",
+      "width": 225,
+      "height": 500,
+      "version": 1789119037
+    },
+    {
+      "publicId": "archivos-de-medianoche/ocho-minutos-bajo-tierra/pruebas/pesos",
+      "width": 225,
+      "height": 500,
+      "version": 1789119038
+    }
+  ]
+}

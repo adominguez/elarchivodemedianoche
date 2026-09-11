@@ -52,9 +52,23 @@ test('cada grupo probatorio es necesario y los indicios indiscriminados penaliza
   assert.equal(judgeAccusation(file,{...accusation,evidenceClueIds:['c003-cl-catalogo','c003-cl-pase','c003-cl-cuenta']},state).verdict,'partial');
 });
 
-test('los tres secretos secundarios quedan separados de la doble estafa',()=>{
+test('las confrontaciones añaden conclusiones nuevas y los secretos secundarios quedan separados',()=>{
+  const confrontations: Record<string,string[]> = {
+    'c003-n-confrontar-celia':['c003-f-celia-cuenta'],
+    'c003-n-confrontar-bruno':['c003-f-bruno-pujas'],
+    'c003-n-confrontar-nadia':['c003-f-nadia-marcas'],
+    'c003-n-confrontar-leo':['c003-f-leo-camara','c003-f-leo-entregas'],
+  };
+  for(const [nodeId,expected] of Object.entries(confrontations)) {
+    const before=traverse(false,nodeId);
+    const action=[...nodeContinuations(file,before,before.currentNodeId),...openInvestigations(file,before)].find(({option})=>option.targetNodeId===nodeId);
+    assert.ok(action,nodeId);
+    const after=visitNode(file,before,nodeId).state;
+    const gained=[...after.discoveredFactIds].filter(id=>!before.discoveredFactIds.has(id));
+    assert.deepEqual(gained.sort(),expected.sort(),nodeId);
+  }
   const state=traverse();
-  for(const factId of ['c003-f-celia-cuenta','c003-f-bruno-pujas','c003-f-nadia-barniz','c003-f-leo-camara']) {
+  for(const factId of ['c003-f-celia-cuenta','c003-f-bruno-pujas','c003-f-nadia-barniz','c003-f-nadia-marcas','c003-f-leo-camara']) {
     assert.ok(state.discoveredFactIds.has(factId));
   }
 });
