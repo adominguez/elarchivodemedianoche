@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { case004 } from '../db/seeds/case-004-noventa-segundos-de-sombra.ts';
 import { fromDefinition, initialState } from './case-definition.ts';
-import { canAccuse, canFollow, caseProgress, judgeAccusation, nodeContinuations, openInvestigations, visitNode } from '../src/lib/domain/engine.ts';
+import { canAccuse, canFollow, caseProgress, isSuspectVisible, judgeAccusation, nodeContinuations, openInvestigations, visitNode } from '../src/lib/domain/engine.ts';
 
 const file=fromDefinition(case004);
 const accusation={
@@ -35,6 +35,13 @@ test('la desaparición completa es alcanzable en distintos órdenes',()=>{
 
 test('Elisa no aparece como sospechosa hasta encontrarla en el conducto',()=>{
   assert.equal(file.suspects.find(({id})=>id==='c004-s-elisa')?.visibleAfterNodeId,'c004-n-tunel');
+  const before=visitNode(file,initialState(file.id),file.entryNodeId).state;
+  const elisa=file.suspects.find(({id})=>id==='c004-s-elisa')!;
+  assert.equal(isSuspectVisible(elisa,before),false);
+  assert.equal(judgeAccusation(file,accusation,before).culpritCorrect,false);
+
+  const after=traverse();
+  assert.equal(isSuspectVisible(elisa,after),true);
 });
 
 test('la presentación conserva la hora correcta y no entrega la plantilla de la acusación',()=>{

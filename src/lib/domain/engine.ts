@@ -14,12 +14,17 @@ import type {
   InvestigationDifficulty,
   InvestigationState,
   OptionRequirement,
+  Suspect,
   Verdict,
 } from './types';
 
 // ---------------------------------------------------------------------------
 // Requisitos y disponibilidad
 // ---------------------------------------------------------------------------
+
+export function isSuspectVisible(suspect: Suspect, state: InvestigationState): boolean {
+  return !suspect.visibleAfterNodeId || state.visitedNodeIds.has(suspect.visibleAfterNodeId);
+}
 
 export function isRequirementMet(req: OptionRequirement, state: InvestigationState): boolean {
   switch (req.requirement) {
@@ -278,7 +283,9 @@ function countKnown(known: IterableIterator<string>, universe: string[]): number
 export function judgeAccusation(caseFile: CaseFile, accusation: Accusation, state: InvestigationState): AccusationResult {
   const { solution } = caseFile;
 
-  const culpritCorrect = accusation.culpritSuspectId === solution.culpritSuspectId;
+  const accused = caseFile.suspects.find((suspect) => suspect.id === accusation.culpritSuspectId);
+  const accusedIsVisible = Boolean(accused && isSuspectVisible(accused, state));
+  const culpritCorrect = accusedIsVisible && accusation.culpritSuspectId === solution.culpritSuspectId;
   const motiveCorrect = accusation.motiveOptionId === solution.motiveOptionId;
   const methodCorrect = accusation.methodOptionId === solution.methodOptionId;
 

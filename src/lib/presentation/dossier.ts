@@ -8,6 +8,7 @@
 import {
   canAccuse,
   caseProgress,
+  isSuspectVisible,
   nodeContinuations,
   openInvestigations,
   requiredEvidenceGroups,
@@ -393,13 +394,15 @@ export function caseSummaryCover(summary: CaseSummary): CaseImage | null {
 
 function accusationForm(caseFile: CaseFile, state: InvestigationState): AccusationFormView {
   return {
-    suspects: caseFile.suspects.map((suspect) => ({
-      id: suspect.id,
-      name: suspect.name,
-      role: suspect.role,
-      thumbSrc: caseImage(suspect.portraitPublicId, 'portraitThumb')?.src ?? null,
-      initials: initials(suspect.name),
-    })),
+    suspects: caseFile.suspects
+      .filter((suspect) => isSuspectVisible(suspect, state))
+      .map((suspect) => ({
+        id: suspect.id,
+        name: suspect.name,
+        role: suspect.role,
+        thumbSrc: caseImage(suspect.portraitPublicId, 'portraitThumb')?.src ?? null,
+        initials: initials(suspect.name),
+      })),
     motives: caseFile.solutionOptions
       .filter((option) => option.dimension === 'motive')
       .map(({ id, label }) => ({ id, label })),
@@ -477,7 +480,7 @@ export function buildDossier({
     continuations: nodeContinuations(caseFile, state, state.currentNodeId).map(toOptionView),
     investigationLines: groupOptions(openInvestigations(caseFile, state)),
     suspects: caseFile.suspects
-      .filter((suspect) => !suspect.visibleAfterNodeId || state.visitedNodeIds.has(suspect.visibleAfterNodeId))
+      .filter((suspect) => isSuspectVisible(suspect, state))
       .map((suspect) => suspectCard(suspect, state)),
     evidence: evidenceBoard(caseFile, state),
     progress: caseProgress(caseFile, state),

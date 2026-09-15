@@ -1,0 +1,198 @@
+{
+  "case": "la-habitacion-que-respiraba",
+  "revision": "2026-09-14",
+  "assets": [
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/portada",
+      "width": 1024,
+      "height": 1536,
+      "version": 1789385497
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/sospechosos/amalia-voss",
+      "width": 300,
+      "height": 500,
+      "version": 1789385498
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/sospechosos/clara-valdes",
+      "width": 300,
+      "height": 500,
+      "version": 1789385500
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/sospechosos/mateo-robles",
+      "width": 300,
+      "height": 500,
+      "version": 1789385502
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/escenas/hotel",
+      "width": 720,
+      "height": 538,
+      "version": 1789385504
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/escenas/seance",
+      "width": 720,
+      "height": 538,
+      "version": 1789385506
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/escenas/library",
+      "width": 720,
+      "height": 538,
+      "version": 1789385509
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/escenas/passage",
+      "width": 720,
+      "height": 538,
+      "version": 1789385511
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/escenas/infirmary",
+      "width": 720,
+      "height": 538,
+      "version": 1789385514
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/escenas/boiler",
+      "width": 720,
+      "height": 538,
+      "version": 1789385517
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/escenas/props",
+      "width": 720,
+      "height": 538,
+      "version": 1789385519
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/escenas/evidence",
+      "width": 720,
+      "height": 538,
+      "version": 1789385521
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/escenas/amalia",
+      "width": 720,
+      "height": 538,
+      "version": 1789385523
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/escenas/clara",
+      "width": 720,
+      "height": 538,
+      "version": 1789385527
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/escenas/mateo",
+      "width": 720,
+      "height": 538,
+      "version": 1789385530
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/escenas/reconstruction",
+      "width": 720,
+      "height": 538,
+      "version": 1789385532
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/pruebas/llave-notario",
+      "width": 300,
+      "height": 310,
+      "version": 1789385535
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/pruebas/sello",
+      "width": 300,
+      "height": 310,
+      "version": 1789385536
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/pruebas/codicilo",
+      "width": 300,
+      "height": 310,
+      "version": 1789385538
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/pruebas/testamento",
+      "width": 300,
+      "height": 310,
+      "version": 1789385539
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/pruebas/guante",
+      "width": 300,
+      "height": 310,
+      "version": 1789385540
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/pruebas/reloj-gas",
+      "width": 300,
+      "height": 310,
+      "version": 1789385541
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/pruebas/presion-gas",
+      "width": 300,
+      "height": 310,
+      "version": 1789385542
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/pruebas/gasa",
+      "width": 300,
+      "height": 310,
+      "version": 1789385544
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/pruebas/plano",
+      "width": 300,
+      "height": 310,
+      "version": 1789385545
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/pruebas/trompeta",
+      "width": 300,
+      "height": 310,
+      "version": 1789385546
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/pruebas/llave-copia",
+      "width": 300,
+      "height": 310,
+      "version": 1789385547
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/pruebas/registro-circulo",
+      "width": 300,
+      "height": 310,
+      "version": 1789385549
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/pruebas/papeleta",
+      "width": 300,
+      "height": 310,
+      "version": 1789385550
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/pruebas/medicinas",
+      "width": 300,
+      "height": 310,
+      "version": 1789385551
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/pruebas/carbon",
+      "width": 300,
+      "height": 310,
+      "version": 1789385553
+    },
+    {
+      "publicId": "archivos-de-medianoche/la-habitacion-que-respiraba/pruebas/bomba",
+      "width": 300,
+      "height": 310,
+      "version": 1789385554
+    }
+  ]
+}

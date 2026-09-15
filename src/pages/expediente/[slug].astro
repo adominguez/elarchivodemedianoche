@@ -27,7 +27,7 @@ import {
   reopenInvestigation,
   setDifficulty,
 } from '@lib/data/progressRepository';
-import { canAccuse, canFollow, judgeAccusation, visitNode, type StateChanges } from '@lib/domain/engine';
+import { canAccuse, canFollow, isSuspectVisible, judgeAccusation, visitNode, type StateChanges } from '@lib/domain/engine';
 import { buildDossier } from '@lib/presentation/dossier';
 import { readerKey } from '@lib/reader';
 import type { Accusation, InvestigationDifficulty } from '@lib/domain/types';
@@ -83,8 +83,11 @@ if (Astro.request.method === 'POST') {
     if (!canAccuse(caseFile, state)) {
       notice = 'Antes de acusar debe completar la diligencia urgente pendiente.';
     } else {
+    const requestedCulpritId = String(form.get('culpable') ?? '');
+    const requestedCulprit = caseFile.suspects.find((suspect) => suspect.id === requestedCulpritId);
+    const culpritIsVisible = requestedCulprit && isSuspectVisible(requestedCulprit, state);
     const accusation: Accusation = {
-      culpritSuspectId: String(form.get('culpable') ?? ''),
+      culpritSuspectId: culpritIsVisible ? requestedCulpritId : '',
       motiveOptionId: String(form.get('motivo') ?? ''),
       methodOptionId: String(form.get('metodo') ?? ''),
       evidenceClueIds: form

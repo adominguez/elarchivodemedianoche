@@ -15,8 +15,9 @@ import { case002 } from '../db/seeds/case-002-la-senal-bajo-el-hielo.ts';
 import { case003 } from '../db/seeds/case-003-la-puja-de-humo.ts';
 import { case004 } from '../db/seeds/case-004-noventa-segundos-de-sombra.ts';
 import { case005 } from '../db/seeds/case-005-ocho-minutos-bajo-tierra.ts';
+import { case006 } from '../db/seeds/case-006-la-habitacion-que-respiraba.ts';
 
-export const CASES: CaseDefinition[] = [case001, case002, case003, case004, case005];
+export const CASES: CaseDefinition[] = [case001, case002, case003, case004, case005, case006];
 
 function statementsFor(def: CaseDefinition): InStatement[] {
   const statements: InStatement[] = [];
