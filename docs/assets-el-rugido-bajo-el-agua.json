@@ -1,0 +1,240 @@
+{
+  "case": "el-rugido-bajo-el-agua",
+  "revision": "2026-09-16",
+  "assets": [
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/portada",
+      "width": 1024,
+      "height": 1536,
+      "version": 1789552442
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/sospechosos/leire-santacruz",
+      "width": 295,
+      "height": 500,
+      "version": 1789552443
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/sospechosos/mauro-galan",
+      "width": 295,
+      "height": 500,
+      "version": 1789552444
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/sospechosos/nerea-campos",
+      "width": 300,
+      "height": 500,
+      "version": 1789552446
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/sospechosos/basilio-roca",
+      "width": 295,
+      "height": 500,
+      "version": 1789552447
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/sospechosos/raul-mena",
+      "width": 295,
+      "height": 500,
+      "version": 1789552449
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/escenas/zoo",
+      "width": 720,
+      "height": 538,
+      "version": 1789552450
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/escenas/enclosure",
+      "width": 720,
+      "height": 538,
+      "version": 1789552452
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/escenas/clinic",
+      "width": 720,
+      "height": 538,
+      "version": 1789552453
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/escenas/office",
+      "width": 720,
+      "height": 538,
+      "version": 1789552455
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/escenas/power",
+      "width": 720,
+      "height": 538,
+      "version": 1789552459
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/escenas/primates",
+      "width": 720,
+      "height": 538,
+      "version": 1789552460
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/escenas/lift",
+      "width": 720,
+      "height": 538,
+      "version": 1789552462
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/escenas/archive",
+      "width": 720,
+      "height": 538,
+      "version": 1789552464
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/escenas/evidence",
+      "width": 720,
+      "height": 538,
+      "version": 1789552466
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/escenas/service",
+      "width": 720,
+      "height": 538,
+      "version": 1789552468
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/escenas/quarantine",
+      "width": 720,
+      "height": 538,
+      "version": 1789552471
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/escenas/reconstruction",
+      "width": 720,
+      "height": 538,
+      "version": 1789552472
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/escenas/leire",
+      "width": 504,
+      "height": 378,
+      "version": 1789552474
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/escenas/mauro",
+      "width": 504,
+      "height": 378,
+      "version": 1789552476
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/escenas/nerea",
+      "width": 504,
+      "height": 378,
+      "version": 1789552478
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/escenas/basilio",
+      "width": 504,
+      "height": 378,
+      "version": 1789552479
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/escenas/raul",
+      "width": 504,
+      "height": 378,
+      "version": 1789552480
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/pruebas/dardo",
+      "width": 300,
+      "height": 300,
+      "version": 1789552482
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/pruebas/sedante",
+      "width": 300,
+      "height": 300,
+      "version": 1789552483
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/pruebas/bisagra",
+      "width": 300,
+      "height": 300,
+      "version": 1789552484
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/pruebas/huellas",
+      "width": 300,
+      "height": 300,
+      "version": 1789552485
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/pruebas/ascensor",
+      "width": 300,
+      "height": 300,
+      "version": 1789552486
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/pruebas/jaula",
+      "width": 300,
+      "height": 300,
+      "version": 1789552488
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/pruebas/plano",
+      "width": 300,
+      "height": 300,
+      "version": 1789552489
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/pruebas/rejilla",
+      "width": 300,
+      "height": 300,
+      "version": 1789552490
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/pruebas/contrato",
+      "width": 300,
+      "height": 300,
+      "version": 1789552491
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/pruebas/carta",
+      "width": 300,
+      "height": 300,
+      "version": 1789552492
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/pruebas/carrete",
+      "width": 300,
+      "height": 300,
+      "version": 1789552493
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/pruebas/radio",
+      "width": 300,
+      "height": 300,
+      "version": 1789552494
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/pruebas/generador",
+      "width": 300,
+      "height": 300,
+      "version": 1789552496
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/pruebas/facturas",
+      "width": 300,
+      "height": 300,
+      "version": 1789552497
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/pruebas/telefono",
+      "width": 300,
+      "height": 300,
+      "version": 1789552498
+    },
+    {
+      "publicId": "archivos-de-medianoche/el-rugido-bajo-el-agua/pruebas/sira",
+      "width": 300,
+      "height": 300,
+      "version": 1789552499
+    }
+  ]
+}
